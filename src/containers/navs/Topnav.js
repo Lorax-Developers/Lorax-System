@@ -237,7 +237,7 @@ class TopNav extends Component {
             <a
               className="btn btn-primary btn-sm ml-2"
               target="_top"
-              href="https://themeforest.net/cart/configure_before_adding/22544383?license=regular&ref=ColoredStrategies&size=source"
+              href="/scan"
             >
               <i class="iconsminds-qr-code"></i>
               &nbsp; SCAN
@@ -253,8 +253,8 @@ class TopNav extends Component {
 
           <div className="header-icons d-inline-block align-middle">
 
-            <TopnavEasyAccess />
-            <TopnavNotifications />
+            {/* <TopnavEasyAccess /> */}
+            {/* <TopnavNotifications /> */}
             <button
               className="header-icon btn btn-empty d-none d-sm-inline-block"
               type="button"
