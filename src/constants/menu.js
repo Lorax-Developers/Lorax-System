@@ -20,8 +20,14 @@ const data = [
   {
     id: "admin",
     icon: "iconsminds-administrator",
-    label: "Admin",
+    label: "Admin Stats",
     to: "/admin"
+  },
+  {
+    id: "manufacturer",
+    icon: "iconsminds-administrator",
+    label: "Manufacturer Profiling",
+    to: "/manufacturer"
   },
   {
     id: "user-profile",

@@ -16,6 +16,8 @@ import { getDirection } from './helpers/Utils';
 import Dashboard from "./views/Dashboard"
 import Scan from "./views/Scan"
 import Home from "./views/Home"
+import Admin from "./views/Admin"
+import Manufacturer from "./views/Manufacturer"
 
 class App extends Component {
   constructor(props) {
@@ -53,6 +55,7 @@ class App extends Component {
                     path="/scan"
                     component={Scan}
                   />
+                  
                   <Route
                     path="/error"
                     exact
@@ -62,6 +65,14 @@ class App extends Component {
                     path="/"
                     exact
                     component = {Home}
+                  />
+                   <Route
+                    path="/admin"
+                    component = {Admin}
+                  />
+                   <Route
+                    path="/manufacturer"
+                    component = {Manufacturer}
                   />
                   <Redirect to="/error" />
                 </Switch>
