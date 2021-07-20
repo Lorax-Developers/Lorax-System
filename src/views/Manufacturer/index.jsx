@@ -2,7 +2,7 @@ import React from "react";
 import AppLayout from '../../layout/AppLayout';
 import { Row } from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
-import UserList from "../../components/userList/UserList";
+import Employee from "../../components/Employee/Employee";
 
 
 const Manufacturer = () => {
@@ -14,7 +14,7 @@ const Manufacturer = () => {
                 <Separator className="mb-5" />
               </Colxx>
             </Row>
-            <UserList/>
+            <Employee/>
         </AppLayout>
     )
   }
