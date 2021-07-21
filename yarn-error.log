@@ -1,0 +1,100 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\ARNDAN005\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install
+
+PATH: 
+  C:\Users\ARNDAN005\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\ARNDAN005\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0;C:\windows\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files (x86)\IncrediBuild;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn;C:\Program Files\Microsoft SQL Server\150\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn;C:\Program Files\Microsoft SQL Server\150\DTS\Binn;C:\Program Files\Azure Data Studio\bin;C:\Program Files\nodejs;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;C:\Users\ARNDAN005\AppData\Local\Microsoft\WindowsApps;C:\Users\ARNDAN005\.dotnet\tools;C:\Users\ARNDAN005\AppData\Roaming\npm;C:\Users\ARNDAN005\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  16.5.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: C:\Users\ARNDAN005\Desktop\Lorax-System\package.json: Unexpected token n in JSON at position 1863
+      at JSON.parse (<anonymous>)
+      at C:\Users\ARNDAN005\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (C:\Users\ARNDAN005\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
+      at C:\Users\ARNDAN005\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "lorax",
+    "version": "1.0.0",
+    "description": "LORAX PROJECT",
+    "private": true,
+    "dependencies": {
+      "@glidejs/glide": "^3.3.0",
+      "availity-reactstrap-validation": "^2.0.4",
+      "axios": "^0.18.0",
+      "chart.js": "^2.7.2",
+      "classnames": "2.2.6",
+      "firebase": "^5.9.4",
+      "formik": "^1.5.1",
+      "moment": "2.22.2",
+      "mousetrap": "^1.6.3",
+      "rc-slider": "^8.6.1",
+      "rc-switch": "^1.6.0",
+      "react": "^16.9.0",
+      "react-albus": "^2.0.0",
+      "react-autosuggest": "^9.3.4",
+      "react-big-calendar": "^0.22.0",
+      "react-chartjs-2": "^2.7.4",
+      "react-circular-progressbar": "^2.0.2",
+      "react-contextmenu": "^2.9.4",
+      "react-datepicker": "^1.5.0",
+      "react-dom": "^16.8.6",
+      "react-dropzone-component": "^3.2.0",
+      "react-google-maps": "^9.4.5",
+      "react-image-lightbox": "^5.1.0",
+      "react-intl": "2.4.0",
+      "react-lines-ellipsis": "^0.14.1",
+      "react-perfect-scrollbar": "^1.1.1",
+      "react-quill": "^1.3.1",
+      "react-rater": "^5.0.3",
+      "react-redux": "^7.1.0",
+      "react-router-dom": "^5.0.1",
+      "react-scripts": "^3.0.1",
+      "react-select": "^2.0.0-beta.7",
+      "react-sortablejs": "^1.3.6",
+      "react-table": "^6.10.0",
+      "react-tagsinput": "^3.19.0",
+      "react-transition-group": "^4.2.2",
+      "react-yandex-maps": "^3.0.2",
+      "reactstrap": "^8.0.1",
+      "redux": "^4.0.1",
+      "redux-saga": "^1.0.2",
+      "sortablejs": "^1.6.1",
+      "video.js": "^7.6.0",
+      "yup": "^0.27.0"
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+      "extends": "react-app"
+    },
+    "browserslist": [
+      ">0.2%",
+      "not dead",
+      "not ie <= 11",
+      "not op_mini all"
+    ],
+    "devDependencies": {
+      "node-sass": "^6.0.1",
+      "sass-loader": "^11.1.1"
+    }
+  }n
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
