@@ -1,5 +1,6 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useState } from 'react'
-import EmployeeForm from "./EmployeeForm";
+import Manufacturer_ProfilingForm from "./Manufacturer_ProfilingForm";
 import { Paper, makeStyles, TableBody, TableRow, TableCell, Toolbar, InputAdornment } from '@material-ui/core';
 import useTable from "../useTable";
 import * as employeeService from "../../services/employeeService";
@@ -35,7 +36,7 @@ const headCells = [
     { id: 'actions', label: 'Actions', disableSorting: true }
 ]
 
-export default function Employees() {
+export default function Manufacturer_Profiling() {
 
     const classes = useStyles();
     const [recordForEdit, setRecordForEdit] = useState(null)
@@ -164,7 +165,7 @@ export default function Employees() {
                 openPopup={openPopup}
                 setOpenPopup={setOpenPopup}
             >
-                <EmployeeForm
+                <Manufacturer_ProfilingForm
                     recordForEdit={recordForEdit}
                     addOrEdit={addOrEdit} />
             </Popup>

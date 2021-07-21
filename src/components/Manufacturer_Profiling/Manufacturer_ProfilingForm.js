@@ -23,7 +23,7 @@ const initialFValues = {
     isPermanent: false,
 }
 
-export default function EmployeeForm(props) {
+export default function Manufacturer_ProfilingForm(props) {
     const { addOrEdit, recordForEdit } = props
 
     const validate = (fieldValues = values) => {
