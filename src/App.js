@@ -1,34 +1,34 @@
-import React, { Component, Suspense } from 'react';
-import { connect } from 'react-redux';
+import React, { Component, Suspense } from "react";
+import { connect } from "react-redux";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
-} from 'react-router-dom';
-import { IntlProvider } from 'react-intl';
-import AppLocale from './lang';
-import NotificationContainer from './components/common/react-notifications/NotificationContainer';
-import { getDirection } from './helpers/Utils';
-
+  Redirect,
+} from "react-router-dom";
+import { IntlProvider } from "react-intl";
+import AppLocale from "./lang";
+import NotificationContainer from "./components/common/react-notifications/NotificationContainer";
+import { getDirection } from "./helpers/Utils";
 
 //APP PAGES
-import Dashboard from "./views/Dashboard"
-import Scan from "./views/Scan"
-import Home from "./views/Home"
-import Admin from "./views/Admin"
-import Manufacturer from "./views/Manufacturer"
+import Dashboard from "./views/Dashboard";
+import Scan from "./views/Scan";
+import Home from "./views/Home";
+import Admin from "./views/Admin";
+import Manufacturer from "./views/Manufacturer";
+import Login from "./views/Login";
 
 class App extends Component {
   constructor(props) {
     super(props);
     const direction = getDirection();
     if (direction.isRtl) {
-      document.body.classList.add('rtl');
-      document.body.classList.remove('ltr');
+      document.body.classList.add("rtl");
+      document.body.classList.remove("ltr");
     } else {
-      document.body.classList.add('ltr');
-      document.body.classList.remove('rtl');
+      document.body.classList.add("ltr");
+      document.body.classList.remove("rtl");
     }
   }
 
@@ -47,33 +47,18 @@ class App extends Component {
             <Suspense fallback={<div className="loading" />}>
               <Router>
                 <Switch>
-                  <Route
-                    path="/dashboard"
-                    component={Dashboard}
-                  />
-                   <Route
-                    path="/scan"
-                    component={Scan}
-                  />
-                  
+                  <Route path="/login" component={Login} />
+                  <Route path="/dashboard" component={Dashboard} />
+                  <Route path="/scan" component={Scan} />
+
                   <Route
                     path="/error"
                     exact
                     render={() => <h1>Error page</h1>}
                   />
-                  <Route
-                    path="/"
-                    exact
-                    component = {Home}
-                  />
-                   <Route
-                    path="/admin"
-                    component = {Admin}
-                  />
-                   <Route
-                    path="/manufacturer"
-                    component = {Manufacturer}
-                  />
+                  <Route path="/" exact component={Home} />
+                  <Route path="/admin" component={Admin} />
+                  <Route path="/manufacturer" component={Manufacturer} />
                   <Redirect to="/error" />
                 </Switch>
               </Router>
@@ -91,7 +76,4 @@ const mapStateToProps = ({ settings }) => {
 };
 const mapActionsToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(App);
+export default connect(mapStateToProps, mapActionsToProps)(App);
