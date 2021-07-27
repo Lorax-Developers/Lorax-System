@@ -59,9 +59,11 @@ router.post(
       //save user to db
       await user.save();
 
+      // ?? Token wont be needed for register only for login
       const payload = {
         user: {
           id: user.id,
+          role: user.role,
         },
       };
 
