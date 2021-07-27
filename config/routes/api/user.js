@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../models/User");
 
-//@route    POST api/users
+//@route    POST api/User
 //@desc     register user
 //access    Public (eg token needed?)
 router.post(
@@ -18,6 +18,9 @@ router.post(
       "password",
       "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
+    check("role", "Role is required").not().isEmpty(),
+    check("city", "City is required").not().isEmpty(),
+    check("province", "Province is required").not().isEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -25,22 +28,26 @@ router.post(
       //bad request
       return res.status(400).json({ errors: errors.array() });
     }
-
-    const { name, email, password } = req.body;
+    //pull data from request
+    const { name, email, password, role, city, province } = req.body;
 
     try {
+      //check if user exists
       let user = await User.findOne({ email });
-
       if (user) {
         return res
           .status(400)
           .json({ errors: [{ msg: "User already exists" }] });
       }
 
+      //create instance of user
       user = new User({
         name,
         email,
         password,
+        role,
+        city,
+        province,
       });
 
       //encrypt password
