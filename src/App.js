@@ -18,6 +18,7 @@ import Scan from "./views/Scan"
 import Home from "./views/Home"
 import Admin from "./views/Admin"
 import Manufacturer from "./views/Manufacturer"
+import Faq from "./views/FAQ"
 
 class App extends Component {
   constructor(props) {
@@ -73,6 +74,10 @@ class App extends Component {
                    <Route
                     path="/manufacturer"
                     component = {Manufacturer}
+                  />
+                  <Route
+                    path="/faq"
+                    component = {Faq}
                   />
                   <Redirect to="/error" />
                 </Switch>
