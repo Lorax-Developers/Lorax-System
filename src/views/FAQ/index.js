@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from "react";
 import AppLayout from '../../layout/AppLayout';
 import { Row, Collapse, Card, Button } from "reactstrap";
-import Breadcrumb from "../../containers/navs/Breadcrumb";
-import { Separator, Colxx } from "../../components/common/CustomBootstrap";
+import { Colxx } from "../../components/common/CustomBootstrap";
 import faqData from "../../data/faq"
 import { injectIntl } from "react-intl";
 
@@ -34,7 +33,7 @@ class Faq extends Component {
             <Fragment>
                 <Row>
                     <Colxx xxs="12">
-                    <img style={{width:"100%"}} src = "/assets/img/FAQ.jpg" />
+                    <img alt = "FAQ" style={{width:"100%"}} src = "/assets/img/FAQ.jpg" />
                     </Colxx>
  
 
