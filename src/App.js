@@ -19,6 +19,7 @@ import Admin from "./views/Admin";
 import Manufacturer from "./views/Manufacturer";
 import Login from "./views/Login";
 import UserProfile from "./views/UserProfile";
+import Faq from "./views/FAQ";
 
 class App extends Component {
   constructor(props) {
@@ -58,9 +59,29 @@ class App extends Component {
                     exact
                     render={() => <h1>Error page</h1>}
                   />
+<<<<<<< HEAD
                   <Route path="/" exact component={Home} />
                   <Route path="/admin" component={Admin} />
                   <Route path="/manufacturer" component={Manufacturer} />
+=======
+                  <Route
+                    path="/"
+                    exact
+                    component = {Home}
+                  />
+                   <Route
+                    path="/admin"
+                    component = {Admin}
+                  />
+                   <Route
+                    path="/manufacturer"
+                    component = {Manufacturer}
+                  />
+                  <Route
+                    path="/faq"
+                    component = {Faq}
+                  />
+>>>>>>> origin/Temoso
                   <Redirect to="/error" />
                 </Switch>
               </Router>

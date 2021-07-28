@@ -35,5 +35,11 @@ const data = [
     label: " User Profile",
     to: "/userprofile",
   },
+  {
+    id: "faq",
+    icon: "simple-icon-question",
+    label: "FAQ",
+    to: "/faq",
+  },
 ];
 export default data;
