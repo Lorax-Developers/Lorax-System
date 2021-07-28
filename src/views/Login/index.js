@@ -2,19 +2,17 @@ import React, { Fragment, useState } from "react";
 import axios from "axios";
 import "../Login/style.css";
 
-//Allows transition
-window.onload = function () {
-  const sign_in_btn = document.getElementById("sign-in-btn");
-  const sign_up_btn = document.getElementById("sign-up-btn");
+//Allows transition (SignIn/SignUp)
+const signIn = function () {
+  const sign_in_btn = document.querySelector("#sign-in-btn");
   const container = document.querySelector(".container");
+  container.classList.remove("sign-up-mode");
+};
 
-  sign_up_btn.addEventListener("click", () => {
-    container.classList.add("sign-up-mode");
-  });
-
-  sign_in_btn.addEventListener("click", () => {
-    container.classList.remove("sign-up-mode");
-  });
+const signUp = function () {
+  const sign_up_btn = document.querySelector("#sign-up-btn");
+  const container = document.querySelector(".container");
+  container.classList.add("sign-up-mode");
 };
 
 const Login = () => {
@@ -31,10 +29,7 @@ const Login = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData.name);
-    console.log(formData.email);
-    console.log(formData.role);
-    console.log(formData.password);
+
     const newUser = {
       name,
       email,
@@ -42,13 +37,15 @@ const Login = () => {
       password,
     };
     try {
+      //access headers make sure its json
       const config = {
         headers: { "Content-Type": "application/json" },
       };
+      //change body to JSON format
       const body = JSON.stringify(newUser);
       console.log(body);
       const res = await axios.post("/api/users", body, config);
-      console.log(body);
+      console.log(res.data);
     } catch (err) {
       console.error(err.response.data);
     }
@@ -99,6 +96,7 @@ const Login = () => {
                     placeholder="Name"
                     onChange={(e) => onChange(e)}
                     required
+                    name="name"
                   />
                 </div>
                 <div className="input-field">
@@ -108,6 +106,7 @@ const Login = () => {
                     placeholder="Email"
                     onChange={(e) => onChange(e)}
                     required
+                    name="email"
                   />
                 </div>
                 <div className="input-field">
@@ -117,6 +116,7 @@ const Login = () => {
                     placeholder="Role"
                     onChange={(e) => onChange(e)}
                     required
+                    name="role"
                   />
                 </div>
                 <div className="input-field">
@@ -126,6 +126,7 @@ const Login = () => {
                     placeholder="Password"
                     onChange={(e) => onChange(e)}
                     required
+                    name="password"
                   />
                 </div>
                 <input type="submit" className="btn" value="Sign up" />
@@ -156,7 +157,11 @@ const Login = () => {
                   Kindly click on the sign up icon below and fill in the
                   necessary details to access the LORAX System.
                 </p>
-                <button className="btn transparent" id="sign-up-btn">
+                <button
+                  className="btn transparent"
+                  id="sign-up-btn"
+                  onClick={signUp}
+                >
                   Sign up
                 </button>
               </div>
@@ -169,7 +174,11 @@ const Login = () => {
                   Kindly click on the Login icon below to access the LORAX
                   system.
                 </p>
-                <button className="btn transparent" id="sign-in-btn">
+                <button
+                  className="btn transparent"
+                  id="sign-in-btn"
+                  onClick={signIn}
+                >
                   Login
                 </button>
               </div>
