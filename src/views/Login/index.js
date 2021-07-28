@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import axios from "axios";
-import "../Login/style.css";
+import "./loginstyle.css";
 
 //Allows transition (SignIn/SignUp)
 const signIn = function () {
