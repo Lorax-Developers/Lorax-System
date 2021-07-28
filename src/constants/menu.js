@@ -15,26 +15,25 @@ const data = [
     id: "search",
     icon: "iconsminds-magnifi-glass",
     label: "Search",
-    to: "/search"
+    to: "/search",
   },
   {
     id: "admin",
     icon: "iconsminds-administrator",
     label: "Admin Stats",
-    to: "/admin"
+    to: "/admin",
   },
   {
     id: "manufacturer",
     icon: "iconsminds-administrator",
     label: "Manufacturer Profiling",
-    to: "/manufacturer"
+    to: "/manufacturer",
   },
   {
-    id: "user-profile",
+    id: "userprofile",
     icon: "iconsminds-user",
     label: " User Profile",
-    to: "/user-profile"
-  }
- 
+    to: "/userprofile",
+  },
 ];
 export default data;

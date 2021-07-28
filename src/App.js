@@ -18,6 +18,7 @@ import Home from "./views/Home";
 import Admin from "./views/Admin";
 import Manufacturer from "./views/Manufacturer";
 import Login from "./views/Login";
+import UserProfile from "./views/UserProfile";
 
 class App extends Component {
   constructor(props) {
@@ -50,6 +51,7 @@ class App extends Component {
                   <Route path="/login" component={Login} />
                   <Route path="/dashboard" component={Dashboard} />
                   <Route path="/scan" component={Scan} />
+                  <Route path="/userprofile" component={UserProfile} />
 
                   <Route
                     path="/error"
