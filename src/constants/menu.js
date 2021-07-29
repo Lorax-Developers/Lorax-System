@@ -36,10 +36,10 @@ const data = [
     to: "/faq"
   },
   {
-    id: "user-profile",
+    id: "userprofile",
     icon: "iconsminds-user",
     label: " User Profile",
-    to: "/user-profile"
+    to: "/userprofile"
   }
   
  
