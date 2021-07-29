@@ -19,6 +19,7 @@ import Home from "./views/Home"
 import Admin from "./views/Admin"
 import Manufacturer from "./views/Manufacturer"
 import Faq from "./views/FAQ"
+import UserProfile from "./views/UserProfile"
 
 class App extends Component {
   constructor(props) {
@@ -74,6 +75,10 @@ class App extends Component {
                    <Route
                     path="/manufacturer"
                     component = {Manufacturer}
+                  />
+                   <Route
+                    path="/user-profile"
+                    component = {UserProfile}
                   />
                   <Route
                     path="/faq"
