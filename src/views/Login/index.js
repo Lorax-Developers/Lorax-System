@@ -165,7 +165,7 @@ const Login = () => {
                   Sign up
                 </button>
               </div>
-              <img src={require("./img/log.svg")} className="image" alt="" />
+              <img src={require("./img/log.svg").default} className="image" alt="" />
             </div>
             <div className="panel right-panel">
               <div className="content">
@@ -182,7 +182,7 @@ const Login = () => {
                   Login
                 </button>
               </div>
-              <img src={require("./img/register.svg")} className="image" alt="" />
+              <img src={require("./img/register.svg").default} className="image" alt="" />
             </div>
           </div>
         </div>

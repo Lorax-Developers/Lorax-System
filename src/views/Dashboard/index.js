@@ -2,6 +2,7 @@ import React from "react";
 import AppLayout from "../../layout/AppLayout";
 import { Row } from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
+import "./dashboard.scss"
 
 import RecyclingLineGraph from "./components/RecyclingLineGraph";
 import SortableStaticticsRow from "./components/SortableStaticticsRow";
