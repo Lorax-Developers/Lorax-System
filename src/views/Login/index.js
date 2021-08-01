@@ -1,16 +1,16 @@
 import React, { Fragment, useState } from "react";
 import axios from "axios";
-import "./loginstyle.css";
+import "./loginstyle.scss";
 
 //Allows transition (SignIn/SignUp)
 const signIn = function () {
-  const sign_in_btn = document.querySelector("#sign-in-btn");
+  //const sign_in_btn = document.querySelector("#sign-in-btn");
   const container = document.querySelector(".container");
   container.classList.remove("sign-up-mode");
 };
 
 const signUp = function () {
-  const sign_up_btn = document.querySelector("#sign-up-btn");
+  //const sign_up_btn = document.querySelector("#sign-up-btn");
   const container = document.querySelector(".container");
   container.classList.add("sign-up-mode");
 };
@@ -53,7 +53,7 @@ const Login = () => {
 
   return (
     <Fragment>
-      <body>
+      <body className="login-container">
         <div className="container">
           <div className="forms-container">
             <div className="signin-signup">
@@ -61,27 +61,27 @@ const Login = () => {
                 <h1 className="heading">LORAX</h1>
                 <h2 className="title">Login to access account</h2>
                 <div className="input-field">
-                  <i className="fas fa-user"></i>
+                  <i className="simple-icon-user"></i>
                   <input type="text" placeholder="Username" />
                 </div>
                 <div className="input-field">
-                  <i className="fas fa-lock"></i>
+                  <i className="simple-icon-lock"></i>
                   <input type="password" placeholder="Password" />
                 </div>
                 <input type="submit" defvalue="Login" className="btn solid" />
                 <p className="social-text">Or Sign in with social platforms</p>
                 <div className="social-media">
-                  <a href="#" className="social-icon">
-                    <i className="fab fa-facebook-f"></i>
+                  <a href="https://facebook.com" className="social-icon">
+                    <i className="simple-icon-social-facebook"></i>
                   </a>
-                  <a href="#" className="social-icon">
-                    <i className="fab fa-twitter"></i>
+                  <a href="https://twitter.com" className="social-icon">
+                    <i className="simple-icon-social-twitter"></i>
                   </a>
-                  <a href="#" className="social-icon">
-                    <i className="fab fa-google"></i>
+                  <a href="https://google.com" className="social-icon">
+                    <i className="simple-icon-social-google"></i>
                   </a>
-                  <a href="#" className="social-icon">
-                    <i className="fab fa-linkedin-in"></i>
+                  <a href="https://linkedin.com" className="social-icon">
+                    <i className="simple-icon-social-linkedin"></i>
                   </a>
                 </div>
               </form>
@@ -90,7 +90,7 @@ const Login = () => {
                 <h1 className="heading">LORAX</h1>
                 <h2 className="title">Sign up to access account</h2>
                 <div className="input-field">
-                  <i className="fas fa-user"></i>
+                  <i className="simple-icon-user"></i>
                   <input
                     type="text"
                     placeholder="Name"
@@ -100,7 +100,7 @@ const Login = () => {
                   />
                 </div>
                 <div className="input-field">
-                  <i className="fas fa-envelope"></i>
+                  <i className="simple-icon-envelope"></i>
                   <input
                     type="email"
                     placeholder="Email"
@@ -110,7 +110,7 @@ const Login = () => {
                   />
                 </div>
                 <div className="input-field">
-                  <i className="fas fa-user"></i>
+                  <i className="simple-icon-user"></i>
                   <input
                     type="enum"
                     placeholder="Role"
@@ -120,7 +120,7 @@ const Login = () => {
                   />
                 </div>
                 <div className="input-field">
-                  <i className="fas fa-lock"></i>
+                  <i className="simple-icon-lock"></i>
                   <input
                     type="password"
                     placeholder="Password"
@@ -132,17 +132,17 @@ const Login = () => {
                 <input type="submit" className="btn" value="Sign up" />
                 <p className="social-text">Or Sign up with social platforms</p>
                 <div className="social-media">
-                  <a href="#" className="social-icon">
-                    <i className="fab fa-facebook-f"></i>
+                  <a href="https://facebook.com" className="social-icon">
+                    <i className="simple-icon-social-facebook"></i>
                   </a>
-                  <a href="#" className="social-icon">
-                    <i className="fab fa-twitter"></i>
+                  <a href="https://twitter.com" className="social-icon">
+                    <i className="simple-icon-social-twitter"></i>
                   </a>
-                  <a href="#" className="social-icon">
-                    <i className="fab fa-google"></i>
+                  <a href="https://google.com" className="social-icon">
+                    <i className="simple-icon-social-google"></i>
                   </a>
-                  <a href="#" className="social-icon">
-                    <i className="fab fa-linkedin-in"></i>
+                  <a href="https://linkedin.com" className="social-icon">
+                    <i className="simple-icon-social-linkedin"></i>
                   </a>
                 </div>
               </form>
@@ -182,7 +182,7 @@ const Login = () => {
                   Login
                 </button>
               </div>
-              <img src="./img/register.svg" className="image" alt="" />
+              <img src={require("./img/register.svg")} className="image" alt="" />
             </div>
           </div>
         </div>
