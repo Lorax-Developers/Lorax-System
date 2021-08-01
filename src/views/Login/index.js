@@ -44,7 +44,7 @@ const Login = () => {
       //change body to JSON format
       const body = JSON.stringify(newUser);
       console.log(body);
-      const res = await axios.post("/api/users", body, config);
+      const res = await axios.post("http://localhost:5000/api/user", body, config);
       console.log(res.data);
     } catch (err) {
       console.error(err.response.data);
