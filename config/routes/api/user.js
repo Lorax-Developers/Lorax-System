@@ -19,6 +19,8 @@ router.post(
       "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
     check("role", "Role is required").not().isEmpty(),
+
+    //the enforcement is preventing sign up but there isn't any space to enter the info on front end
     check("city", "City is required").not().isEmpty(),
     check("province", "Province is required").not().isEmpty(),
   ],
