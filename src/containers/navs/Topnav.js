@@ -276,8 +276,9 @@ class TopNav extends Component {
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" right>
-                <DropdownItem>Account</DropdownItem>
+                <DropdownItem onClick={() => window.location="/userprofile"}>Account</DropdownItem>
                 <DropdownItem>Features</DropdownItem>
+                <DropdownItem onClick={() => window.location="/faq"}>FAQ </DropdownItem>
                 <DropdownItem>History</DropdownItem>
                 <DropdownItem>Support</DropdownItem>
                 <DropdownItem divider />
