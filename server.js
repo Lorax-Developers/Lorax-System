@@ -1,9 +1,13 @@
 const express = require("express");
 const connectDB = require("./config/db");
+const cors = require("cors")
 
 const app = express();
 //connect db
 connectDB();
+
+//Allow cross origin access (cors error fix)
+app.use(cors())
 
 //Init Middleware (allows retrieval of request data in json)
 app.use(express.json({ extended: false }));
