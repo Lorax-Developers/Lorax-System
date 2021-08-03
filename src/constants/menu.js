@@ -30,11 +30,18 @@ const data = [
     to: "/manufacturer"
   },
   {
-    id: "user-profile",
+    id: "faq",
+    icon: "simple-icon-question",
+    label: "FAQ",
+    to: "/faq"
+  },
+  {
+    id: "userprofile",
     icon: "iconsminds-user",
     label: " User Profile",
-    to: "/user-profile"
+    to: "/userprofile"
   }
+  
  
 ];
 export default data;

@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-pascal-case */
 import React from "react";
 import AppLayout from '../../layout/AppLayout';
 import { Row } from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
-import UserList from "../../components/userList/UserList";
+import Manufacturer_Profiling from "../../components/Manufacturer_Profiling/Manufacturer_Profiling";
 
 
 const Manufacturer = () => {
@@ -10,11 +11,11 @@ const Manufacturer = () => {
         <AppLayout>
             <Row>
               <Colxx xxs="12">
-                <h1>Edit Manufacturer's Profile</h1>
+                <h1>Manufacturer's Profile</h1>
                 <Separator className="mb-5" />
               </Colxx>
             </Row>
-            <UserList/>
+            <Manufacturer_Profiling/>
         </AppLayout>
     )
   }

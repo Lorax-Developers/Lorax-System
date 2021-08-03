@@ -1,36 +1,36 @@
-import React, { Component, Suspense } from 'react';
-import { connect } from 'react-redux';
+import React, { Component, Suspense } from "react";
+import { connect } from "react-redux";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
-} from 'react-router-dom';
-import { IntlProvider } from 'react-intl';
-import AppLocale from './lang';
-import NotificationContainer from './components/common/react-notifications/NotificationContainer';
-import { getDirection } from './helpers/Utils';
-
+  Redirect,
+} from "react-router-dom";
+import { IntlProvider } from "react-intl";
+import AppLocale from "./lang";
+import NotificationContainer from "./components/common/react-notifications/NotificationContainer";
+import { getDirection } from "./helpers/Utils";
 
 //APP PAGES
-import Dashboard from "./views/Dashboard"
-import Scan from "./views/Scan"
-import Home from "./views/Home"
-import Admin from "./views/Admin"
-import Manufacturer from "./views/Manufacturer"
+import Dashboard from "./views/Dashboard";
+import Scan from "./views/Scan";
+import Admin from "./views/Admin";
+import Manufacturer from "./views/Manufacturer";
+import Login from "./views/Login";
+import UserProfile from "./views/UserProfile";
+import Faq from "./views/FAQ";
 import Landing from "./views/Landing"
-
 
 class App extends Component {
   constructor(props) {
     super(props);
     const direction = getDirection();
     if (direction.isRtl) {
-      document.body.classList.add('rtl');
-      document.body.classList.remove('ltr');
+      document.body.classList.add("rtl");
+      document.body.classList.remove("ltr");
     } else {
-      document.body.classList.add('ltr');
-      document.body.classList.remove('rtl');
+      document.body.classList.add("ltr");
+      document.body.classList.remove("rtl");
     }
   }
 
@@ -49,15 +49,11 @@ class App extends Component {
             <Suspense fallback={<div className="loading" />}>
               <Router>
                 <Switch>
-                  <Route
-                    path="/dashboard"
-                    component={Dashboard}
-                  />
-                   <Route
-                    path="/scan"
-                    component={Scan}
-                  />
-                  
+                  <Route path="/login" component={Login} />
+                  <Route path="/dashboard" component={Dashboard} />
+                  <Route path="/scan" component={Scan} />
+                  <Route path="/userprofile" component={UserProfile} />
+
                   <Route
                     path="/error"
                     exact
@@ -66,7 +62,7 @@ class App extends Component {
                   <Route
                     path="/"
                     exact
-                    component = {Home}
+                    component = {Landing}
                   />
                    <Route
                     path="/admin"
@@ -77,10 +73,14 @@ class App extends Component {
                     component = {Manufacturer}
                   />
                    <Route
-                    path="/landing"
-                    component = {Landing}
+                    path="/user-profile"
+                    component = {UserProfile}
                   />
-                <Redirect to="/error" />
+                  <Route
+                    path="/faq"
+                    component = {Faq}
+                  />               
+                  <Redirect to="/error" />
                 </Switch>
               </Router>
             </Suspense>
@@ -97,7 +97,4 @@ const mapStateToProps = ({ settings }) => {
 };
 const mapActionsToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(App);
+export default connect(mapStateToProps, mapActionsToProps)(App);

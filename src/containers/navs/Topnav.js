@@ -23,8 +23,7 @@ import {
 } from "../../constants/defaultValues";
 
 import { MobileMenuIcon, MenuIcon } from "../../components/svg";
-import TopnavEasyAccess from "./Topnav.EasyAccess";
-import TopnavNotifications from "./Topnav.Notifications";
+
 
 import { getDirection, setDirection } from "../../helpers/Utils";
 
@@ -277,12 +276,13 @@ class TopNav extends Component {
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" right>
-                <DropdownItem>Account</DropdownItem>
+                <DropdownItem onClick={() => window.location="/userprofile"}>Account</DropdownItem>
                 <DropdownItem>Features</DropdownItem>
+                <DropdownItem onClick={() => window.location="/faq"}>FAQ </DropdownItem>
                 <DropdownItem>History</DropdownItem>
                 <DropdownItem>Support</DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem onClick={() => this.handleLogout()}>
+                <DropdownItem onClick={() => window.location="/login"}> {/*a way to link to another page */}
                   Sign out
                 </DropdownItem>
               </DropdownMenu>
