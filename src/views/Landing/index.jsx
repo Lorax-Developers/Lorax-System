@@ -10,9 +10,9 @@ const NewLanding = (props) => {
       <header id="header" className="d-flex align-items-center">
         <div className="container d-flex align-items-center justify-content-between">
           <div className="logo">
-            <a href="/landing">
+            <a href="/">
               <img
-                src={require("../../assets/img/logo-black.png")}
+                src={require("../../assets/img/logo-black.png").default}
                 className="img-fluid"
               />
             </a>
@@ -24,7 +24,7 @@ const NewLanding = (props) => {
                   <a href="#solution">The Solution</a>
                   <a href="#benefits">The Benefits</a>
                   <a href="#technology">The Technology</a>
-                  <a href="#getstarted" className="getstarted">
+                  <a href="/login" className="getstarted">
                     Get Started
                   </a>
                 </div>
@@ -47,14 +47,14 @@ const NewLanding = (props) => {
                 Powered by blockchain to facilitate a cleaner environment{" "}
               </h2>
               <div>
-                <a href="#about" className="btn-get-started scrollto">
+                <a href="/login" className="btn-get-started scrollto">
                   Get Started
                 </a>
               </div>
             </div>
             <div className="col-lg-6 order-1 order-lg-2 hero-img">
               <img
-                src={require("./assets/img/example-scene-2.svg")}
+                src={require("./assets/img/example-scene-2.svg").default}
                 className="img-fluid animated"
                 alt=""
               />
@@ -70,7 +70,7 @@ const NewLanding = (props) => {
             <div className="row justify-content-between">
               <div className="col-lg-5 d-flex align-items-center justify-content-center about-img">
                 <img
-                  src={require("./assets/img/example-scene-2.svg")}
+                  src={require("./assets/img/example-scene-2.svg").default}
                   className="img-fluid animated"
                   alt=""
                 />
@@ -223,7 +223,7 @@ const NewLanding = (props) => {
             </div>
             <div className="col-lg-5 d-flex align-items-center justify-content-center about-img">
               <img
-                src={require("./assets/img/example-scene-2.svg")}
+                src={require("./assets/img/example-scene-2.svg").default}
                 className="img-fluid animated"
                 alt=""
               />
