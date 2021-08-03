@@ -18,6 +18,8 @@ import Scan from "./views/Scan"
 import Home from "./views/Home"
 import Admin from "./views/Admin"
 import Manufacturer from "./views/Manufacturer"
+import Landing from "./views/Landing"
+
 
 class App extends Component {
   constructor(props) {
@@ -74,7 +76,11 @@ class App extends Component {
                     path="/manufacturer"
                     component = {Manufacturer}
                   />
-                  <Redirect to="/error" />
+                   <Route
+                    path="/landing"
+                    component = {Landing}
+                  />
+                <Redirect to="/error" />
                 </Switch>
               </Router>
             </Suspense>
