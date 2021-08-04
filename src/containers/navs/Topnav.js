@@ -9,13 +9,6 @@ import {
 } from "reactstrap";
 
 import { NavLink } from "react-router-dom";
-import { connect } from "react-redux";
-
-import {
-  setContainerClassnames,
-  clickOnMobileMenu,
-  changeLocale
-} from "../../redux/actions";
 
 import {
   menuHiddenBreakpoint,
@@ -200,16 +193,16 @@ class TopNav extends Component {
           <NavLink
             to="#"
             className="menu-button d-none d-md-block"
-            onClick={e =>
-              this.menuButtonClick(e, menuClickCount, containerClassnames)
-            }
+            // onClick={e =>
+            //   this.menuButtonClick(e, menuClickCount, containerClassnames)
+            // }
           >
             <MenuIcon />
           </NavLink>
           <NavLink
             to="#"
             className="menu-button-mobile d-xs-block d-sm-block d-md-none"
-            onClick={e => this.mobileMenuButtonClick(e, containerClassnames)}
+            //onClick={e => this.mobileMenuButtonClick(e, containerClassnames)}
           >
             <MobileMenuIcon />
           </NavLink>
@@ -294,19 +287,4 @@ class TopNav extends Component {
   }
 }
 
-const mapStateToProps = ({ menu, settings }) => {
-  const { containerClassnames, menuClickCount, selectedMenuHasSubItems } = menu;
-  const { locale } = settings;
-  return {
-    containerClassnames,
-    menuClickCount,
-    selectedMenuHasSubItems,
-    locale
-  };
-};
-export default injectIntl(
-  connect(
-    mapStateToProps,
-    { setContainerClassnames, clickOnMobileMenu, changeLocale }
-  )(TopNav)
-);
+export default injectIntl(TopNav);
