@@ -1,5 +1,4 @@
 import React, { Component, Suspense } from "react";
-import { connect } from "react-redux";
 import {
   BrowserRouter as Router,
   Route,
@@ -35,8 +34,7 @@ class App extends Component {
   }
 
   render() {
-    const { locale } = this.props;
-    const currentAppLocale = AppLocale[locale];
+    const currentAppLocale = AppLocale["en"];
 
     return (
       <div className="h-100">
@@ -91,10 +89,4 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ settings }) => {
-  const { locale } = settings;
-  return { locale };
-};
-const mapActionsToProps = {};
-
-export default connect(mapStateToProps, mapActionsToProps)(App);
+export default App;
