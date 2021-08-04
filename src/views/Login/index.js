@@ -20,9 +20,12 @@ const Login = () => {
     name: "",
     email: "",
     role: "",
+    province: "",
+    city: "",
     password: "",
+    access: "n/a",
   });
-  const { name, email, role, password } = formData;
+  const { name, email, role, province, city, password, access } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,20 +37,32 @@ const Login = () => {
       name,
       email,
       role,
+      province,
+      city,
       password,
+      access,
     };
-    try {
-      //access headers make sure its json
-      const config = {
-        headers: { "Content-Type": "application/json" },
-      };
-      //change body to JSON format
-      const body = JSON.stringify(newUser);
-      console.log(body);
-      const res = await axios.post("http://localhost:5000/api/user", body, config);
-      console.log(res.data);
-    } catch (err) {
-      console.error(err.response.data);
+    //check if manufacturer and apply pending access
+    if ((newUser.role = "Manufacturer" || "manufacturer")) {
+      newUser.access = "Pending";
+      console.log(newUser);
+      try {
+        //access headers make sure its json
+        const config = {
+          headers: { "Content-Type": "application/json" },
+        };
+        //change body to JSON format
+        const body = JSON.stringify(newUser);
+        console.log(body);
+        const res = await axios.post(
+          "http://localhost:5000/api/user",
+          body,
+          config
+        );
+        console.log(res.data);
+      } catch (err) {
+        console.error(err.response.data);
+      }
     }
   };
 
@@ -112,6 +127,26 @@ const Login = () => {
                 <div className="input-field">
                   <i className="simple-icon-user"></i>
                   <input
+                    type="text"
+                    placeholder="Province"
+                    onChange={(e) => onChange(e)}
+                    required
+                    name="province"
+                  />
+                </div>
+                <div className="input-field">
+                  <i className="simple-icon-user"></i>
+                  <input
+                    type="text"
+                    placeholder="City"
+                    onChange={(e) => onChange(e)}
+                    required
+                    name="city"
+                  />
+                </div>
+                <div className="input-field">
+                  <i className="simple-icon-user"></i>
+                  <input
                     type="enum"
                     placeholder="Role"
                     onChange={(e) => onChange(e)}
@@ -165,7 +200,11 @@ const Login = () => {
                   Sign up
                 </button>
               </div>
-              <img src={require("./img/log.svg").default} className="image" alt="" />
+              <img
+                src={require("./img/log.svg").default}
+                className="image"
+                alt=""
+              />
             </div>
             <div className="panel right-panel">
               <div className="content">
@@ -182,7 +221,11 @@ const Login = () => {
                   Login
                 </button>
               </div>
-              <img src={require("./img/register.svg").default} className="image" alt="" />
+              <img
+                src={require("./img/register.svg").default}
+                className="image"
+                alt=""
+              />
             </div>
           </div>
         </div>
@@ -190,5 +233,4 @@ const Login = () => {
     </Fragment>
   );
 };
-
 export default Login;

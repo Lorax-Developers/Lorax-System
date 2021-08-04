@@ -31,7 +31,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     //pull data from request
-    const { name, email, password, role, city, province } = req.body;
+    const { name, email, password, role, city, province, access } = req.body;
 
     try {
       //check if user exists
@@ -50,6 +50,7 @@ router.post(
         role,
         city,
         province,
+        access,
       });
 
       //encrypt password
@@ -60,24 +61,6 @@ router.post(
 
       //save user to db
       await user.save();
-
-      // ?? Token wont be needed for register only for login
-      const payload = {
-        user: {
-          id: user.id,
-          role: user.role,
-        },
-      };
-
-      jwt.sign(
-        payload,
-        config.get("jwtSecret"),
-        { expiresIn: 3600 },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
