@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter} from "react-router-dom";
 
 import TopNav from "../containers/navs/Topnav";
 import Sidebar from "../containers/navs/Sidebar";
@@ -20,13 +18,5 @@ class AppLayout extends Component {
     );
   }
 }
-const mapStateToProps = ({ menu }) => {
-  const { containerClassnames } = menu;
-  return { containerClassnames };
-};
-const mapActionToProps={}
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapActionToProps
-)(AppLayout));
+export default AppLayout;
