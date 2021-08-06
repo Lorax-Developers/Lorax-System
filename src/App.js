@@ -14,12 +14,12 @@ import { getDirection } from "./helpers/Utils";
 //APP PAGES
 import Dashboard from "./views/Dashboard";
 import Scan from "./views/Scan";
-import Home from "./views/Home";
 import Admin from "./views/Admin";
 import Manufacturer from "./views/Manufacturer";
 import Login from "./views/Login";
 import UserProfile from "./views/UserProfile";
 import Faq from "./views/FAQ";
+import Landing from "./views/Landing"
 
 class App extends Component {
   constructor(props) {
@@ -62,7 +62,7 @@ class App extends Component {
                   <Route
                     path="/"
                     exact
-                    component = {Home}
+                    component = {Landing}
                   />
                    <Route
                     path="/admin"
@@ -79,7 +79,7 @@ class App extends Component {
                   <Route
                     path="/faq"
                     component = {Faq}
-                  />
+                  />               
                   <Redirect to="/error" />
                 </Switch>
               </Router>
