@@ -16,6 +16,7 @@ const signUp = function () {
 };
 
 const Login = () => {
+  //REGISTER HOOK
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,6 +26,12 @@ const Login = () => {
     password: "",
     access: "n/a",
   });
+  //LOGIN HOOK
+  const [L_formData, L_setFormData] = useState({
+    L_email: "",
+    L_password: "",
+  });
+  //REGISTER FUNCTIONALITY
   const { name, email, role, province, city, password, access } = formData;
 
   const onChange = (e) =>
@@ -63,6 +70,16 @@ const Login = () => {
       } catch (err) {
         console.error(err.response.data);
       }
+      //LOGIN FUNCTIONALITY
+
+      const { L_email, L_password } = formData;
+
+      const onChange = (f) =>
+        setFormData({ ...formData, [f.target.name]: f.target.value });
+
+      const onSubmit = async (f) => {
+        f.preventDefault();
+      };
     }
   };
 
@@ -72,16 +89,30 @@ const Login = () => {
         <div className="container">
           <div className="forms-container">
             <div className="signin-signup">
-              <form action="#" className="sign-in-form">
+              <form
+                action="#"
+                onSubmit={(f) => onSubmit(f)}
+                className="sign-in-form"
+              >
                 <h1 className="heading">LORAX</h1>
                 <h2 className="title">Login to access account</h2>
                 <div className="input-field">
                   <i className="simple-icon-user"></i>
-                  <input type="text" placeholder="Username" />
+                  <input
+                    type="text"
+                    placeholder="Email"
+                    name="L_email"
+                    onChange={(f) => onChange(f)}
+                  />
                 </div>
                 <div className="input-field">
                   <i className="simple-icon-lock"></i>
-                  <input type="password" placeholder="Password" />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    name="L_name"
+                    onChange={(f) => onChange(f)}
+                  />
                 </div>
                 <input type="submit" defvalue="Login" className="btn solid" />
                 <p className="social-text">Or Sign in with social platforms</p>
