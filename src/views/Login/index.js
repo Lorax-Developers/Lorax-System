@@ -1,6 +1,9 @@
 import React, { Fragment, useState } from "react";
+import { connect } from "react-redux";
 import axios from "axios";
 import "./loginstyle.scss";
+import { setAlert } from "../../actions/alert";
+import PropTypes from "prop-types";
 
 //Allows transition (SignIn/SignUp)
 const signIn = function () {
@@ -15,7 +18,7 @@ const signUp = function () {
   container.classList.add("sign-up-mode");
 };
 
-const Login = () => {
+const Login = ({ setAlert }) => {
   //REGISTER HOOK
   const [formData, setFormData] = useState({
     name: "",
@@ -39,6 +42,7 @@ const Login = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setAlert("SUBMITTING", "success");
 
     const newUser = {
       name,
@@ -66,21 +70,23 @@ const Login = () => {
           body,
           config
         );
-        console.log(res.data);
+
+        //console.log(res.data);
       } catch (err) {
         console.error(err.response.data);
       }
-      //LOGIN FUNCTIONALITY
-
-      const { L_email, L_password } = formData;
-
-      const onChange = (f) =>
-        setFormData({ ...formData, [f.target.name]: f.target.value });
-
-      const onSubmit = async (f) => {
-        f.preventDefault();
-      };
     }
+  };
+  //LOGIN FUNCTIONALITY
+
+  const { L_email, L_password } = L_formData;
+
+  const onChangeL = (f) =>
+    setFormData({ ...formData, [f.target.name]: f.target.value });
+
+  const onSubmitL = async (f) => {
+    f.preventDefault();
+    console.log("SUCCESS");
   };
 
   return (
@@ -91,7 +97,7 @@ const Login = () => {
             <div className="signin-signup">
               <form
                 action="#"
-                onSubmit={(f) => onSubmit(f)}
+                onSubmit={(f) => onSubmitL(f)}
                 className="sign-in-form"
               >
                 <h1 className="heading">LORAX</h1>
@@ -102,7 +108,7 @@ const Login = () => {
                     type="text"
                     placeholder="Email"
                     name="L_email"
-                    onChange={(f) => onChange(f)}
+                    onChange={(f) => onChangeL(f)}
                   />
                 </div>
                 <div className="input-field">
@@ -111,7 +117,7 @@ const Login = () => {
                     type="password"
                     placeholder="Password"
                     name="L_name"
-                    onChange={(f) => onChange(f)}
+                    onChange={(f) => onChangeL(f)}
                   />
                 </div>
                 <input type="submit" defvalue="Login" className="btn solid" />
@@ -178,10 +184,11 @@ const Login = () => {
                 <div className="input-field">
                   <i className="simple-icon-user"></i>
                   <input
-                    type="enum"
+                    type="text"
                     placeholder="Role"
                     onChange={(e) => onChange(e)}
-                    required
+                    requir
+                    ed
                     name="role"
                   />
                 </div>
@@ -264,4 +271,7 @@ const Login = () => {
     </Fragment>
   );
 };
-export default Login;
+Login.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+};
+export default connect(null, { setAlert })(Login);
