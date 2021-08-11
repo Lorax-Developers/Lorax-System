@@ -8,15 +8,18 @@ import SortableStaticticsRow from './components/SortableStaticticsRow';
 import SmartbinPieChart from "./components/SmartbinPieChart";
 import DashboardBarChart from "./components/DashboardBarChart";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
     const [dataNumbers, setDataNumbers]= useState({});
     const [dataNumbersBarChart, setDataNumbersBarChart]= useState({});
     const [isLoading, setIsLoading]= useState(true);
 
+    let manufacturer = useSelector(state => state.auth.user._id);
+
+
     useEffect(() => {
         let server = 'http://localhost:5000';
-        let manufacturer = "ireodjk039834u200";
 
         const getFurtherData = () => {
             let thisMonth =  new Date().getMonth() - 1;
