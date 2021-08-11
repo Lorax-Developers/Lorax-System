@@ -1,27 +1,23 @@
 import React from "react";
-import { Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
+import { Card, CardBody, CardTitle } from "reactstrap";
 
 import {
     BarChart,
-  } from "../../../components/charts";
+} from "../../../components/charts";
   
-  import {
-    barChartData,
-  } from "../../../data/charts";
 
   
-const DashboardBarChart = () => {
+const DashboardBarChart = (props) => {
+  console.log(props.dataNumbersBarChart)
     return(
         <Card>
               <CardBody>
                 <CardTitle>
-                Monthly recycling levels
+                Monthly Bottle Recycle Analysis
                 </CardTitle>
-                    <CardSubtitle>
-                      Bottles recycled per month
-                    </CardSubtitle>
+                    
                     <div className="chart-container">
-                      <BarChart  data={barChartData} />
+                      <BarChart  data={props.dataNumbersBarChart} />
                     </div>
               </CardBody>
             </Card>

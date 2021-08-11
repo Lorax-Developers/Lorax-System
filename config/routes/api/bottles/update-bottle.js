@@ -37,27 +37,27 @@ const deleteFromOldTransactionsDb = async (currentDb, bottleQr) => {
 
 }
 
-const addToNewTransactionsDb = async (nextDb, bottleQr, checkExist, bottleStatus) => {
+const addToNewTransactionsDb = async (nextDb, bottleQr, checkExist, bottleStatus, userId) => {
     
     //Find and Insert into the appropriate next transaction status collection
     let addToNewTransactionDb; 
     if(nextDb === "transactions-manufactured"){
-        addToNewTransactionDb = await TransactionsManufacturedModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsManufacturedModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     else if(nextDb === "transactions-outgoing"){
-        addToNewTransactionDb = await TransactionsOutgoingModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsOutgoingModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     else if(nextDb === "transactions-purchased"){
-        addToNewTransactionDb = await TransactionsPurchasedModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsPurchasedModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     else if(nextDb === "transactions-delivered"){
-        addToNewTransactionDb = await TransactionsDeliveredModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsDeliveredModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     else if(nextDb === "transactions-deposited"){
-        addToNewTransactionDb = await TransactionsDepositedModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsDepositedModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     else if(nextDb === "transactions-recycled"){
-        addToNewTransactionDb = await TransactionsRecycledModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsRecycledModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     console.log("added "+bottleQr+" to "+nextDb);
 
@@ -88,27 +88,27 @@ const deleteFromOldTransactionsDbBatch = async (currentDb, batchQr) => {
 
 }
 
-const addToNewTransactionsDbBatch = async (nextDb, bottleQr, checkExist, bottleStatus) => {
+const addToNewTransactionsDbBatch = async (nextDb, bottleQr, checkExist, bottleStatus, userId) => {
     
     //Find and Insert into the appropriate next transaction status collection
     let addToNewTransactionDb; 
     if(nextDb === "transactions-manufactured"){
-        addToNewTransactionDb = await TransactionsManufacturedModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsManufacturedModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     else if(nextDb === "transactions-outgoing"){
-        addToNewTransactionDb = await TransactionsOutgoingModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsOutgoingModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     else if(nextDb === "transactions-purchased"){
-        addToNewTransactionDb = await TransactionsPurchasedModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsPurchasedModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     else if(nextDb === "transactions-delivered"){
-        addToNewTransactionDb = await TransactionsDeliveredModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsDeliveredModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     else if(nextDb === "transactions-deposited"){
-        addToNewTransactionDb = await TransactionsDepositedModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsDepositedModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     else if(nextDb === "transactions-recycled"){
-        addToNewTransactionDb = await TransactionsRecycledModel.create({bottleQr, userId:checkExist.userId,batchQr: checkExist.batchQr,bottleStatus})
+        addToNewTransactionDb = await TransactionsRecycledModel.create({bottleQr, userId,batchQr: checkExist.batchQr,bottleStatus})
     }
     console.log("added "+bottleQr+" to "+nextDb+" under batch "+checkExist.batchQr);
 
@@ -118,10 +118,11 @@ const addToNewTransactionsDbBatch = async (nextDb, bottleQr, checkExist, bottleS
 
 router.post("/", [
     check("isBatch", "Please specify if you are scanning a batch or not").exists(),
+    check("userId", "Please provide scanner user ID").exists(),
     check("bottleStatus", "Please provide a bottle status for this scan").exists(),
 ], async (req, res) => {
      //Define user request variables
-     const {bottleQr, isBatch, batchQr, bottleStatus} = req.body;
+     const {bottleQr, userId, isBatch, batchQr, bottleStatus} = req.body;
 
      //Check if any of the error tests mentioned above were failed
      const expressNotedErrors = validationResult(req);
@@ -182,7 +183,7 @@ router.post("/", [
                             //Find and Delete from the appropriate intial transaction status collection
                             deleteFromOldTransactionsDb(currentDb, bottleQr).then(() => 
                             //Find and Insert into the appropriate next transaction status collection
-                            addToNewTransactionsDb(nextDb, bottleQr, checkExist, bottleStatus).then(() => {
+                            addToNewTransactionsDb(nextDb, bottleQr, checkExist, bottleStatus, userId).then(() => {
                                 res.status(200).json({
                                     "message":`Successfully updated single bottle status for bottle with QR Code '${bottleQr}' to '${bottleStatus}'`,
                                     "status":200
@@ -238,7 +239,7 @@ router.post("/", [
                         deleteFromOldTransactionsDbBatch(currentDb, batchQr).then(() =>  
                             //Lopp through the bottles in the batch and insert into the appropriate transaction status collection
                             batch[0].bottles.map(item => {
-                                addToNewTransactionsDbBatch(nextDb, item.bottleQr, checkExist, bottleStatus)
+                                addToNewTransactionsDbBatch(nextDb, item.bottleQr, checkExist, bottleStatus, userId)
                             }),
                             //Success
                             res.status(200).json({

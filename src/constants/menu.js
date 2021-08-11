@@ -11,12 +11,12 @@ const data = [
     label: "Scan Product",
     to: "/scan",
   },
-  {
-    id: "search",
-    icon: "iconsminds-magnifi-glass",
-    label: "Search",
-    to: "/search"
-  },
+  // {
+  //   id: "search",
+  //   icon: "iconsminds-magnifi-glass",
+  //   label: "Search",
+  //   to: "/search"
+  // },
   {
     id: "admin",
     icon: "iconsminds-administrator",
