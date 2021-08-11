@@ -16,6 +16,8 @@ const Dashboard = () => {
 
     useEffect(() => {
         let server = 'http://localhost:5000';
+        let manufacturer = "ireodjk039834u200";
+
         const getFurtherData = () => {
             let thisMonth =  new Date().getMonth() - 1;
             let statusOne = "Manufactured";
@@ -23,7 +25,7 @@ const Dashboard = () => {
 
             var config = {
                 method: 'get',
-                url: `${server}/api/totalbottlesmonthly?startMonth=${thisMonth}&statusOne=${statusOne}&statusTwo=${statusTwo}`,
+                url: `${server}/api/totalbottlesmonthly?startMonth=${thisMonth}&statusOne=${statusOne}&statusTwo=${statusTwo}&manufacturerId=${manufacturer}`,
                 headers: { 
                     'Content-Type': 'application/json'
                 }
@@ -41,7 +43,7 @@ const Dashboard = () => {
 
         var config = {
         method: 'get',
-        url: `${server}/api/totalbottles`,
+        url: `${server}/api/totalbottles?manufacturerId=${manufacturer}`,
         headers: { 
             'Content-Type': 'application/json'
           }
