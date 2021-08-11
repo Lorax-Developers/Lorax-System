@@ -17,7 +17,10 @@ app.get("/", (req, res) => res.send("API Running"));
 //Define routes
 app.use("/api/user", require("./config/routes/api/user"));
 app.use("/api/auth", require("./config/routes/api/auth"));
-app.use("/api/bottle", require("./config/routes/api/bottle"));
+app.use("/api/addbottle", require("./config/routes/api/bottles/add-bottle"));
+app.use("/api/updatebottle", require("./config/routes/api/bottles/update-bottle"));
+app.use("/api/totalbottles", require("./config/routes/api/bottles/get-number-of-bottles"));
+app.use("/api/totalbottlesmonthly", require("./config/routes/api/bottles/get-monthly-total-bottles"));
 
 const PORT = process.env.PORT || 5000;
 
