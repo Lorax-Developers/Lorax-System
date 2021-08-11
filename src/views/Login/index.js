@@ -137,7 +137,7 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
                   />
                 </div>
                 <div className="input-field">
-                  <i className="simple-icon-user"></i>
+                  <i className="simple-icon-location-pin"></i>
                   <input
                     type="text"
                     placeholder="Province"
@@ -147,7 +147,7 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
                   />
                 </div>
                 <div className="input-field">
-                  <i className="simple-icon-user"></i>
+                  <i className="simple-icon-location-pin"></i>
                   <input
                     type="text"
                     placeholder="City"
