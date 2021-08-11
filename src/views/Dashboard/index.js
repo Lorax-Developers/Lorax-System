@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppLayout from "../../layout/AppLayout";
 import { Row } from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
-import "./dashboard.scss"
+import "./dashboard.scss";
 
 import RecyclingLineGraph from "./components/RecyclingLineGraph";
 import SortableStaticticsRow from "./components/SortableStaticticsRow";
 import SmartbinPieChart from "./components/SmartbinPieChart";
 import DashboardBarChart from "./components/DashboardBarChart";
+
+//REDUX
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 const Dashboard = () => {
   return (
