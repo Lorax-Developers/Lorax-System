@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../models/User");
+const db = require("../../db");
 
 //@route    POST api/User
 //@desc     register user
@@ -61,6 +62,102 @@ router.post(
 
       //save user to db
       await user.save();
+
+      //JWT
+      const payload = {
+        user: {
+          id: user.id,
+          name: user.name,
+          role: user.role,
+          access: user.access,
+        },
+      };
+
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        { expiresIn: 360000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+//@route    POST api/user/update
+//@desc     register user
+//access    Public (eg token needed?)
+router.post(
+  "/update",
+  [
+    check("name", "Name is required").not().isEmpty(),
+    check("email", "Please include a valid email").isEmail(),
+    //the enforcement is preventing sign up but there isn't any space to enter the info on front end
+    check("city", "City is required").not().isEmpty(),
+    check("province", "Province is required").not().isEmpty(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      //bad request
+      return res.status(400).json({ errors: errors.array() });
+    }
+    //pull data from request
+    const { name, email, city, province, currentEmail } = req.body;
+
+    try {
+      //check if user exists
+      console.log(email);
+      console.log(name);
+      console.log(currentEmail);
+      let user = await User.findOne({ email: currentEmail });
+      if (!user) {
+        return res.status(400).json({ errors: [{ msg: "User doesnt exist" }] });
+      }
+
+      //create instance of user
+      user = new User({
+        name,
+        email,
+        city,
+        province,
+      });
+
+      var myquery = { email: currentEmail };
+      var newvalues = {
+        $set: {
+          name: name,
+          email: email,
+          province: province,
+          city: city,
+        },
+      };
+
+      try {
+        await User.updateOne(myquery, newvalues);
+      } catch (err) {
+        console.log(err);
+      }
+
+      /*
+      connectDB.inventory.updateOne(
+      { email: CurrentEmail }, // specifies the document to update
+      {
+        $set: {
+          name: { name },
+          email: { email },
+          province: { province },
+          city: { city },
+        },
+        $currentDate: { lastModified: true },
+      }
+    );
+      */
 
       //JWT
       const payload = {
