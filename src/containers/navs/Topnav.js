@@ -5,7 +5,7 @@ import {
   DropdownItem,
   DropdownToggle,
   DropdownMenu,
-  Input
+  Input,
 } from "reactstrap";
 
 import { NavLink } from "react-router-dom";
@@ -17,16 +17,19 @@ import {
 
 import { MobileMenuIcon, MenuIcon } from "../../components/svg";
 
-
 import { getDirection, setDirection } from "../../helpers/Utils";
+//REDUX
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { logout } from "../../actions/auth";
 
 class TopNav extends Component {
-  constructor(props) {
+  constructor(props, auth, logout) {
     super(props);
 
     this.state = {
       isInFullScreen: false,
-      searchKeyword: ""
+      searchKeyword: "",
     };
   }
 
@@ -52,7 +55,7 @@ class TopNav extends Component {
       (document.msFullscreenElement && document.msFullscreenElement !== null)
     );
   };
-  handleSearchIconClick = e => {
+  handleSearchIconClick = (e) => {
     if (window.innerWidth < menuHiddenBreakpoint) {
       let elem = e.target;
       if (!e.target.classList.contains("search")) {
@@ -84,7 +87,7 @@ class TopNav extends Component {
     document.removeEventListener("click", this.handleDocumentClickSearch, true);
   };
 
-  handleDocumentClickSearch = e => {
+  handleDocumentClickSearch = (e) => {
     let isSearchClick = false;
     if (
       e.target &&
@@ -109,16 +112,16 @@ class TopNav extends Component {
       if (input && input.classList) input.classList.remove("mobile-view");
       this.removeEventsSearch();
       this.setState({
-        searchKeyword: ""
+        searchKeyword: "",
       });
     }
   };
-  handleSearchInputChange = e => {
+  handleSearchInputChange = (e) => {
     this.setState({
-      searchKeyword: e.target.value
+      searchKeyword: e.target.value,
     });
   };
-  handleSearchInputKeyPress = e => {
+  handleSearchInputKeyPress = (e) => {
     if (e.key === "Enter") {
       this.search();
     }
@@ -127,7 +130,7 @@ class TopNav extends Component {
   search = () => {
     this.props.history.push(searchPath + "/" + this.state.searchKeyword);
     this.setState({
-      searchKeyword: ""
+      searchKeyword: "",
     });
   };
 
@@ -157,12 +160,14 @@ class TopNav extends Component {
       }
     }
     this.setState({
-      isInFullScreen: !isInFullScreen
+      isInFullScreen: !isInFullScreen,
     });
   };
 
   handleLogout = () => {
     //logout
+    //logout();
+    window.location = "/login";
   };
 
   menuButtonClick = (e, menuClickCount, containerClassnames) => {
@@ -186,7 +191,7 @@ class TopNav extends Component {
 
   render() {
     const { containerClassnames, menuClickCount } = this.props;
-    const { messages } = this.props.intl;
+    //const { messages } = this.props.intl;
     return (
       <nav className="navbar fixed-top">
         <div className="d-flex align-items-center navbar-left">
@@ -211,19 +216,18 @@ class TopNav extends Component {
             <Input
               name="searchKeyword"
               id="searchKeyword"
-              placeholder={messages["menu.search"]}
+              //placeholder={messages["menu.search"]}
               value={this.state.searchKeyword}
-              onChange={e => this.handleSearchInputChange(e)}
-              onKeyPress={e => this.handleSearchInputKeyPress(e)}
+              onChange={(e) => this.handleSearchInputChange(e)}
+              onKeyPress={(e) => this.handleSearchInputKeyPress(e)}
             />
             <span
               className="search-icon"
-              onClick={e => this.handleSearchIconClick(e)}
+              onClick={(e) => this.handleSearchIconClick(e)}
             >
               <i className="simple-icon-magnifier" />
             </span>
           </div>
-
 
           <div className="position-relative d-none d-none d-lg-inline-block">
             <a
@@ -244,7 +248,6 @@ class TopNav extends Component {
           {/* {isDarkSwitchActive && <TopnavDarkSwitch />} */}
 
           <div className="header-icons d-inline-block align-middle">
-
             {/* <TopnavEasyAccess /> */}
             {/* <TopnavNotifications /> */}
             <button
@@ -256,8 +259,8 @@ class TopNav extends Component {
               {this.state.isInFullScreen ? (
                 <i className="simple-icon-size-actual d-block" />
               ) : (
-                  <i className="simple-icon-size-fullscreen d-block" />
-                )}
+                <i className="simple-icon-size-fullscreen d-block" />
+              )}
             </button>
           </div>
           <div className="user d-inline-block">
@@ -269,13 +272,21 @@ class TopNav extends Component {
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-3" right>
-                <DropdownItem onClick={() => window.location="/userprofile"}>Account</DropdownItem>
+                <DropdownItem
+                  onClick={() => (window.location = "/userprofile")}
+                >
+                  Account
+                </DropdownItem>
                 <DropdownItem>Features</DropdownItem>
-                <DropdownItem onClick={() => window.location="/faq"}>FAQ </DropdownItem>
+                <DropdownItem onClick={() => (window.location = "/faq")}>
+                  FAQ{" "}
+                </DropdownItem>
                 <DropdownItem>History</DropdownItem>
                 <DropdownItem>Support</DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem onClick={() => window.location="/login"}> {/*a way to link to another page */}
+                <DropdownItem onClick={() => this.handleLogout()}>
+                  {}
+                  {/*a way to link to another page */}
                   Sign out
                 </DropdownItem>
               </DropdownMenu>
@@ -285,6 +296,16 @@ class TopNav extends Component {
       </nav>
     );
   }
+  propTypes = {
+    logout: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+  };
 }
+/*const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+*/
 
-export default injectIntl(TopNav);
+//injectIntl was taken out below
+//export default connect(mapStateToProps, { logout })(TopNav);
+export default TopNav;

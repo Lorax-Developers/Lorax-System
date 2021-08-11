@@ -31,7 +31,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     //pull data from request
-    const { name, email, password, role, city, province } = req.body;
+    const { name, email, password, role, city, province, access } = req.body;
 
     try {
       //check if user exists
@@ -50,6 +50,7 @@ router.post(
         role,
         city,
         province,
+        access,
       });
 
       //encrypt password
@@ -61,18 +62,20 @@ router.post(
       //save user to db
       await user.save();
 
-      // ?? Token wont be needed for register only for login
+      //JWT
       const payload = {
         user: {
           id: user.id,
+          name: user.name,
           role: user.role,
+          access: user.access,
         },
       };
 
       jwt.sign(
         payload,
         config.get("jwtSecret"),
-        { expiresIn: 3600 },
+        { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
           res.json({ token });

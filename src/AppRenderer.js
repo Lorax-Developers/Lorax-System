@@ -1,14 +1,21 @@
-import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
-import * as serviceWorker from './serviceWorker';
+import React, { Suspense } from "react";
+import ReactDOM from "react-dom";
+import * as serviceWorker from "./serviceWorker";
+//REDUX
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import Hook from "./layout/useEffectHook";
 
-const App = React.lazy(() => import(/* webpackChunkName: "App" */'./App' ));
+const App = React.lazy(() => import(/* webpackChunkName: "App" */ "./App"));
 
 ReactDOM.render(
+  <Provider store={store}>
+    <Hook />
     <Suspense fallback={<div className="loading" />}>
       <App />
-    </Suspense>,
-  document.getElementById('root')
+    </Suspense>
+  </Provider>,
+  document.getElementById("root")
 );
 /*
  * If you want your app to work offline and load faster, you can change

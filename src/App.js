@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from "react";
+import React, { Component, Suspense, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -18,7 +18,9 @@ import Manufacturer from "./views/Manufacturer";
 import Login from "./views/Login";
 import UserProfile from "./views/UserProfile";
 import Faq from "./views/FAQ";
-import Landing from "./views/Landing"
+import Landing from "./views/Landing";
+
+import Alert from "./layout/Alert";
 
 class App extends Component {
   constructor(props) {
@@ -33,7 +35,7 @@ class App extends Component {
     }
   }
 
-  render() {
+  render = () => {
     const currentAppLocale = AppLocale["en"];
 
     return (
@@ -46,6 +48,7 @@ class App extends Component {
             <NotificationContainer />
             <Suspense fallback={<div className="loading" />}>
               <Router>
+                <Alert />
                 <Switch>
                   <Route path="/login" component={Login} />
                   <Route path="/dashboard" component={Dashboard} />
@@ -57,27 +60,11 @@ class App extends Component {
                     exact
                     render={() => <h1>Error page</h1>}
                   />
-                  <Route
-                    path="/"
-                    exact
-                    component = {Landing}
-                  />
-                   <Route
-                    path="/admin"
-                    component = {Admin}
-                  />
-                   <Route
-                    path="/manufacturer"
-                    component = {Manufacturer}
-                  />
-                   <Route
-                    path="/user-profile"
-                    component = {UserProfile}
-                  />
-                  <Route
-                    path="/faq"
-                    component = {Faq}
-                  />               
+                  <Route path="/" exact component={Landing} />
+                  <Route path="/admin" component={Admin} />
+                  <Route path="/manufacturer" component={Manufacturer} />
+                  <Route path="/user-profile" component={UserProfile} />
+                  <Route path="/faq" component={Faq} />
                   <Redirect to="/error" />
                 </Switch>
               </Router>
@@ -86,7 +73,7 @@ class App extends Component {
         </IntlProvider>
       </div>
     );
-  }
+  };
 }
 
 export default App;

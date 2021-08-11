@@ -1,6 +1,10 @@
 import React, { Fragment, useState } from "react";
-import axios from "axios";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import "./loginstyle.scss";
+import { setAlert } from "../../actions/alert";
+import { register, login } from "../../actions/auth";
+import PropTypes from "prop-types";
 
 //Allows transition (SignIn/SignUp)
 const signIn = function () {
@@ -15,14 +19,24 @@ const signUp = function () {
   container.classList.add("sign-up-mode");
 };
 
-const Login = () => {
+const Login = ({ setAlert, register, login, isAuthenticated }) => {
+  //REGISTER HOOK
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     role: "",
+    province: "",
+    city: "",
     password: "",
+    access: "n/a",
   });
-  const { name, email, role, password } = formData;
+  //LOGIN HOOK
+  const [L_formData, L_setFormData] = useState({
+    L_email: "",
+    L_password: "",
+  });
+  //REGISTER FUNCTIONALITY
+  const { name, email, role, province, city, password, access } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,26 +44,25 @@ const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const newUser = {
-      name,
-      email,
-      role,
-      password,
-    };
-    try {
-      //access headers make sure its json
-      const config = {
-        headers: { "Content-Type": "application/json" },
-      };
-      //change body to JSON format
-      const body = JSON.stringify(newUser);
-      console.log(body);
-      const res = await axios.post("http://localhost:5000/api/user", body, config);
-      console.log(res.data);
-    } catch (err) {
-      console.error(err.response.data);
-    }
+    register({ name, email, role, province, city, password, access });
   };
+  //LOGIN FUNCTIONALITY
+
+  const { L_email, L_password } = L_formData;
+
+  const onChangeL = (f) =>
+    L_setFormData({ ...L_formData, [f.target.name]: f.target.value });
+
+  const onSubmitL = async (f) => {
+    f.preventDefault();
+    login(L_email, L_password);
+  };
+
+  //Redirect if logged in
+  /*if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
+  */
 
   return (
     <Fragment>
@@ -57,16 +70,30 @@ const Login = () => {
         <div className="container">
           <div className="forms-container">
             <div className="signin-signup">
-              <form action="#" className="sign-in-form">
+              <form
+                action="#"
+                onSubmit={(f) => onSubmitL(f)}
+                className="sign-in-form"
+              >
                 <h1 className="heading">LORAX</h1>
                 <h2 className="title">Login to access account</h2>
                 <div className="input-field">
                   <i className="simple-icon-user"></i>
-                  <input type="text" placeholder="Username" />
+                  <input
+                    type="text"
+                    placeholder="Email"
+                    name="L_email"
+                    onChange={(f) => onChangeL(f)}
+                  />
                 </div>
                 <div className="input-field">
                   <i className="simple-icon-lock"></i>
-                  <input type="password" placeholder="Password" />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    name="L_password"
+                    onChange={(f) => onChangeL(f)}
+                  />
                 </div>
                 <input type="submit" defvalue="Login" className="btn solid" />
                 <p className="social-text">Or Sign in with social platforms</p>
@@ -112,10 +139,31 @@ const Login = () => {
                 <div className="input-field">
                   <i className="simple-icon-user"></i>
                   <input
-                    type="enum"
-                    placeholder="Role"
+                    type="text"
+                    placeholder="Province"
                     onChange={(e) => onChange(e)}
                     required
+                    name="province"
+                  />
+                </div>
+                <div className="input-field">
+                  <i className="simple-icon-user"></i>
+                  <input
+                    type="text"
+                    placeholder="City"
+                    onChange={(e) => onChange(e)}
+                    required
+                    name="city"
+                  />
+                </div>
+                <div className="input-field">
+                  <i className="simple-icon-user"></i>
+                  <input
+                    type="text"
+                    placeholder="Role"
+                    onChange={(e) => onChange(e)}
+                    requir
+                    ed
                     name="role"
                   />
                 </div>
@@ -165,7 +213,11 @@ const Login = () => {
                   Sign up
                 </button>
               </div>
-              <img src={require("./img/log.svg").default} className="image" alt="" />
+              <img
+                src={require("./img/log.svg").default}
+                className="image"
+                alt=""
+              />
             </div>
             <div className="panel right-panel">
               <div className="content">
@@ -182,7 +234,11 @@ const Login = () => {
                   Login
                 </button>
               </div>
-              <img src={require("./img/register.svg").default} className="image" alt="" />
+              <img
+                src={require("./img/register.svg").default}
+                className="image"
+                alt=""
+              />
             </div>
           </div>
         </div>
@@ -190,5 +246,15 @@ const Login = () => {
     </Fragment>
   );
 };
+Login.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+};
 
-export default Login;
+const mapStatetoProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStatetoProps, { setAlert, register, login })(Login);
