@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from "react";
+import React, { Component, Suspense, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -35,7 +35,7 @@ class App extends Component {
     }
   }
 
-  render() {
+  render = () => {
     const currentAppLocale = AppLocale["en"];
 
     return (
@@ -73,7 +73,7 @@ class App extends Component {
         </IntlProvider>
       </div>
     );
-  }
+  };
 }
 
 export default App;

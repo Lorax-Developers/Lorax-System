@@ -1,8 +1,9 @@
 import React, { Fragment, useState } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
+import { Redirect } from "react-router-dom";
 import "./loginstyle.scss";
 import { setAlert } from "../../actions/alert";
+import { register, login } from "../../actions/auth";
 import PropTypes from "prop-types";
 
 //Allows transition (SignIn/SignUp)
@@ -18,7 +19,7 @@ const signUp = function () {
   container.classList.add("sign-up-mode");
 };
 
-const Login = ({ setAlert }) => {
+const Login = ({ setAlert, register, login, isAuthenticated }) => {
   //REGISTER HOOK
   const [formData, setFormData] = useState({
     name: "",
@@ -42,52 +43,26 @@ const Login = ({ setAlert }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setAlert("SUBMITTING", "success");
 
-    const newUser = {
-      name,
-      email,
-      role,
-      province,
-      city,
-      password,
-      access,
-    };
-    //check if manufacturer and apply pending access
-    if ((newUser.role = "Manufacturer" || "manufacturer")) {
-      newUser.access = "Pending";
-      console.log(newUser);
-      try {
-        //access headers make sure its json
-        const config = {
-          headers: { "Content-Type": "application/json" },
-        };
-        //change body to JSON format
-        const body = JSON.stringify(newUser);
-        console.log(body);
-        const res = await axios.post(
-          "http://localhost:5000/api/user",
-          body,
-          config
-        );
-
-        //console.log(res.data);
-      } catch (err) {
-        console.error(err.response.data);
-      }
-    }
+    register({ name, email, role, province, city, password, access });
   };
   //LOGIN FUNCTIONALITY
 
   const { L_email, L_password } = L_formData;
 
   const onChangeL = (f) =>
-    setFormData({ ...formData, [f.target.name]: f.target.value });
+    L_setFormData({ ...L_formData, [f.target.name]: f.target.value });
 
   const onSubmitL = async (f) => {
     f.preventDefault();
-    console.log("SUCCESS");
+    login(L_email, L_password);
   };
+
+  //Redirect if logged in
+  /*if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
+  */
 
   return (
     <Fragment>
@@ -116,7 +91,7 @@ const Login = ({ setAlert }) => {
                   <input
                     type="password"
                     placeholder="Password"
-                    name="L_name"
+                    name="L_password"
                     onChange={(f) => onChangeL(f)}
                   />
                 </div>
@@ -273,5 +248,13 @@ const Login = ({ setAlert }) => {
 };
 Login.propTypes = {
   setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
 };
-export default connect(null, { setAlert })(Login);
+
+const mapStatetoProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStatetoProps, { setAlert, register, login })(Login);
