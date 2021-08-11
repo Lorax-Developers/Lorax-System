@@ -9,6 +9,8 @@ const returnCount = async (bottleStatus, manufacturerId) => {
         count = await BottleModel.countDocuments({bottleStatus});
     }
     else{
+        console.log(manufacturerId);
+
         count = await BottleModel.countDocuments({bottleStatus, "manufacturer.id":manufacturerId});
     }
     return count;
@@ -76,7 +78,7 @@ router.get("/", async (req, res) => {
             let TotalNumberAtRecycled = await returnCount("Recycled", manufacturerId)
             
             //Count all the bottles added by this manufacturer in the entire collection
-            let TotalNumberOfBottles = await BottleModel.countDocuments();
+            let TotalNumberOfBottles = await BottleModel.countDocuments({"manufacturer.id":manufacturerId});
 
             res.status(200).json({
                 statusType:"Only bottles for this manufacturer",

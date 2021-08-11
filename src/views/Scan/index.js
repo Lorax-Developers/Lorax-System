@@ -4,17 +4,12 @@ import axios from "axios";
 import { Row } from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
 import './scan.scss';
+import { useSelector } from "react-redux";
 
 const Scan = (props) => {
     const [activeScan, setActiveScan2] = useState("single");
 
-    //Dummy user details retrieved
-    let retrievedUserDetails = {
-        _id: "ahsusdfrthjeni1246463",
-        name: "Coca Cola",
-        role: "Manufacturer",
-        img: "https://mpng.subpng.com/20190527/huu/kisspng-the-coca-cola-company-logo-thredbo-australias-best-winter-summer-alpine-5ceba0b9d8f945.6662259515589459778887.jpg"
-      }
+    let retrievedUserDetails = useSelector(state => state.auth.user);
 
     const [currentUser] = useState(retrievedUserDetails);
     const [isLoading, setIsLoading] = useState(false);

@@ -12,9 +12,10 @@ getMonthsList = (start) => {
 router.get("/", [
     check("startMonth", "Please provide a start month").exists(),
     check("statusTwo", "Please provide the next status").exists(),
+    check("manufacturerId", "Please provide the manufacturerId").exists(),
 ], async (req, res) => {
      //Define user request variables
-     const {startMonth, statusTwo} = req.query;
+     const {startMonth, statusTwo, manufacturerId} = req.query;
 
      //Check if any of the error tests mentioned above were failed
      const expressNotedErrors = validationResult(req);
@@ -33,6 +34,7 @@ router.get("/", [
         const countArray1 = [];
         for(let i = startMonth; i <= parseInt(startMonth) + 5; i++){
             let count1 = await BottleModel.find({
+                "manufacturer.id":manufacturerId,
                 dateUpdated: {
                     $gte: new Date(2021, i - 1), 
                     $lt: new Date(2021, i)
@@ -45,6 +47,7 @@ router.get("/", [
         const countArray2 = [];
         for(let i = startMonth; i <= parseInt(startMonth) + 5; i++){
             let count2 = await BottleModel.find({
+                "manufacturer.id":manufacturerId,
                 bottleStatus: statusTwo,
                 dateUpdated: {
                     $gte: new Date(2021, i - 1), 
