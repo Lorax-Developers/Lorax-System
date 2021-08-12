@@ -1,25 +1,31 @@
-import React, { Component } from 'react';
-import { Nav, NavItem } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import React, { Component } from "react";
+import { Nav, NavItem } from "reactstrap";
+import { NavLink } from "react-router-dom";
+import PerfectScrollbar from "react-perfect-scrollbar";
 
-import IntlMessages from '../../helpers/IntlMessages';
+import IntlMessages from "../../helpers/IntlMessages";
 
-
-
-import menuItems from '../../constants/menu';
-
+import menuItems from "../../constants/menu";
+//REDUX
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { logout } from "../../actions/auth";
 
 class Sidebar extends Component {
+  propTypes = {
+    logout: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+  };
+
   state = {
-    currentPage:"",
-  }
+    currentPage: "",
+  };
   componentDidMount = () => {
     const currentPage = window.location.pathname;
     this.setState({
-      currentPage: currentPage
-    })
-  }
+      currentPage: currentPage,
+    });
+  };
   render() {
     return (
       <div className="sidebar">
@@ -30,11 +36,13 @@ class Sidebar extends Component {
             >
               <Nav vertical className="list-unstyled">
                 {menuItems &&
-                  menuItems.map(item => {
+                  menuItems.map((item) => {
                     return (
                       <NavItem
                         key={item.id}
-                        className={`${item.to === this.state.currentPage && 'active'}`}
+                        className={`${
+                          item.to === this.state.currentPage && "active"
+                        }`}
                       >
                         {item.newWindow ? (
                           <a
@@ -42,15 +50,12 @@ class Sidebar extends Component {
                             rel="noopener noreferrer"
                             target="_blank"
                           >
-                            <i className={item.icon} />{' '}
+                            <i className={item.icon} />{" "}
                             <IntlMessages id={item.label} />
                           </a>
                         ) : (
-                          <NavLink
-                            to={item.to}
-                            data-flag={item.id}
-                          >
-                            <i className={item.icon} />{' '}
+                          <NavLink to={item.to} data-flag={item.id}>
+                            <i className={item.icon} />{" "}
                             <IntlMessages id={item.label} />
                           </NavLink>
                         )}
@@ -62,13 +67,13 @@ class Sidebar extends Component {
           </div>
         </div>
 
-        <div className="sub-menu">
-
-        </div>
+        <div className="sub-menu"></div>
       </div>
     );
   }
 }
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
 
-
-export default Sidebar
+export default connect(mapStateToProps)(Sidebar);
