@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import AppLayout from '../../layout/AppLayout';
 import { Row } from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
-import "./dashboard.scss"
+import "./dashboard.scss";
 
 import SortableStaticticsRow from './components/SortableStaticticsRow';
 import SmartbinPieChart from "./components/SmartbinPieChart";
 import DashboardBarChart from "./components/DashboardBarChart";
 import axios from "axios";
 import { useSelector } from "react-redux";
+
+//REDUX
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 const Dashboard = () => {
     const [dataNumbers, setDataNumbers]= useState({});

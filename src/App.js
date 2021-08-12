@@ -19,7 +19,8 @@ import Login from "./views/Login";
 import UserProfile from "./views/UserProfile";
 import Faq from "./views/FAQ";
 import Landing from "./views/Landing";
-
+//redux
+import PrivateRoute from "./utils/privateRoute";
 import Alert from "./layout/Alert";
 
 class App extends Component {
@@ -51,9 +52,13 @@ class App extends Component {
                 <Alert />
                 <Switch>
                   <Route path="/login" component={Login} />
-                  <Route path="/dashboard" component={Dashboard} />
-                  <Route path="/scan" component={Scan} />
-                  <Route path="/userprofile" component={UserProfile} />
+                  <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                  <PrivateRoute exact path="/scan" component={Scan} />
+                  <PrivateRoute
+                    exact
+                    path="/userprofile"
+                    component={UserProfile}
+                  />
 
                   <Route
                     path="/error"
@@ -61,10 +66,18 @@ class App extends Component {
                     render={() => <h1>Error page</h1>}
                   />
                   <Route path="/" exact component={Landing} />
-                  <Route path="/admin" component={Admin} />
-                  <Route path="/manufacturer" component={Manufacturer} />
-                  <Route path="/user-profile" component={UserProfile} />
-                  <Route path="/faq" component={Faq} />
+                  <PrivateRoute exact path="/admin" component={Admin} />
+                  <PrivateRoute
+                    exact
+                    path="/manufacturer"
+                    component={Manufacturer}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/user-profile"
+                    component={UserProfile}
+                  />
+                  <PrivateRoute exact path="/faq" component={Faq} />
                   <Redirect to="/error" />
                 </Switch>
               </Router>

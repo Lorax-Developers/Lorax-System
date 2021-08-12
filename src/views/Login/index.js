@@ -59,10 +59,9 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
   };
 
   //Redirect if logged in
-  /*if (isAuthenticated) {
+  if (isAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
-  */
 
   return (
     <Fragment>

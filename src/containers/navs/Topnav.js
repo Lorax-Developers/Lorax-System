@@ -7,6 +7,7 @@ import {
   DropdownMenu,
   Input,
 } from "reactstrap";
+import { Redirect } from "react-router-dom";
 
 import { NavLink } from "react-router-dom";
 
@@ -24,7 +25,12 @@ import PropTypes from "prop-types";
 import { logout } from "../../actions/auth";
 
 class TopNav extends Component {
-  constructor(props, auth, logout) {
+  propTypes = {
+    logout: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+  };
+
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -166,8 +172,9 @@ class TopNav extends Component {
 
   handleLogout = () => {
     //logout
-    //logout();
-    window.location = "/login";
+    this.props.logout();
+
+    return <Redirect to="/login" />;
   };
 
   menuButtonClick = (e, menuClickCount, containerClassnames) => {
@@ -296,16 +303,11 @@ class TopNav extends Component {
       </nav>
     );
   }
-  propTypes = {
-    logout: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-  };
 }
-/*const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
   auth: state.auth,
 });
-*/
 
 //injectIntl was taken out below
-//export default connect(mapStateToProps, { logout })(TopNav);
-export default TopNav;
+export default connect(mapStateToProps, { logout })(TopNav);
+//export default TopNav;
