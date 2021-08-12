@@ -8,18 +8,18 @@ import SortableStaticticsRow from "./components/SortableStaticticsRow";
 import SmartbinPieChart from "./components/SmartbinPieChart";
 import DashboardBarChart from "./components/DashboardBarChart";
 import axios from "axios";
-
-//REDUX
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const [dataNumbers, setDataNumbers] = useState({});
   const [dataNumbersBarChart, setDataNumbersBarChart] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
+  let manufacturer = useSelector((state) => state.auth.user._id);
+
   useEffect(() => {
     let server = "http://localhost:5000";
+
     const getFurtherData = () => {
       let thisMonth = new Date().getMonth() - 1;
       let statusOne = "Manufactured";
@@ -27,7 +27,7 @@ const Dashboard = () => {
 
       var config = {
         method: "get",
-        url: `${server}/api/totalbottlesmonthly?startMonth=${thisMonth}&statusOne=${statusOne}&statusTwo=${statusTwo}`,
+        url: `${server}/api/totalbottlesmonthly?startMonth=${thisMonth}&statusOne=${statusOne}&statusTwo=${statusTwo}&manufacturerId=${manufacturer}`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -45,7 +45,7 @@ const Dashboard = () => {
 
     var config = {
       method: "get",
-      url: `${server}/api/totalbottles`,
+      url: `${server}/api/totalbottles?manufacturerId=${manufacturer}`,
       headers: {
         "Content-Type": "application/json",
       },
