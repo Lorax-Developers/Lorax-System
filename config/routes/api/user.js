@@ -112,9 +112,6 @@ router.post(
 
     try {
       //check if user exists
-      console.log(email);
-      console.log(name);
-      console.log(currentEmail);
       let user = await User.findOne({ email: currentEmail });
       if (!user) {
         return res.status(400).json({ errors: [{ msg: "User doesnt exist" }] });
