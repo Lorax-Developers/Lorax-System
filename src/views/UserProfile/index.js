@@ -101,7 +101,9 @@ const UserProfile = ({ auth: { user } }) => {
         body,
         config
       );
+      alert("User profile updated successfully");
     } catch (err) {
+      alert("There was an error when trying to save details")
       const errors = err.response.data.errors;
       if (errors) {
         console.log(errors);
