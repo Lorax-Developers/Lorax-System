@@ -24,6 +24,7 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     role: "",
     province: "",
     city: "",
@@ -36,7 +37,8 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
     L_password: "",
   });
   //REGISTER FUNCTIONALITY
-  const { name, email, role, province, city, password, access } = formData;
+  const { name, email, phone, role, province, city, password, access } =
+    formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,7 +46,7 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    register({ name, email, role, province, city, password, access });
+    register({ name, email, phone, role, province, city, password, access });
   };
   //LOGIN FUNCTIONALITY
 
@@ -136,6 +138,16 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
                   />
                 </div>
                 <div className="input-field">
+                  <i className="simple-icon-phone"></i>
+                  <input
+                    type="text"
+                    placeholder="Phone Number"
+                    onChange={(e) => onChange(e)}
+                    required
+                    name="phone"
+                  />
+                </div>
+                <div className="input-field">
                   <i className="simple-icon-location-pin"></i>
                   <input
                     type="text"
@@ -157,9 +169,9 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
                 </div>
                 <div className="input-field">
                   <i className="simple-icon-user"></i>
-                  <select  name="role" onChange={(e) => onChange(e)}>
-                  <option>Please Select a role</option>
-                  <option>Manufacturer</option>
+                  <select name="role" onChange={(e) => onChange(e)}>
+                    <option>Please Select a role</option>
+                    <option>Manufacturer</option>
                     <option>Retailer</option>
                     <option>Consumer</option>
                     <option>Waste Picker</option>

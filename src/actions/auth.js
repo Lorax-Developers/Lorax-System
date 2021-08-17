@@ -30,7 +30,7 @@ export const loadUser = () => async (dispatch) => {
 
 //REGISTER USER
 export const register =
-  ({ name, email, role, province, city, password, access }) =>
+  ({ name, email, phone, role, province, city, password, access }) =>
   async (dispatch) => {
     const config = {
       headers: {
@@ -47,6 +47,7 @@ export const register =
     const body = JSON.stringify({
       name,
       email,
+      phone,
       role,
       province,
       city,
@@ -65,7 +66,6 @@ export const register =
         payload: res.data,
       });
       dispatch(loadUser());
-
     } catch (err) {
       const errors = err.response.data.errors;
       if (errors) {

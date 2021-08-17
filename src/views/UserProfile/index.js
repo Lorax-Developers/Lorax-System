@@ -19,17 +19,7 @@ import axios from "axios";
                       </div>
                     </div>
 
-  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                      <div className="form-group">
-                        <label htmlFor="phone">Phone</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="phone"
-                          placeholder=""
-                        />
-                      </div>
-                    </div>
+  
 
                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                       <div className="form-group">
@@ -61,11 +51,12 @@ const UserProfile = ({ auth: { user } }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     province: "",
     city: "",
   });
 
-  const { name, email, province, city } = formData;
+  const { name, email, phone, province, city } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -90,6 +81,7 @@ const UserProfile = ({ auth: { user } }) => {
     const body = JSON.stringify({
       name,
       email,
+      phone,
       province,
       city,
       currentEmail,
@@ -101,9 +93,10 @@ const UserProfile = ({ auth: { user } }) => {
         body,
         config
       );
+      window.location.reload();
       alert("User profile updated successfully");
     } catch (err) {
-      alert("There was an error when trying to save details")
+      alert("There was an error when trying to save details");
       const errors = err.response.data.errors;
       if (errors) {
         console.log(errors);
@@ -152,6 +145,20 @@ const UserProfile = ({ auth: { user } }) => {
                             name="name"
                             onChange={(e) => onChange(e)}
                             placeholder={user && user.name}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div className="form-group">
+                          <label htmlFor="phone">Phone</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="phone"
+                            name="phone"
+                            onChange={(e) => onChange(e)}
+                            placeholder={user && user.phone}
                           />
                         </div>
                       </div>
