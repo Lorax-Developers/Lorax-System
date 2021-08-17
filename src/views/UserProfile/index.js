@@ -14,7 +14,7 @@ import axios from "axios";
                           type="text"
                           className="form-control"
                           id="lastName"
-                          placeholder="Jones"
+                          defaultValue="Jones"
                         />
                       </div>
                     </div>
@@ -26,7 +26,7 @@ import axios from "axios";
                           type="text"
                           className="form-control"
                           id="phone"
-                          placeholder=""
+                          defaultValue=""
                         />
                       </div>
                     </div>
@@ -38,7 +38,7 @@ import axios from "axios";
                           type="name"
                           className="form-control"
                           id="Street"
-                          placeholder=""
+                          defaultValue=""
                         />
                       </div>
                     </div>
@@ -50,7 +50,7 @@ import axios from "axios";
                           type="text"
                           className="form-control"
                           id="zIp"
-                          placeholder="7700"
+                          defaultValue="7700"
                         />
                       </div>
                     </div>
@@ -59,10 +59,10 @@ import axios from "axios";
 
 const UserProfile = ({ auth: { user } }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    province: "",
-    city: "",
+    name: user.name,
+    email: user.email,
+    province: user.province,
+    city: user.city,
   });
 
   const { name, email, province, city } = formData;
@@ -151,7 +151,7 @@ const UserProfile = ({ auth: { user } }) => {
                             id="firstName"
                             name="name"
                             onChange={(e) => onChange(e)}
-                            placeholder={user && user.name}
+                            defaultValue={user && user.name}
                           />
                         </div>
                       </div>
@@ -165,7 +165,7 @@ const UserProfile = ({ auth: { user } }) => {
                             id="eMail"
                             name="email"
                             onChange={(e) => onChange(e)}
-                            placeholder={user && user.email}
+                            defaultValue={user && user.email}
                           />
                         </div>
                       </div>
@@ -184,7 +184,7 @@ const UserProfile = ({ auth: { user } }) => {
                             id="ciTy"
                             name="city"
                             onChange={(e) => onChange(e)}
-                            placeholder={user && user.city}
+                            defaultValue={user && user.city}
                           />
                         </div>
                       </div>
@@ -197,7 +197,7 @@ const UserProfile = ({ auth: { user } }) => {
                             id="province"
                             name="province"
                             onChange={(e) => onChange(e)}
-                            placeholder={user && user.province}
+                            defaultValue={user && user.province}
                           />
                         </div>
                       </div>
