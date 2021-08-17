@@ -1,6 +1,9 @@
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
+//Alerts for errors or success messages
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //REDUX
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -12,6 +15,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Hook />
     <Suspense fallback={<div className="loading" />}>
+    <ToastContainer />
       <App />
     </Suspense>
   </Provider>,

@@ -5,6 +5,8 @@ import { Row } from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
 import './scan.scss';
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import Swal from 'sweetalert2'
 
 const Scan = (props) => {
     const [activeScan, setActiveScan2] = useState("single");
@@ -71,6 +73,7 @@ const Scan = (props) => {
 
     //Function to begin the scan after form is submitted
     const BeginScan = (e) => {
+        //makes it inform user that it is loading
         setIsLoading(true);
         e.preventDefault();
 
@@ -92,15 +95,22 @@ const Scan = (props) => {
         };
 
         axios(config)
+        //success
         .then(function (response) {
-            alert(response.data.message);
-            console.log(response.data);
+            Swal.fire({
+                title: 'Scan Successful', 
+                text: response.data.message, 
+                icon: 'success',
+                confirmButtonColor: '#6fb327',
+                confirmButtonText: 'Alright!'
+            })
             setIsLoading(false);
         })
+        //error
         .catch(function (error) {
             let errorList = error.response.data.errors;
             for(let i = 0; i < errorList.length; i++){
-                alert(errorList[i])
+                toast.error(errorList[i])
             }
             setIsLoading(false);
         });
@@ -110,7 +120,7 @@ const Scan = (props) => {
         <AppLayout>
             <Row>
               <Colxx xxs="12">
-                <h1>Scan a new product</h1>
+                <h1>Scan a product</h1>
                 <Separator className="mb-5" />
               </Colxx>
             </Row>
