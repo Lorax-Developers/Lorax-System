@@ -175,7 +175,7 @@ router.post("/", [
                         if(checkExist.bottleStatus.toLowerCase() === bottleStatus.toLowerCase())
                         {
                             res.status(400).json({
-                                "message":`Bottle with QR Code '${bottleQr}' is already at status '${bottleStatus}'`,
+                                "errors":[`Bottle with QR Code '${bottleQr}' is already at status '${bottleStatus}'`],
                                 "status":400
                             });  
                         }

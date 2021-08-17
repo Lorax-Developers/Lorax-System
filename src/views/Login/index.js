@@ -136,7 +136,7 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
                   />
                 </div>
                 <div className="input-field">
-                  <i className="simple-icon-user"></i>
+                  <i className="simple-icon-location-pin"></i>
                   <input
                     type="text"
                     placeholder="Province"
@@ -146,7 +146,7 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
                   />
                 </div>
                 <div className="input-field">
-                  <i className="simple-icon-user"></i>
+                  <i className="simple-icon-location-pin"></i>
                   <input
                     type="text"
                     placeholder="City"
@@ -157,14 +157,14 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
                 </div>
                 <div className="input-field">
                   <i className="simple-icon-user"></i>
-                  <input
-                    type="text"
-                    placeholder="Role"
-                    onChange={(e) => onChange(e)}
-                    requir
-                    ed
-                    name="role"
-                  />
+                  <select  name="role" onChange={(e) => onChange(e)}>
+                  <option>Please Select a role</option>
+                  <option>Manufacturer</option>
+                    <option>Retailer</option>
+                    <option>Consumer</option>
+                    <option>Waste Picker</option>
+                    <option>Recycling Depot</option>
+                  </select>
                 </div>
                 <div className="input-field">
                   <i className="simple-icon-lock"></i>
