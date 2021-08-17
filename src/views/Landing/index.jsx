@@ -13,7 +13,7 @@ const NewLanding = (props) => {
             <a href="/">
               <img
                 src={require("../../assets/img/logo-black.png").default}
-                className="img-fluid"
+                className="img-fluid" alt="Lorax Logo"
               />
             </a>
           </div>
