@@ -21,13 +21,24 @@ export default function (state = initialState, action) {
     case USER_LOADED:
       return { ...state, isAuthenticated: true, loading: false, user: payload };
     case REGISTER_SUCCESS:
+      localStorage.setItem("token", payload.token);
+      alert("User Successfully Registered");
+      return { ...state, ...payload, loading: false };
     case LOGIN_SUCCESS:
       localStorage.setItem("token", payload.token);
+      alert("User Successfully logged in");
       return { ...state, ...payload, loading: false };
     case REGISTER_FAIL:
+      localStorage.removeItem("token");
+      return { ...state, token: null, isAuthenticated: false, loading: false };
     case AUTH_ERROR:
+      localStorage.removeItem("token");
+      return { ...state, token: null, isAuthenticated: false, loading: false };
     case LOGIN_FAIL:
+      localStorage.removeItem("token");
+      return { ...state, token: null, isAuthenticated: false, loading: false };
     case LOGOUT:
+      alert("User Successfully logged out");
       localStorage.removeItem("token");
       return { ...state, token: null, isAuthenticated: false, loading: false };
 
