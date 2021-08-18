@@ -11,18 +11,20 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
+    //variable, variable updating function, default value
     const [dataNumbers, setDataNumbers] = useState({});
     const [dataNumbersBarChart, setDataNumbersBarChart] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
     let manufacturer = useSelector(state => state.auth.user._id);
 
-
+    //runs when page loads
     useEffect(() => {
         let server = 'http://localhost:5000';
 
+        //Further data for the bar chart
         const getFurtherData = () => {
-            let thisMonth = new Date().getMonth() - 1;
+            let thisMonth = new Date().getMonth() - 4;
             let statusOne = "Manufactured";
             let statusTwo = "Recycled";
 
@@ -52,10 +54,12 @@ const Dashboard = () => {
             }
         }
         axios(config)
+            //Successful?
             .then(function (response) {
                 setDataNumbers(response.data);
                 getFurtherData();
             })
+            //Unsuccessful?
             .catch(function (error) {
                 console.log(error);
                 setIsLoading(false);
