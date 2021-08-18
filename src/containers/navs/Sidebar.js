@@ -9,11 +9,9 @@ import menuItems from "../../constants/menu";
 //REDUX
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { logout } from "../../actions/auth";
 
 class Sidebar extends Component {
   propTypes = {
-    logout: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
   };
 
@@ -26,7 +24,7 @@ class Sidebar extends Component {
       currentPage: currentPage,
     });
   };
-  render() {
+  render({ auth: { user } }) {
     return (
       <div className="sidebar">
         <div className="main-menu">
@@ -43,6 +41,18 @@ class Sidebar extends Component {
                         className={`${
                           item.to === this.state.currentPage && "active"
                         }`}
+                        /*style={{
+                          visibility:
+                            user.role == "admin" && item.id == "admin"
+                              ? "visible"
+                              : "hidden",
+                        }}
+                        style={{
+                          visibility:
+                            user.role == "PRO" && item.id == "manufacturer"
+                              ? "visible"
+                              : "hidden",
+                        }}*/
                       >
                         {item.newWindow ? (
                           <a

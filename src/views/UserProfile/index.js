@@ -61,12 +61,6 @@ const UserProfile = ({ auth: { user } }) => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const incentives = {};
-  if (user.role !== "WastePicker" || "Consumer") {
-    const incentives = {
-      display: "none",
-    };
-  }
   const currentEmail = user.email;
 
   const onSubmit = async (e) => {
@@ -235,7 +229,15 @@ const UserProfile = ({ auth: { user } }) => {
         </div>
       </div>
 
-      <div className=" pt-3 border" style={{ display: "none" }}>
+      <div
+        className="pt-3 border"
+        style={{
+          visibility:
+            user.role == "Consumer" || user.role == "Waste Picker"
+              ? "visible"
+              : "hidden",
+        }}
+      >
         <div class="card ">
           <div class="card-body text-center">
             <h6 className="mb-2 text-primary">Number of bottles recycled</h6>
