@@ -5,20 +5,21 @@ import Sidebar from "../containers/navs/Sidebar";
 import { useSelector } from "react-redux";
 
 const AppLayout = (props) => {
-  let user = useSelector(state => state.auth.user);
+  let user = useSelector((state) => state.auth.user);
   const { containerClassnames } = props;
 
-  return(
-      <div id="app-container" className={`menu-sub-hidden rounded sub-hidden ${containerClassnames}`}>
-        <TopNav user={user} history={props.history} />
-        <Sidebar />
-        <main>
-          <div className="container-fluid">
-          {props.children}
-          </div>
-        </main>
-      </div>
-    )
-  }
+  return (
+    <div
+      id="app-container"
+      className={`menu-sub-hidden rounded sub-hidden ${containerClassnames}`}
+    >
+      <TopNav user={user} history={props.history} />
+      <Sidebar user={user} history={props.history} />
+      <main>
+        <div className="container-fluid">{props.children}</div>
+      </main>
+    </div>
+  );
+};
 
 export default AppLayout;

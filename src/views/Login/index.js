@@ -176,6 +176,8 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
                     <option>Consumer</option>
                     <option>Waste Picker</option>
                     <option>Recycling Depot</option>
+                    <option>PRO</option>
+                    <option>DEFF</option>
                   </select>
                 </div>
                 <div className="input-field">
