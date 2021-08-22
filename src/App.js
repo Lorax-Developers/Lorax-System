@@ -21,6 +21,9 @@ import Faq from "./views/FAQ";
 import Landing from "./views/Landing";
 //redux
 import PrivateRoute from "./utils/privateRoute";
+import AdminPrivateRoute from "./utils/adminPrivateRoute";
+import PROPrivateRoute from "./utils/proPrivateRoute";
+
 import Alert from "./layout/Alert";
 
 class App extends Component {
@@ -66,8 +69,8 @@ class App extends Component {
                     render={() => <h1>Error page</h1>}
                   />
                   <Route path="/" exact component={Landing} />
-                  <PrivateRoute exact path="/admin" component={Admin} />
-                  <PrivateRoute
+                  <AdminPrivateRoute exact path="/admin" component={Admin} />
+                  <PROPrivateRoute
                     exact
                     path="/manufacturer"
                     component={Manufacturer}
