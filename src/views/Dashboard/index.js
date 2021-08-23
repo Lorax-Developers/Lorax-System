@@ -7,6 +7,7 @@ import "./dashboard.scss";
 import SortableStaticticsRow from "./components/SortableStaticticsRow";
 import SmartbinPieChart from "./components/SmartbinPieChart";
 import DashboardBarChart from "./components/DashboardBarChart";
+import TotalManufacturedCard from "./components/TotalManufacturedCard";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -78,13 +79,16 @@ const Dashboard = () => {
         "Please wait..."
       ) : (
         <>
+          <TotalManufacturedCard
+            dataNumbers={dataNumbers}
+          ></TotalManufacturedCard>
           <SortableStaticticsRow dataNumbers={dataNumbers} />
           <Row>
             <Colxx sm="12" md="6" className="mb-4">
               {/*Bar Chart*/}
               <DashboardBarChart dataNumbersBarChart={dataNumbersBarChart} />
             </Colxx>
-            <Colxx sm="4" md="6" className="mb-4">
+            <Colxx sm="12" md="6" className="mb-4">
               {/*Polar Chart*/}
               <SmartbinPieChart
                 dataNumbers={dataNumbers}
