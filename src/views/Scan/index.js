@@ -29,6 +29,26 @@ const Scan = (props) => {
     });
 
    
+    const [scanQr, setscanQr] = useState("");
+
+
+    const beginUpload = () => {
+        document.getElementById("dummy_file").click();
+    }
+
+    const ShowScanMsg = (type) => {
+        if(type == "error"){
+            setscanQr(" ")
+            document.getElementById("qr_val").value = " "
+            toast.error("QR code can not be decoded, please try another image");
+        }
+        else if(type == "success"){
+            let val = document.getElementById("qr_val").value;
+            setscanQr(val)
+            toast.success(`QR code scanned successfully with value '${val}'`);
+        }
+    }
+
     
     useEffect(() => {
          //Declare the available status to each user role in arrays
@@ -170,6 +190,32 @@ const Scan = (props) => {
                                         </div>
                                     </div>
                                 }
+                                <div className="form-group row">
+                                    <label className="col-sm-2 col-form-label">QR Code</label>
+                                    <div className="col-sm-10">
+                                    <div onClick={beginUpload}  className="scan_div">
+                                            {
+                                                scanQr === "" ?
+                                                <>
+                                                    <i class="iconsminds-qr-code"></i>
+                                                    <p>Click to scan</p>
+                                                </>
+                                                :
+                                                <>
+                                                    <i class="simple-icon-reload"></i><br></br>
+                                                    <p>Change QR</p>
+                                                </>
+                                            }
+                                        </div> 
+
+                                        <button type="button" class="lorax_hidden" id="scan_error_btn" onClick={() => ShowScanMsg('error')}></button>
+
+
+                                        <button type="button" class="lorax_hidden" id="scan_success_btn" onClick={() => ShowScanMsg('success')}></button>                                   
+                                    </div>
+                                </div>
+
+                                <input value={scanQr} onChange={(e) => setscanQr(e.target.value)} id="qr_val" className="form-control" />
 
                                 {
                                 data.isNewScan === "true" &&

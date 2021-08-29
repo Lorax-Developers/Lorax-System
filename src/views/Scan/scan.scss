@@ -74,3 +74,60 @@
         }
     }
 }
+
+
+.lorax_hidden{
+    display: none;
+}
+.scan_div{
+    border:1px solid #ddd;
+    height: 150px;
+    width: 150px;
+    margin-right: 10px;
+    text-align: center;
+    padding: 30px;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: relative;
+    i{
+        transition: all 0.4s ease;
+        display: block;
+        transform: scale(1.1);
+        font-size: 40px;
+    }
+    p{
+        transition: all 0.4s ease;
+        font-weight: 700;
+        line-height: 1.3em;
+    }
+    img{
+        width: 100%;
+    }
+    div{
+        width: 100%;
+        position: absolute;
+        height: 100%;
+        top:0;
+        left:0;
+        background-color:rgba(255,255,255,.96);
+        i{
+            padding-top: 50px;
+        }
+        i.success{
+            color: #6c9e37;
+        }
+        i.error{
+            color:#d00;
+        }
+    }
+   
+}
+.scan_div:hover{
+    i{
+        color:#6c9e37;
+        transform: scale(1.7);
+    }
+    p{
+        margin-top:10px;
+    }
+}
