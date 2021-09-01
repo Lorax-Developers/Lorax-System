@@ -119,10 +119,15 @@ const addToNewTransactionsDbBatch = async (nextDb, bottleQr, checkExist, bottleS
 router.post("/", [
     check("isBatch", "Please specify if you are scanning a batch or not").exists(),
     check("userId", "Please provide scanner user ID").exists(),
+    check("qrCode", "Please provide the qrCode").exists(),
     check("bottleStatus", "Please provide a bottle status for this scan").exists(),
 ], async (req, res) => {
      //Define user request variables
-     const {bottleQr, userId, isBatch, batchQr, bottleStatus} = req.body;
+     const {qrCode, userId, isBatch, bottleStatus} = req.body;
+
+    //Assign the bottle qr variable and batch qr variable to the qr code parameter
+    const bottleQr = qrCode;
+    const batchQr = qrCode;
 
      //Check if any of the error tests mentioned above were failed
      const expressNotedErrors = validationResult(req);

@@ -13,10 +13,15 @@ router.post("/", [
     check("bottleSize", "Please provide a bottle size for this scan").exists(),
     check("sizeUnit", "Please provide a bottle size unit for this scan").exists(),
     check("userId", "Please provide valid userId").exists(),
+    check("qrCode", "Please provide the qr code").exists(),
 ], async (req, res) => {
 
     //Define user request variables
-    const {bottleQr, isBatch, batchQr, title, manufacturer, bottleType, bottleStatus, userId, bottleSize, sizeUnit} = req.body;
+    const {qrCode, isBatch, title, manufacturer, bottleType, bottleStatus, userId, bottleSize, sizeUnit} = req.body;
+
+    //Assign the bottle qr variable and batch qr variable to the qr code parameter
+    const bottleQr = qrCode;
+    const batchQr = qrCode;
 
     //Check if any of the error tests mentioned above were failed
     const expressNotedErrors = validationResult(req);
