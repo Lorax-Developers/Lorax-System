@@ -52,5 +52,17 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <div id="outdiv" style="display: none;"></div>
+    <div id="result" style="display: none;"></div>
+    <canvas id="qr-canvas" width="800" height="600"></canvas>
+
+    <script type="text/javascript" src="%PUBLIC_URL%/assets/scripts/llqrcode.js"></script>
+    <script type="text/javascript" src="%PUBLIC_URL%/assets/scripts/webqr.js"></script>
+    <script>
+      setimg()
+    </script>
+    <script type="text/javascript">load();</script>
   </body>
 </html>
+
