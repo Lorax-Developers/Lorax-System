@@ -15,13 +15,13 @@ const Scan = (props) => {
 
     const [currentUser] = useState(retrievedUserDetails);
     const [isLoading, setIsLoading] = useState(false);
-    const [roleOptions, setroleOptions] = useState([]);
+    //const [roleOptions, setroleOptions] = useState([]);
     const [data, setData] = useState({
         "manufacturer":{
             id: retrievedUserDetails._id,
             name: retrievedUserDetails.name
         },
-        "isBatch": false,
+      //  "isBatch": false,
         "sizeUnit":"ml",
         "qrCode":"",
         "bottleType": "PET",
@@ -42,41 +42,41 @@ const Scan = (props) => {
         else if(type == "success"){
             let val = document.getElementById("qr_val").value;
             setDataValue2("qrCode", val);
-            toast.success(`QR code scanned successfully with value '${val}'`);
+            toast.info(`QR code decoded successfully with value '${val}'`);
         }
     }
 
     
-    useEffect(() => {
-         //Declare the available status to each user role in arrays
-        const ManufacturerOptions = ["Manufactured", "Outgoing"];
-        const RetailerOptions = ["Delivered", "Purchased"];
-        const ConsumerOptions = ["Deposited"];
-        const WastePickerOptions = ["Deposited"];
-        const RecyclingDepotOptions = ["Recycled"]
+    // useEffect(() => {
+    //      //Declare the available status to each user role in arrays
+    //     const ManufacturerOptions = ["Manufactured", "Outgoing"];
+    //     const RetailerOptions = ["Delivered", "Purchased"];
+    //     const ConsumerOptions = ["Deposited"];
+    //     const WastePickerOptions = ["Deposited"];
+    //     const RecyclingDepotOptions = ["Recycled"]
 
-        if(currentUser.role === "Manufacturer"){
-            setroleOptions(ManufacturerOptions);
-            setData({...data,"bottleStatus":ManufacturerOptions[0]});
-        }
-        else if(currentUser.role === "Retailer"){
-            setroleOptions(RetailerOptions);
-            setData({...data,"bottleStatus":RetailerOptions[0]});
-        }
-        else if(currentUser.role === "Consumer"){
-            setroleOptions(ConsumerOptions);
-            setData({...data,"bottleStatus":ConsumerOptions[0]});
-        }
-        else if(currentUser.role === "Waste Picker"){
-            setroleOptions(WastePickerOptions);
-            setData({...data,"bottleStatus":WastePickerOptions[0]});
-        }
-        else if(currentUser.role === "Recycling Depot"){
-            setroleOptions(RecyclingDepotOptions);
-            setData({...data,"bottleStatus":RecyclingDepotOptions[0]});
-        }
+    //     if(currentUser.role === "Manufacturer"){
+    //         setroleOptions(ManufacturerOptions);
+    //         setData({...data,"bottleStatus":ManufacturerOptions[0]});
+    //     }
+    //     else if(currentUser.role === "Retailer"){
+    //         setroleOptions(RetailerOptions);
+    //         setData({...data,"bottleStatus":RetailerOptions[0]});
+    //     }
+    //     else if(currentUser.role === "Consumer"){
+    //         setroleOptions(ConsumerOptions);
+    //         setData({...data,"bottleStatus":ConsumerOptions[0]});
+    //     }
+    //     else if(currentUser.role === "Waste Picker"){
+    //         setroleOptions(WastePickerOptions);
+    //         setData({...data,"bottleStatus":WastePickerOptions[0]});
+    //     }
+    //     else if(currentUser.role === "Recycling Depot"){
+    //         setroleOptions(RecyclingDepotOptions);
+    //         setData({...data,"bottleStatus":RecyclingDepotOptions[0]});
+    //     }
        
-    }, [currentUser])
+   // }, [currentUser])
 
     //Add the user's input into the data sent to the backend
     const setDataValue = e => {
@@ -87,10 +87,10 @@ const Scan = (props) => {
         setData({...data, [state]:value});
     }
 
-    const setActiveScan = e => {
-        setData({...data, "isBatch": e.target.value === "single" ? false : true})
-        setActiveScan2(e.target.value);
-    }
+    // const setActiveScan = e => {
+    //     setData({...data, "isBatch": e.target.value === "single" ? false : true})
+    //     setActiveScan2(e.target.value);
+    // }
 
     //Function to begin the scan after form is submitted
     const BeginScan = (e) => {
@@ -183,7 +183,7 @@ const Scan = (props) => {
                                 
                               
 
-                                    <div className="form-group row">
+                                    {/* <div className="form-group row">
                                         <label className="col-sm-2 col-form-label">Scan Type</label>
                                         <div className="col-sm-10">
                                         <select required  name="isNewScan" onChange={(e) => setActiveScan(e)} className="form-control">
@@ -191,7 +191,7 @@ const Scan = (props) => {
                                             <option value="multiple">Multiple bottles (Batch)</option>                                           
                                         </select>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 
                                 <div className="form-group row">
                                     <label className="col-sm-2 col-form-label">QR Code</label>
@@ -238,7 +238,7 @@ const Scan = (props) => {
 
 
 
-                                <div className="form-group row">
+                                {/* <div className="form-group row">
                                     <label className="col-sm-2 col-form-label">Status</label>
                                     <div className="col-sm-10">
                                         <select required  className="form-control" name="bottleStatus" onChange={(e) => setDataValue(e)}>
@@ -249,7 +249,7 @@ const Scan = (props) => {
                                            }
                                         </select>
                                     </div>
-                                </div>
+                                </div> */}
 
                               
                                 
