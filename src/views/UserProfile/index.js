@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AppLayout from "../../layout/AppLayout";
 import "./userprofile.css";
-import Logo from "../../assets/img/loraxprofiletransparent.png";
+import ProfilePic from "../../assets/img/default-profile.jpg";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -119,7 +119,7 @@ const UserProfile = ({ auth: { user } }) => {
                   <div className="account-settings">
                     <div className="user-profile">
                       <div className="user-avatar">
-                        <img alt="Lorax Logo" src={Logo} />
+                        <img alt="Lorax Logo" src={ProfilePic} />
                       </div>
                       <h5 className="user-name">{user && user.name}</h5>
                       <h6 className="user-role">{user && user.role}</h6>

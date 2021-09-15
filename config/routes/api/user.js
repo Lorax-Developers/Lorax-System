@@ -189,4 +189,17 @@ router.post(
   }
 );
 
+// Get list of manufacturers
+//@route    POST api/User/manufacturerlist
+
+router.get('/manufacturerlist', async (req, res) => {
+  User.find({ "role": "Manufacturer" }, (err, User) => {
+    if (err) {
+      res.send(err);
+    }
+    res.json(User);
+  })
+}
+);
+
 module.exports = router;

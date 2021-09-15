@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
-import AppLayout from "../../layout/AppLayout";
-import { Row } from "reactstrap";
+import AppLayout from '../../layout/AppLayout';
+import {
+  Row, Card, CardText, CardBody,
+  CardTitle
+} from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
 import "./dashboard.scss";
 
@@ -12,13 +15,19 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { LoraxLoader } from "../../components/LoraxLoader";
 
+
 const Dashboard = () => {
   //variable, variable updating function, default value
   const [dataNumbers, setDataNumbers] = useState({});
   const [dataNumbersBarChart, setDataNumbersBarChart] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-  let manufacturer = useSelector((state) => state.auth.user._id);
+  // get manufacturer details
+  let manufacturer = useSelector(state => state.auth.user._id);
+  let name = useSelector(state => state.auth.user.name);
+  let city = useSelector(state => state.auth.user.city);
+  let province = useSelector(state => state.auth.user.province);
+  let today = new Date().toLocaleDateString()
 
   //runs when page loads
   useEffect(() => {
@@ -68,6 +77,43 @@ const Dashboard = () => {
       });
   }, []);
 
+  //   return (
+  //     <AppLayout>
+  //       <Row>
+  //         <Colxx xxs="12">
+  //           <h1>LORAX Dashboard</h1>
+  //           <Separator className="mb-5" />
+  //         </Colxx>
+  //       </Row>
+  //       {isLoading ? (
+  //         "Please wait..."
+  //       ) : (
+  //         <>
+  //           <TotalManufacturedCard
+  //             dataNumbers={dataNumbers}
+  //           ></TotalManufacturedCard>
+  //           <SortableStaticticsRow dataNumbers={dataNumbers} />
+  //           <Row>
+  //             <Colxx sm="12" md="6" className="mb-4">
+  //               {/*Bar Chart*/}
+  //               <DashboardBarChart dataNumbersBarChart={dataNumbersBarChart} />
+  //             </Colxx>
+  //             <Colxx sm="12" md="6" className="mb-4">
+  //               {/*Polar Chart*/}
+  //               <SmartbinPieChart
+  //                 dataNumbers={dataNumbers}
+  //                 chartClass="dashboard-donut-chart"
+  //               />
+  //             </Colxx>
+  //           </Row>
+  //         </>
+  //       )}
+  //       <br />
+  //       <br />
+  //     </AppLayout>
+  //   );
+  // };
+
   return (
     <AppLayout>
       <Row>
@@ -76,33 +122,50 @@ const Dashboard = () => {
           <Separator className="mb-5" />
         </Colxx>
       </Row>
-      {isLoading ? (
-        <LoraxLoader/>
-      ) : (
-        <>
-          <TotalManufacturedCard
-            dataNumbers={dataNumbers}
-          ></TotalManufacturedCard>
-          <SortableStaticticsRow dataNumbers={dataNumbers} />
-          <Row>
-            <Colxx sm="12" md="6" className="mb-4">
-              {/*Bar Chart*/}
-              <DashboardBarChart dataNumbersBarChart={dataNumbersBarChart} />
-            </Colxx>
-            <Colxx sm="12" md="6" className="mb-4">
-              {/*Polar Chart*/}
-              <SmartbinPieChart
-                dataNumbers={dataNumbers}
-                chartClass="dashboard-donut-chart"
-              />
-            </Colxx>
-          </Row>
-        </>
-      )}
+      {
+
+        isLoading ? (
+          <LoraxLoader />
+        ) : (
+          <>
+            <Row>
+              <Colxx xl="6" lg="6" md="6" className="mb-4">
+                <div>
+
+                  <Card>
+                    <CardBody>
+                      <CardTitle tag="h5">{name}</CardTitle>
+                      <CardText tag="h6" className="mb-2 text-muted">{city}</CardText>
+                      <CardText tag="h6" className="mb-2 text-muted">{province}</CardText>
+                      <CardText tag="h6" className="mb-2 text-muted">Date: {today}</CardText>
+                    </CardBody>
+                  </Card>
+                </div>
+              </Colxx>
+              <Colxx xl="6" lg="6" md="6" className="mb-4">
+                <TotalManufacturedCard dataNumbers={dataNumbers} ></TotalManufacturedCard>
+              </Colxx>
+            </Row>
+
+            <SortableStaticticsRow dataNumbers={dataNumbers} />
+            <Row>
+              <Colxx sm="12" md="6" className="mb-4">
+                {/*Bar Chart*/}
+                <DashboardBarChart dataNumbersBarChart={dataNumbersBarChart} />
+              </Colxx>
+              <Colxx sm="12" md="6" className="mb-4">
+
+                {/*Polar Chart*/}
+                <SmartbinPieChart dataNumbers={dataNumbers} chartClass="dashboard-donut-chart" />
+              </Colxx>
+            </Row>
+          </>
+        )
+      }
       <br />
       <br />
     </AppLayout>
-  );
-};
+  )
+}
 
 export default Dashboard;

@@ -19,6 +19,8 @@ import Login from "./views/Login";
 import UserProfile from "./views/UserProfile";
 import Faq from "./views/FAQ";
 import Landing from "./views/Landing";
+import Insights from "./views/Insights";
+import DEFFDashboard from "./views/DEFF-Dashboard"
 import Bottles from "./views/Bottles";
 //redux
 import PrivateRoute from "./utils/privateRoute";
@@ -86,6 +88,16 @@ class App extends Component {
                     component={UserProfile}
                   />
                   <PrivateRoute exact path="/faq" component={Faq} />
+                  <PrivateRoute
+                    exact
+                    path="/insights"
+                    component={Insights}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/deff-dashboard"
+                    component={DEFFDashboard}
+                  />
                   <Redirect to="/error" />
                 </Switch>
               </Router>
