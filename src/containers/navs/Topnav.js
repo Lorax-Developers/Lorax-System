@@ -212,8 +212,8 @@ class TopNav extends Component {
           <NavLink
             to="#"
             className="menu-button-mobile d-xs-block d-sm-block d-md-none"
-            //onClick={e => this.mobileMenuButtonClick(e, containerClassnames)}
-          >
+            onClick={() => this.props.togglesidebar(!this.props.showsidebar)}
+            >
             <MobileMenuIcon />
           </NavLink>
 

@@ -141,7 +141,7 @@ function load()
 {
 	if(isCanvasSupported() && window.File && window.FileReader)
 	{
-		initCanvas(800, 600);
+		initCanvas(8, 6);
 		qrcode.callback = read;
 		document.getElementById("mainbody").style.display="inline";
         setwebcam();
