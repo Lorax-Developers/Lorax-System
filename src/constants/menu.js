@@ -12,7 +12,7 @@ const data = [
     to: "/scan",
   },
   {
-    id: "bottlehistory",
+    id: "bottles",
     icon: "iconsminds-can-2",
     label: "Bottles",
     to: "/bottles"
