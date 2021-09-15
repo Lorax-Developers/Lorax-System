@@ -72,6 +72,7 @@ router.post("/", [
                         bottleSize,
                         sizeUnit,
                         bottleType,
+                        //dateAdded:new Date("2021-06-13"),
                     }).then(async () => {
 
                         //Insert into the relevant status tracking db (in this Transactions-Manufactured)
@@ -137,6 +138,7 @@ router.post("/", [
                             sizeUnit,
                             batchQr,
                             bottleType,
+                            //dateAdded:new Date("2021-06-13"),
                         }).then(async () => {
 
     
