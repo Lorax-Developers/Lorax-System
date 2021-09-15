@@ -45,11 +45,13 @@ $primary-color: #3a3a3a;
     color:#fff;
     background: #6fb327;
   }
+  //general container
   .loraxLoader{
     width: 90px;
     height: 130px;
     position:relative;
     margin: 100px auto;
+    //logo circles styling
     div{
       background:#6fb327;
       height:20px;
@@ -88,6 +90,7 @@ $primary-color: #3a3a3a;
       animation:beep 1.4s infinite;
     }
   }
+  //animation
   @keyframes beep {
     from{opacity:0;transform:scale(0.5);};
     to{opacity:1;transform:scale(1.1);}

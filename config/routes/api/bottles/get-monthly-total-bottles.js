@@ -35,7 +35,7 @@ router.get("/", [
         for (let i = startMonth; i <= parseInt(startMonth) + 5; i++) {
             let count1 = await BottleModel.find({
                 "manufacturer.id": manufacturerId,
-                dateUpdated: {
+                dateAdded: {
                     $gte: new Date(2021, i - 1),
                     $lt: new Date(2021, i)
                 }

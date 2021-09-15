@@ -13,6 +13,7 @@ import DashboardBarChart from "./components/DashboardBarChart";
 import TotalManufacturedCard from "./components/TotalManufacturedCard";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { LoraxLoader } from "../../components/LoraxLoader";
 
 
 const Dashboard = () => {
@@ -122,10 +123,10 @@ const Dashboard = () => {
         </Colxx>
       </Row>
       {
-        isLoading ?
 
-          "Please wait..."
-          :
+        isLoading ? (
+          <LoraxLoader />
+        ) : (
           <>
             <Row>
               <Colxx xl="6" lg="6" md="6" className="mb-4">
@@ -159,6 +160,7 @@ const Dashboard = () => {
               </Colxx>
             </Row>
           </>
+        )
       }
       <br />
       <br />
