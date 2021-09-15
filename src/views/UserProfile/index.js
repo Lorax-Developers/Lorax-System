@@ -5,57 +5,6 @@ import Logo from "../../assets/img/loraxprofiletransparent.png";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import axios from "axios";
-/*
-
-<div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                      <div className="form-group">
-                        <label htmlFor="LastName">Last Name</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="lastName"
-                          defaultValue="Jones"
-                        />
-                      </div>
-                    </div>
-
-  <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                      <div className="form-group">
-                        <label htmlFor="phone">Phone</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="phone"
-                          defaultValue=""
-                        />
-                      </div>
-                    </div>
-
-                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                      <div className="form-group">
-                        <label htmlFor="Street">Street</label>
-                        <input
-                          type="name"
-                          className="form-control"
-                          id="Street"
-                          defaultValue=""
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                      <div className="form-group">
-                        <label htmlFor="zIp">Zip Code</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="zIp"
-                          defaultValue="7700"
-                        />
-                      </div>
-                    </div>
-
-*/
 
 const UserProfile = ({ auth: { user } }) => {
   const [formData, setFormData] = useState({
