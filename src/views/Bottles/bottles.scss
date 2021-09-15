@@ -1,0 +1,127 @@
+/* 00.Variables and Imports */
+@import url("https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700");
+
+$secondary-color: #8f8f8f;
+$primary-color: #3a3a3a;
+
+.modal-dialog {
+    margin: 0 auto;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    height: 100%;
+    max-width: 530px !important;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #d1f1af !important;
+  }
+
+  button.rje{
+    background-color:unset;
+    padding: 6px 20px;
+  }
+  .badge-Manufactured{
+    color:#fff;
+    background: #f59740;
+  }
+  .badge-Outgoing{
+    color:#fff;
+    background: #f5ad40;
+  }
+  .badge-Delivered{
+    color:#fff;
+    background: #f5d440;
+  }
+  .badge-Purchased{
+    color:#fff;
+    background: #b8e442;
+  }
+  .badge-Deposited{
+    color:#fff;
+    background: #8eb327;
+  }
+  .badge-Recycled{
+    color:#fff;
+    background: #6fb327;
+  }
+  //general container
+  .loraxLoader{
+    width: 90px;
+    height: 130px;
+    position:relative;
+    margin: 100px auto;
+    //logo circles styling
+    div{
+      background:#6fb327;
+      height:20px;
+      width: 20px;
+      border-radius: 100%;
+      position:absolute;
+    }
+    .ball1{
+      right:0;
+      top:8px;
+      animation:beep 1.4s 1s infinite;
+    }
+    .ball2{
+      left:0;
+      right:0;
+      margin: 0 auto;
+      top:18%;
+      animation:beep 1.4s 0.8s infinite;
+    }
+    .ball3{
+      left:10px;
+      top:44%;
+      animation:beep 1.4s 0.5s infinite;
+    }
+    .ball4{
+      left:0;
+      right:0;
+      bottom:0;
+      bottom:17%;
+      margin: 0 auto;
+      animation:beep 1.4s 0.3s infinite;
+    }
+    .ball5{
+      right:0;
+      bottom:0;
+      animation:beep 1.4s infinite;
+    }
+  }
+  //animation
+  @keyframes beep {
+    from{opacity:0;transform:scale(0.5);};
+    to{opacity:1;transform:scale(1.1);}
+  }
+
+  .search-sm {
+    position: relative;
+  
+    input {
+      background: none;
+      outline: initial !important;
+      border: 1px solid $secondary-color;
+      border-radius: 15px;
+      padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+      font-size: 0.76rem;
+      line-height: 1.3;
+      color: $primary-color;
+      width: 150px;
+      margin-left: 10px;
+    }
+    label{
+      margin-left: 10px;
+    }
+    button{
+      margin-left: 10px;
+      color: #fff !important;
+      border: 0;
+      height: 30px;
+      padding: 3px 22px;
+    }
+    &:after{
+        display: none;
+    }
+}

@@ -15,61 +15,82 @@ const Scan = (props) => {
 
     const [currentUser] = useState(retrievedUserDetails);
     const [isLoading, setIsLoading] = useState(false);
-    const [roleOptions, setroleOptions] = useState([]);
+    //const [roleOptions, setroleOptions] = useState([]);
     const [data, setData] = useState({
         "manufacturer":{
             id: retrievedUserDetails._id,
             name: retrievedUserDetails.name
         },
-        "isBatch": false,
+      //  "isBatch": false,
         "sizeUnit":"ml",
+        "qrCode":"",
         "bottleType": "PET",
         "isNewScan":retrievedUserDetails.role === "Manufacturer" ? "true" : "false",
         "userId": retrievedUserDetails._id
     });
 
-   
-    
-    useEffect(() => {
-         //Declare the available status to each user role in arrays
-        const ManufacturerOptions = ["Manufactured", "Outgoing"];
-        const RetailerOptions = ["Delivered", "Purchased"];
-        const ConsumerOptions = ["Deposited"];
-        const WastePickerOptions = ["Deposited"];
-        const RecyclingDepotOptions = ["Recycled"]
+    const beginUpload = () => {
+        document.getElementById("dummy_file").click();
+    }
 
-        if(currentUser.role === "Manufacturer"){
-            setroleOptions(ManufacturerOptions);
-            setData({...data,"bottleStatus":ManufacturerOptions[0]});
+    const ShowScanMsg = (type) => {
+        if(type == "error"){
+            setDataValue2("qrCode", " ")
+            document.getElementById("qr_val").value = " "
+            toast.error("QR code can not be decoded, please try another image");
         }
-        else if(currentUser.role === "Retailer"){
-            setroleOptions(RetailerOptions);
-            setData({...data,"bottleStatus":RetailerOptions[0]});
+        else if(type == "success"){
+            let val = document.getElementById("qr_val").value;
+            setDataValue2("qrCode", val);
+            toast.info(`QR code decoded successfully with value '${val}'`);
         }
-        else if(currentUser.role === "Consumer"){
-            setroleOptions(ConsumerOptions);
-            setData({...data,"bottleStatus":ConsumerOptions[0]});
-        }
-        else if(currentUser.role === "Waste Picker"){
-            setroleOptions(WastePickerOptions);
-            setData({...data,"bottleStatus":WastePickerOptions[0]});
-        }
-        else if(currentUser.role === "Recycling Depot"){
-            setroleOptions(RecyclingDepotOptions);
-            setData({...data,"bottleStatus":RecyclingDepotOptions[0]});
-        }
+    }
+
+    
+    // useEffect(() => {
+    //      //Declare the available status to each user role in arrays
+    //     const ManufacturerOptions = ["Manufactured", "Outgoing"];
+    //     const RetailerOptions = ["Delivered", "Purchased"];
+    //     const ConsumerOptions = ["Deposited"];
+    //     const WastePickerOptions = ["Deposited"];
+    //     const RecyclingDepotOptions = ["Recycled"]
+
+    //     if(currentUser.role === "Manufacturer"){
+    //         setroleOptions(ManufacturerOptions);
+    //         setData({...data,"bottleStatus":ManufacturerOptions[0]});
+    //     }
+    //     else if(currentUser.role === "Retailer"){
+    //         setroleOptions(RetailerOptions);
+    //         setData({...data,"bottleStatus":RetailerOptions[0]});
+    //     }
+    //     else if(currentUser.role === "Consumer"){
+    //         setroleOptions(ConsumerOptions);
+    //         setData({...data,"bottleStatus":ConsumerOptions[0]});
+    //     }
+    //     else if(currentUser.role === "Waste Picker"){
+    //         setroleOptions(WastePickerOptions);
+    //         setData({...data,"bottleStatus":WastePickerOptions[0]});
+    //     }
+    //     else if(currentUser.role === "Recycling Depot"){
+    //         setroleOptions(RecyclingDepotOptions);
+    //         setData({...data,"bottleStatus":RecyclingDepotOptions[0]});
+    //     }
        
-    }, [currentUser])
+   // }, [currentUser])
 
     //Add the user's input into the data sent to the backend
     const setDataValue = e => {
         setData({...data, [e.target.name]:e.target.value});
     }
 
-    const setActiveScan = type => {
-        setData({...data, "isBatch": type === "single" ? false : true})
-        setActiveScan2(type);
+    const setDataValue2 = (state, value) => {
+        setData({...data, [state]:value});
     }
+
+    // const setActiveScan = e => {
+    //     setData({...data, "isBatch": e.target.value === "single" ? false : true})
+    //     setActiveScan2(e.target.value);
+    // }
 
     //Function to begin the scan after form is submitted
     const BeginScan = (e) => {
@@ -128,22 +149,25 @@ const Scan = (props) => {
                 <div className="glide__track" data-glide-el="track">
                     <h5 className="mb-4">&nbsp;&nbsp;&nbsp;Select Scan Type</h5>
                     <ul className="glide__slides scan_options" style={{minWidth:320,flexDirection: "column"}}>
-                        <li className="glide__slide" onClick={() => setActiveScan("single")}>
-                            <div className={`card ${activeScan === "single" && "active"}`}>
+                        {
+                         //Only a manufacturer should see this option
+                         currentUser.role === "Manufacturer" &&
+                         <li className="glide__slide" onClick={() => setDataValue2("isNewScan", "true")}>
+                            <div className={`card ${data.isNewScan == "true" && "active"}`}>
                                 <div className="card-body text-center">
                                     <i className="iconsminds-basket-coins"></i>
-                                    <p className="card-text mb-0">Single Item</p>
+                                    <p className="card-text mb-0">Upload New Bottle(s)</p>
                                 </div>
                             </div>
                         </li>
-                        <li className="glide__slide" onClick={() => setActiveScan("multiple")}>
-                        <div className={`card ${activeScan === "multiple" && "active"}`}>
+                        }
+                        <li className="glide__slide" onClick={() => setDataValue2("isNewScan", "false")}>
+                        <div className={`card ${data.isNewScan == "false" && "active"}`}>
                                 <div className="card-body text-center">
                                     <div style={{textAlign:"center",justifyContent:"center",display: "flex"}}>
                                         <i className="iconsminds-basket-coins"></i>
-                                        <i className="iconsminds-basket-coins"></i>
                                     </div>
-                                    <p className="card-text mb-0">Multiple Items</p>
+                                    <p className="card-text mb-0">Update Existing  Bottle</p>
                                 </div>
                             </div>
                         </li>
@@ -157,19 +181,50 @@ const Scan = (props) => {
                             <h5 className="mb-4">Product Details</h5>
                             <form onSubmit={(e) => BeginScan(e)}>
                                 
-                                {
-                                    //Only a manufacturer should see this option
-                                    currentUser.role === "Manufacturer" &&
-                                    <div className="form-group row">
-                                        <label className="col-sm-2 col-form-label">Scan Action</label>
+                              
+
+                                    {/* <div className="form-group row">
+                                        <label className="col-sm-2 col-form-label">Scan Type</label>
                                         <div className="col-sm-10">
-                                        <select required  name="isNewScan" onChange={(e) => setDataValue(e)} className="form-control">
-                                            <option value={true}>New Scan</option>
-                                            <option value={false}>Update Previous Scan</option>                                           
+                                        <select required  name="isNewScan" onChange={(e) => setActiveScan(e)} className="form-control">
+                                            <option value="single">Single bottle</option>
+                                            <option value="multiple">Multiple bottles (Batch)</option>                                           
                                         </select>
                                         </div>
+                                    </div> */}
+                                
+                                <div className="form-group row">
+                                    <label className="col-sm-2 col-form-label">QR Code</label>
+                                    <div className="col-sm-10">
+                                    <div onClick={beginUpload}  className="scan_div">
+                                            {
+                                                data.qrCode === "" ?
+                                                <>
+                                                    <i class="iconsminds-qr-code"></i>
+                                                    <p>Click to scan</p>
+                                                </>
+                                                :
+                                                <>
+                                                    <i class="simple-icon-reload"></i><br></br>
+                                                    <p>Change QR</p>
+                                                </>
+                                            }
+                                        </div> 
+
+                                        <button type="button" class="lorax_hidden" id="scan_error_btn" onClick={() => ShowScanMsg('error')}></button>
+
+
+                                        <button type="button" class="lorax_hidden" id="scan_success_btn" onClick={() => ShowScanMsg('success')}></button>                                   
                                     </div>
-                                }
+                                </div>
+
+
+                                <div  className={`form-group row ${data.qrCode === "" && 'lorax_hidden'}`}>
+                                    <label className="col-sm-2 col-form-label">QR Value</label>
+                                    <div className="col-sm-10">
+                                        <input name="qrCode" value={data.qrCode} onChange={(e) => setDataValue2("qrCode", e.target.value)} id="qr_val" disabled  className="form-control" />
+                                    </div>
+                                </div>
 
                                 {
                                 data.isNewScan === "true" &&
@@ -183,7 +238,7 @@ const Scan = (props) => {
 
 
 
-                                <div className="form-group row">
+                                {/* <div className="form-group row">
                                     <label className="col-sm-2 col-form-label">Status</label>
                                     <div className="col-sm-10">
                                         <select required  className="form-control" name="bottleStatus" onChange={(e) => setDataValue(e)}>
@@ -194,9 +249,13 @@ const Scan = (props) => {
                                            }
                                         </select>
                                     </div>
-                                </div>
+                                </div> */}
+
+                              
                                 
-                                {
+                                
+
+                                {/*
                                 activeScan === "single" ?
                                 <div className="form-group row">
                                     <label className="col-sm-2 col-form-label">Bottle QR</label>
@@ -211,7 +270,8 @@ const Scan = (props) => {
                                         <input required name="batchQr" onChange={(e) => setDataValue(e)} type="text" className="form-control" />
                                     </div>
                                 </div>
-                                }
+                                */}
+
                                 {
                                    data.isNewScan === "true" &&
                                     <>

@@ -1,21 +1,21 @@
 const router = require("express").Router();
 const { check, validationResult } = require("express-validator");
-const BottleModel = require("../../models/bottles/BottleModel");
+const TransactionsDepositedModel = require("../../models/bottles/TransactionsDepositedModel");
 
 let getMonthsList = (start) => {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let removeFirst = months.splice(0, start - 1);
-    let newMonth = months.filter(item => !removeFirst.includes(item))
-    newMonth.length = 6;
+    // let removeFirst = months.splice(0, start - 1);
+    //let newMonth = months.filter(item => !removeFirst.includes(item))
+    let newMonth = months
+    newMonth.length = 12;
     return newMonth;
 }
 router.get("/", [
     check("startMonth", "Please provide a start month").exists(),
-    check("statusTwo", "Please provide the next status").exists(),
-    check("manufacturerId", "Please provide the manufacturerId").exists(),
+    check("wastepickerId", "Please provide the wastepickerId").exists(),
 ], async (req, res) => {
     //Define user request variables
-    const { startMonth, statusTwo, manufacturerId } = req.query;
+    const { startMonth, wastepickerId } = req.query;
 
     //Check if any of the error tests mentioned above were failed
     const expressNotedErrors = validationResult(req);
@@ -29,32 +29,17 @@ router.get("/", [
     }
     else {
 
-
         //Count for the first status
         const countArray1 = [];
-        for (let i = startMonth; i <= parseInt(startMonth) + 5; i++) {
-            let count1 = await BottleModel.find({
-                "manufacturer.id": manufacturerId,
-                dateAdded: {
-                    $gte: new Date(2021, i - 1),
-                    $lt: new Date(2021, i)
-                }
-            }).countDocuments()
-            countArray1.push(count1);
-        }
-
-        //Count for the second status
-        const countArray2 = [];
-        for (let i = startMonth; i <= parseInt(startMonth) + 5; i++) {
-            let count2 = await BottleModel.find({
-                "manufacturer.id": manufacturerId,
-                bottleStatus: statusTwo,
+        for (let i = 1; i <= parseInt(0) + 11; i++) {
+            let count1 = await TransactionsDepositedModel.find({
+                "userId": wastepickerId,
                 dateUpdated: {
                     $gte: new Date(2021, i - 1),
                     $lt: new Date(2021, i)
                 }
             }).countDocuments()
-            countArray2.push(count2);
+            countArray1.push(count1);
         }
 
         res.status(200).json({
@@ -63,19 +48,12 @@ router.get("/", [
                 labels: getMonthsList(startMonth),
                 datasets: [
                     {
-                        label: "Manufactured",
+                        label: "Deposited",
                         borderColor: "#51c878",
                         backgroundColor: "#eef9f1",
                         data: countArray1,
                         borderWidth: 2
                     },
-                    {
-                        label: statusTwo,
-                        borderColor: "#6fb427",
-                        backgroundColor: "#f1f7eb",
-                        data: countArray2,
-                        borderWidth: 2
-                    }
                 ]
             }
         })

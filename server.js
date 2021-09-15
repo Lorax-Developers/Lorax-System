@@ -32,6 +32,32 @@ app.use(
   "/api/totalbottlesmonthly",
   require("./config/routes/api/bottles/get-monthly-total-bottles")
 );
+app.use(
+  "/api/manufacturerbottles",
+  require("./config/routes/api/bottles/manufacturer-bottles")
+);
+app.use(
+  "/api/bottlehistory",
+  require("./config/routes/api/bottles/get-bottle-history")
+);
+
+//Jenna Added
+app.use(
+  "/api/totalbottlesdeposited",
+  require("./config/routes/api/bottles/get-number-of-bottles-deposited")
+);
+app.use(
+  "/api/totalbottlesrecycled",
+  require("./config/routes/api/bottles/get-number-of-bottles-recycled")
+);
+app.use(
+  "/api/totalbottlesmonthlydeposited",
+  require("./config/routes/api/bottles/get-monthly-total-deposited")
+);
+app.use(
+  "/api/totalbottlesmonthlyrecycled",
+  require("./config/routes/api/bottles/get-monthly-total-recycled")
+);
 
 const PORT = process.env.PORT || 5000;
 
