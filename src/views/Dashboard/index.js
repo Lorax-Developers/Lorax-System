@@ -10,6 +10,7 @@ import DashboardBarChart from "./components/DashboardBarChart";
 import TotalManufacturedCard from "./components/TotalManufacturedCard";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { LoraxLoader } from "../../components/LoraxLoader";
 
 const Dashboard = () => {
   //variable, variable updating function, default value
@@ -76,7 +77,7 @@ const Dashboard = () => {
         </Colxx>
       </Row>
       {isLoading ? (
-        "Please wait..."
+        <LoraxLoader/>
       ) : (
         <>
           <TotalManufacturedCard
