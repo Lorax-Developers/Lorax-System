@@ -19,6 +19,7 @@ import Login from "./views/Login";
 import UserProfile from "./views/UserProfile";
 import Faq from "./views/FAQ";
 import Landing from "./views/Landing";
+import Bottles from "./views/Bottles";
 //redux
 import PrivateRoute from "./utils/privateRoute";
 import AdminPrivateRoute from "./utils/adminPrivateRoute";
@@ -62,7 +63,11 @@ class App extends Component {
                     path="/userprofile"
                     component={UserProfile}
                   />
-
+                  <PrivateRoute
+                    exact
+                    path="/bottles"
+                    component={Bottles}
+                  />
                   <Route
                     path="/error"
                     exact
