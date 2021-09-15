@@ -11,6 +11,12 @@ const data = [
     label: "Scan Product",
     to: "/scan",
   },
+  {
+    id: "bottlehistory",
+    icon: "iconsminds-can-2",
+    label: "Bottles",
+    to: "/bottles"
+  },
   // {
   //   id: "search",
   //   icon: "iconsminds-magnifi-glass",

@@ -31,7 +31,7 @@ router.get("/", [
 
         //Count for the first status
         const countArray1 = [];
-        for (let i = 0; i <= parseInt(0) + 11; i++) {
+        for (let i = 1; i <= parseInt(0) + 11; i++) {
             let count1 = await TransactionsDepositedModel.find({
                 "userId": wastepickerId,
                 dateUpdated: {

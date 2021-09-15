@@ -205,17 +205,15 @@ class TopNav extends Component {
           <NavLink
             to="#"
             className="menu-button d-none d-md-block"
-            // onClick={e =>
-            //   this.menuButtonClick(e, menuClickCount, containerClassnames)
-            // }
+          onClick={() => this.props.togglesidebar(!this.props.showsidebar)}
           >
             <MenuIcon />
           </NavLink>
           <NavLink
             to="#"
             className="menu-button-mobile d-xs-block d-sm-block d-md-none"
-            //onClick={e => this.mobileMenuButtonClick(e, containerClassnames)}
-          >
+            onClick={() => this.props.togglesidebar(!this.props.showsidebar)}
+            >
             <MobileMenuIcon />
           </NavLink>
 

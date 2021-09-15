@@ -3,20 +3,26 @@ const {check, validationResult} = require("express-validator");
 const batchBottles = require("./batches")
 const BottleModel = require("../../models/bottles/BottleModel");
 const TransactionsManufacturedModel = require("../../models/bottles/TransactionsManufacturedModel");
+const BottleHistoryModel = require("../../models/bottles/BottleHistoryModel")
 
 router.post("/", [
     check("manufacturer", "Please provide the manufacturer info").exists(),
-    check("isBatch", "Please specify if you are scanning a batch or not").exists(),
     check("title", "Please provide a title for this scan").exists(),
     check("bottleType", "Please provide a bottle type for this scan").exists(),
-    check("bottleStatus", "Please provide a bottle status for this scan").exists(),
     check("bottleSize", "Please provide a bottle size for this scan").exists(),
     check("sizeUnit", "Please provide a bottle size unit for this scan").exists(),
     check("userId", "Please provide valid userId").exists(),
+    check("qrCode", "Please provide the qr code").exists(),
 ], async (req, res) => {
 
     //Define user request variables
-    const {bottleQr, isBatch, batchQr, title, manufacturer, bottleType, bottleStatus, userId, bottleSize, sizeUnit} = req.body;
+    const {qrCode, isBatch, title, manufacturer, bottleType, userId, bottleSize, sizeUnit} = req.body;
+
+    //Assign the bottle qr variable and batch qr variable to the qr code parameter
+    const bottleQr = qrCode;
+    const batchQr = qrCode;
+    
+    const bottleStatus = "Manufactured";
 
     //Check if any of the error tests mentioned above were failed
     const expressNotedErrors = validationResult(req);
@@ -29,14 +35,18 @@ router.post("/", [
         })
     }
     else{
-        //Check if the request is a batch or single request
-        if(!isBatch)
+        //Check if the request is a batch or single request by checking the batch repository
+        const batch = batchBottles.filter((item) => item.batchQr === batchQr);
+
+        if(batch.length < 1)
         {
-            //This is not a batch request, make sure the single bottle qr code was provided and is more than 10 digits
-            if(bottleQr === undefined || bottleQr === null || bottleQr.length < 10){
+            //The search returned empty array meaning the batch qr was not found.
+            
+            //This is not a batch request, make sure the qr code is more than 10 digits
+            if(qrCode.length < 10){
                 res.status(400).json({
                     status: 400,
-                    errors: ["Please provide the bottle QR code and ensure it is above 10 digits"]
+                    errors: ["Please ensure the QR code is above 10 digits"]
                 })
             }
             else{
@@ -64,18 +74,32 @@ router.post("/", [
                         bottleType,
                     }).then(async () => {
 
-
                         //Insert into the relevant status tracking db (in this Transactions-Manufactured)
                         TransactionsManufacturedModel.create({
                             bottleQr,
                             userId,
                             batchQr,
                             bottleStatus
-                        }).then(() => {
-                            res.status(200).json({
-                                "message":`Successfully added a new bottle with QR Code '${bottleQr}'`,
-                                "status":200
-                            });  
+                        }).then(async () => {
+                                //Create the history array and add in 'Manufactured'
+                                let array = [];
+                                array.push({
+                                    status:"Manufactured",
+                                    updated:new Date(),
+                                    userId
+                                })
+
+                                //Insert into history db
+                                BottleHistoryModel.create({
+                                    bottleQr,
+                                    history:array
+                                }).then(() => {
+                                    res.status(200).json({
+                                        "message":`Successfully added a new bottle with QR Code '${bottleQr}'`,
+                                        "status":200
+                                    });  
+                                })
+
                         })
 
                        
@@ -87,27 +111,21 @@ router.post("/", [
             
         }
         else{
-            //Since it's a batch request, we can now check if the batchQr was supplied by the user
-            if(batchQr === null || batchQr === undefined)
+            //check if the batch QR has been scanned before and return error if so
+            let checkExist = await BottleModel.findOne({batchQr});
+            if(checkExist)
             {
                 res.status(400).json({
                     status: 400,
-                    errors: [`Please provide the batchQr for this batch scan`]
+                    errors: [`Batch with QR code ${batchQr} scanned already`]
                 }) 
             }
             else{
-                //If it was supplied, carry on
+
+                //Get the batch from the batch repository to view bottles in it
                 const batch = batchBottles.filter((item) => item.batchQr === batchQr);
             
-                //Then we check to make sure the supplied batch code can be identified
-                if(batch.length < 1){
-                    //Can't be verified? show error
-                    res.status(404).json({
-                        status: 404,
-                        errors: [`Batch with QR Code ${batchQr} not found`]
-                    }) 
-                }
-                else{
+
                     //Can be verified? insert each bottle in the batch into the collection
                     batch[0].bottles.map(item => {
                         BottleModel.create({
@@ -129,6 +147,21 @@ router.post("/", [
                                 batchQr,
                                 bottleStatus
                             })
+
+                            let array = [];
+                            array.push({
+                                status:"Manufactured",
+                                updated:new Date(),
+                                userId
+                            })
+
+                            //Insert into history db
+                            BottleHistoryModel.create({
+                                bottleQr:item.bottleQr,
+                                batchQr,
+                                history:array
+                            })
+
                         })
                     })
                     //Send a success message
@@ -136,9 +169,6 @@ router.post("/", [
                         "message":`Successfully scanned a batch containing ${batch[0].bottles.length} bottles with QR Code '${batchQr}`,
                     })
                 }
-            }
-            
-            
         }    
     }
 

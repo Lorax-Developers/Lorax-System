@@ -61,21 +61,16 @@ const UserProfile = ({ auth: { user } }) => {
   const [formData, setFormData] = useState({
     name: user.name,
     email: user.email,
+    phone: user.phone,
     province: user.province,
     city: user.city,
   });
 
-  const { name, email, province, city } = formData;
+  const { name, email, phone, province, city } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const incentives = {};
-  if (user.role !== "WastePicker" || "Consumer") {
-    const incentives = {
-      display: "none",
-    };
-  }
   const currentEmail = user.email;
 
   const onSubmit = async (e) => {
@@ -90,6 +85,7 @@ const UserProfile = ({ auth: { user } }) => {
     const body = JSON.stringify({
       name,
       email,
+      phone,
       province,
       city,
       currentEmail,
@@ -101,9 +97,10 @@ const UserProfile = ({ auth: { user } }) => {
         body,
         config
       );
+      window.location.reload();
       alert("User profile updated successfully");
     } catch (err) {
-      alert("There was an error when trying to save details")
+      alert("There was an error when trying to save details");
       const errors = err.response.data.errors;
       if (errors) {
         console.log(errors);
@@ -152,6 +149,20 @@ const UserProfile = ({ auth: { user } }) => {
                             name="name"
                             onChange={(e) => onChange(e)}
                             defaultValue={user && user.name}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div className="form-group">
+                          <label htmlFor="phone">Phone</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="phone"
+                            name="phone"
+                            onChange={(e) => onChange(e)}
+                            placeholder={user && user.phone}
                           />
                         </div>
                       </div>
@@ -228,7 +239,15 @@ const UserProfile = ({ auth: { user } }) => {
         </div>
       </div>
 
-      <div className=" pt-3 border" style={{ display: "none" }}>
+      <div
+        className="pt-3 border"
+        style={{
+          visibility:
+            user.role == "Consumer" || user.role == "Waste Picker"
+              ? "visible"
+              : "hidden",
+        }}
+      >
         <div class="card ">
           <div class="card-body text-center">
             <h6 className="mb-2 text-primary">Number of bottles recycled</h6>

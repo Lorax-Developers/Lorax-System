@@ -15,6 +15,7 @@ router.post(
   [
     check("name", "Name is required").not().isEmpty(),
     check("email", "Please include a valid email").isEmail(),
+    check("phone", "Please include a valid phone number").not().isEmpty(),
     check(
       "password",
       "Please enter a password with 6 or more characters"
@@ -32,7 +33,8 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     //pull data from request
-    const { name, email, password, role, city, province, access } = req.body;
+    const { name, email, phone, password, role, city, province, access } =
+      req.body;
 
     try {
       //check if user exists
@@ -47,6 +49,7 @@ router.post(
       user = new User({
         name,
         email,
+        phone,
         password,
         role,
         city,
@@ -68,6 +71,7 @@ router.post(
         user: {
           id: user.id,
           name: user.name,
+          phone: user.phone,
           role: user.role,
           access: user.access,
         },
@@ -97,6 +101,7 @@ router.post(
   [
     check("name", "Name is required").not().isEmpty(),
     check("email", "Please include a valid email").isEmail(),
+    check("phone", "Phone is required").not().isEmpty(),
     //the enforcement is preventing sign up but there isn't any space to enter the info on front end
     check("city", "City is required").not().isEmpty(),
     check("province", "Province is required").not().isEmpty(),
@@ -108,7 +113,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     //pull data from request
-    const { name, email, city, province, currentEmail } = req.body;
+    const { name, email, phone, city, province, currentEmail } = req.body;
 
     try {
       //check if user exists
@@ -121,6 +126,7 @@ router.post(
       user = new User({
         name,
         email,
+        phone,
         city,
         province,
       });
@@ -130,6 +136,7 @@ router.post(
         $set: {
           name: name,
           email: email,
+          phone: phone,
           province: province,
           city: city,
         },

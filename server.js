@@ -21,6 +21,9 @@ app.use("/api/addbottle", require("./config/routes/api/bottles/add-bottle"));
 app.use("/api/updatebottle", require("./config/routes/api/bottles/update-bottle"));
 app.use("/api/totalbottles", require("./config/routes/api/bottles/get-number-of-bottles"));
 app.use("/api/totalbottlesmonthly", require("./config/routes/api/bottles/get-monthly-total-bottles"));
+app.use("/api/manufacturerbottles", require("./config/routes/api/bottles/manufacturer-bottles"));
+app.use("/api/bottlehistory", require("./config/routes/api/bottles/get-bottle-history"));
+
 
 //Jenna Added 
 app.use("/api/totalbottlesdeposited", require("./config/routes/api/bottles/get-number-of-bottles-deposited"));

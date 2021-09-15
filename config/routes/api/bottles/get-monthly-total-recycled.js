@@ -31,7 +31,7 @@ router.get("/", [
     else {
         const countArray1 = [];
         //     for (let i = startMonth; i <= parseInt(startMonth) + 5; i++) {
-        for (let i = 0; i <= parseInt(startMonth) + 11; i++) {
+        for (let i = 1; i <= parseInt(startMonth) + 11; i++) {
             let count1 = await TransactionsRecycledModel.find({
                 "userId": recyclingDepotId,
                 dateUpdated: {

@@ -10,6 +10,7 @@ import {
   LOGOUT,
 } from "./types";
 import setAuthToken from "../utils/setAuthToken";
+import Swal from "sweetalert2";
 
 //LOAD USER
 export const loadUser = () => async (dispatch) => {
@@ -30,7 +31,7 @@ export const loadUser = () => async (dispatch) => {
 
 //REGISTER USER
 export const register =
-  ({ name, email, role, province, city, password, access }) =>
+  ({ name, email, phone, role, province, city, password, access }) =>
   async (dispatch) => {
     const config = {
       headers: {
@@ -47,6 +48,7 @@ export const register =
     const body = JSON.stringify({
       name,
       email,
+      phone,
       role,
       province,
       city,
@@ -65,7 +67,13 @@ export const register =
         payload: res.data,
       });
       dispatch(loadUser());
-
+      Swal.fire({
+        title: 'Register Successful', 
+        text: "You are all set! If you are a manufacturer or PRO, we will get back to you as soon as your registration is approved!", 
+        icon: 'success',
+        confirmButtonColor: '#6fb327',
+        confirmButtonText: 'Alright!'
+    })
     } catch (err) {
       const errors = err.response.data.errors;
       if (errors) {
@@ -100,6 +108,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: res.data,
     });
     dispatch(loadUser());
+    dispatch(setAlert("Logged in successfully 🎉", "success"))
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {
@@ -113,4 +122,5 @@ export const login = (email, password) => async (dispatch) => {
 //LOGOUT
 export const logout = () => (dispatch) => {
   dispatch({ type: LOGOUT });
+  dispatch(setAlert("Logged out successfully", "success"))
 };

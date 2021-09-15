@@ -2,6 +2,7 @@ var router = require("express").Router();
 const {check, validationResult} = require("express-validator");
 const batchBottles = require("./batches")
 const BottleModel = require("../../models/bottles/BottleModel");
+const BottleHistoryModel = require("../../models/bottles/BottleHistoryModel")
 
 //Models for all transactions types
 const TransactionsManufacturedModel = require("../../models/bottles/TransactionsManufacturedModel");
@@ -117,12 +118,15 @@ const addToNewTransactionsDbBatch = async (nextDb, bottleQr, checkExist, bottleS
 
 
 router.post("/", [
-    check("isBatch", "Please specify if you are scanning a batch or not").exists(),
     check("userId", "Please provide scanner user ID").exists(),
-    check("bottleStatus", "Please provide a bottle status for this scan").exists(),
+    check("qrCode", "Please provide the qrCode").exists(),
 ], async (req, res) => {
      //Define user request variables
-     const {bottleQr, userId, isBatch, batchQr, bottleStatus} = req.body;
+     const {qrCode, userId} = req.body;
+
+    //Assign the bottle qr variable and batch qr variable to the qr code parameter
+    const bottleQr = qrCode;
+    const batchQr = qrCode;
 
      //Check if any of the error tests mentioned above were failed
      const expressNotedErrors = validationResult(req);
@@ -135,17 +139,21 @@ router.post("/", [
          })
      }
      else{
-        //Check if the request is a batch or single request
-        if(!isBatch){
-            //Make sure the bottle QR code was provided
-            if(bottleQr === undefined || bottleQr === null){
+        //Check if the request is a batch or single request by checking the batch repository
+        const batch = batchBottles.filter((item) => item.batchQr === batchQr);
+
+        if(batch.length < 1) {
+            //The search returned empty array meaning the batch qr was not found.
+
+            //This is not a batch request, make sure the qr code is more than 10 digits
+            if(qrCode.length < 10){
                 res.status(400).json({
-                    status:400,
-                    errors:["Please provide the bottle QR"]
+                    status: 400,
+                    errors: ["Please ensure the QR code is above 10 digits"]
                 })
-            }
+            } 
             else{
-                //If it was supplied, carry on
+                //If it was more than 10 carry on
 
                 //Check if this bottle has been scanned before
                 let checkExist = await BottleModel.findOne({bottleQr});
@@ -159,6 +167,30 @@ router.post("/", [
                 }
                 else{
                     //If it has been scanned, update the status in the db and the date modified
+
+                    //Get the current status of the bottle/batch
+                    const currentStatus = checkExist.bottleStatus;
+
+                    let bottleStatus;
+                    //Find the next status based on the current status
+                    if(currentStatus === "Manufactured")
+                    {
+                        bottleStatus = "Outgoing"
+                    }
+                    else if(currentStatus === "Outgoing"){
+                        bottleStatus = "Delivered"
+                    }
+                    else if(currentStatus === "Delivered"){
+                        bottleStatus = "Purchased"
+                    }
+                    else if(currentStatus === "Purchased"){
+                        bottleStatus = "Deposited"
+                    }
+                    else if(currentStatus === "Deposited"){
+                        bottleStatus = "Recycled"
+                    }
+
+
                     var myquery = { bottleQr};
                     let date = Date.now();
                     var newvalues = { $set: {bottleStatus, dateUpdated: date} };
@@ -168,29 +200,34 @@ router.post("/", [
                         //Get the current transaction status collection holding this bottle
                         let currentDb = "transactions-"+checkExist.bottleStatus.toLowerCase();
 
-                        //Set the next transaction status collection db based on the status provided by user
+                        //Set the next transaction status collection db based on the next status
                         let nextDb = "transactions-"+bottleStatus.toLowerCase();
                         
-                        //check if the current status of the bottle is the same as the new status
-                        if(checkExist.bottleStatus.toLowerCase() === bottleStatus.toLowerCase())
-                        {
-                            res.status(400).json({
-                                "errors":[`Bottle with QR Code '${bottleQr}' is already at status '${bottleStatus}'`],
-                                "status":400
+
+                        //Find and Delete from the appropriate intial transaction status collection
+                        deleteFromOldTransactionsDb(currentDb, bottleQr).then(() => 
+                        //Find and Insert into the appropriate next transaction status collection
+                        addToNewTransactionsDb(nextDb, bottleQr, checkExist, bottleStatus, userId).then(async () => {
+                            
+                            //Add new status to the history
+                            let newHistoryValue = {
+                                status: bottleStatus,
+                                updated:new Date(),
+                                userId
+                            }
+
+                            var newvalues2 = { $push: {history: newHistoryValue} };
+                            
+                            await BottleHistoryModel.updateOne(myquery, newvalues2);
+
+                            res.status(200).json({
+                                "message":`Successfully updated single bottle status for bottle with QR Code '${bottleQr}' to '${bottleStatus}'. Was previously at '${checkExist.bottleStatus}'`,
+                                "status":200
                             });  
-                        }
-                        else{
-                            //Find and Delete from the appropriate intial transaction status collection
-                            deleteFromOldTransactionsDb(currentDb, bottleQr).then(() => 
-                            //Find and Insert into the appropriate next transaction status collection
-                            addToNewTransactionsDb(nextDb, bottleQr, checkExist, bottleStatus, userId).then(() => {
-                                res.status(200).json({
-                                    "message":`Successfully updated single bottle status for bottle with QR Code '${bottleQr}' to '${bottleStatus}'`,
-                                    "status":200
-                                });  
-                            })
-                            )
-                        }
+                            
+                        })
+                        )
+                        
                     }
                     catch(err){
                         console.log(err);
@@ -199,36 +236,78 @@ router.post("/", [
             }
         }
         else{
-            //If it's a batch, check if the batch qr was supplied
-            if(batchQr === undefined || batchQr === null)
+            //it's a batch, and the batch qr was found
+
+            let checkExist = await BottleModel.findOne({batchQr});
+
+            if(!checkExist)
             {
+                //If btach hasn't been scanned by manufacturer, return an error
                 res.status(400).json({
-                    status:400,
-                    errors: [`Please provide the batchQr for this batch scan`]
-                })
+                    status: 400,
+                    errors: [`Batch with QR code '${bottleQr}' not yet scanned by manufacturer and can't be updated`]
+                }) 
             }
             else{
-                //Check if the batch code exists in the db
-                let checkExist = await BottleModel.findOne({batchQr});
-                if(!checkExist){
-                    //If it hasn't been inserted by manufacturer, return an error
-                    res.status(400).json({
+            //Get the current status of the bottle/batch
+            const currentStatus = checkExist.bottleStatus;
+
+            let bottleStatus;
+
+            //Find the next status based on the current status
+            if(currentStatus === "Recycled") {
+                //If batch hasn't been scanned by manufacturer, return an error
+                res.status(400).json({
                     status: 400,
-                    errors: [`Batch code '${batchQr}' not yet scanned by manufacturer and can't be updated`]
-                    }) 
+                    errors: [`Batch with QR code '${batchQr}' is at 'Recycled'`]
+                }) 
+            }
+            else{
+
+                //Find the next status based on the current status
+                if(currentStatus === "Manufactured")
+                {
+                    bottleStatus = "Outgoing"
                 }
-                else{
-                    //If it exists, update all the bottles tied to this batch code
-                    var myquery = { batchQr};
-                    let date = Date.now();
-                    var newvalues = { $set: {bottleStatus, dateUpdated: date} };
+                else if(currentStatus === "Outgoing"){
+                    bottleStatus = "Delivered"
+                }
+                else if(currentStatus === "Delivered"){
+                    bottleStatus = "Purchased"
+                }
+                else if(currentStatus === "Purchased"){
+                    bottleStatus = "Deposited"
+                }
+                else if(currentStatus === "Deposited"){
+                    bottleStatus = "Recycled"
+                }
+                
+
+                //If it exists, update all the bottles tied to this batch code
+                var myquery = { batchQr};
+                let date = Date.now();
+
+                var newvalues = { $set: {bottleStatus, dateUpdated: date} };
+
+                console.log("from "+ currentStatus+" to "+bottleStatus);
                     try{
                         await BottleModel.updateMany(myquery, newvalues);
+
+                         //Add new status to the history
+                         let newHistoryValue = {
+                            status: bottleStatus,
+                            updated:new Date(),
+                            userId
+                        }
+
+                        var newvalues2 = { $push: {history: newHistoryValue} };
+                        await BottleHistoryModel.updateMany(myquery, newvalues2);
+
                         
                         //Get all the bottles in the batch
-                        batch = batchBottles.filter((item) => item.batchQr === batchQr)
+                        const batch2 = batchBottles.filter((item) => item.batchQr === batchQr)
 
-                        console.log(batch[0].bottles.length);
+                        console.log(batch2[0].bottles.length);
                         //Get the current transaction status collection holding this batch
                         let currentDb = "transactions-"+checkExist.bottleStatus.toLowerCase();
 
@@ -238,12 +317,12 @@ router.post("/", [
                         //Find and Delete from the appropriate intial transaction status collection
                         deleteFromOldTransactionsDbBatch(currentDb, batchQr).then(() =>  
                             //Lopp through the bottles in the batch and insert into the appropriate transaction status collection
-                            batch[0].bottles.map(item => {
+                            batch2[0].bottles.map(item => {
                                 addToNewTransactionsDbBatch(nextDb, item.bottleQr, checkExist, bottleStatus, userId)
                             }),
                             //Success
                             res.status(200).json({
-                                "message":`Successfully updated all bottles in batch with QR Code '${batchQr}'`,
+                                "message":`Successfully updated status of all bottles in batch with QR Code '${batchQr}' to '${bottleStatus}'. All bottles were previously at '${currentStatus}'`,
                                 "status":200
                             })
                         )
@@ -253,7 +332,7 @@ router.post("/", [
                     }
                 }
             }
-            
+
         }
           
      }
