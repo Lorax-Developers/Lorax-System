@@ -20,7 +20,7 @@ const ManufacturerPrivateRoute = ({
       ) : user.role == "admin" ? (
         <Redirect to="/admin" />
       ) : (
-        <Redirect to="/insights" />
+        <Redirect to="/scan" />
       )
     }
   />
