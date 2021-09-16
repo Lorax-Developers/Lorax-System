@@ -203,6 +203,25 @@ const batchBottles = [
             
             
         ]
+    },
+    {
+        id:9,
+        batchQr:"BATCHCCA00009",
+        bottles:[
+            { id: 145, bottleQr: "CCA0000000145" },
+            { id: 146, bottleQr: "CCA0000000146" },
+            { id: 147, bottleQr: "CCA0000000147" },
+            { id: 148, bottleQr: "CCA0000000148" },
+            { id: 149, bottleQr: "CCA0000000149" },
+            { id: 150, bottleQr: "CCA0000000150" },
+            { id: 151, bottleQr: "CCA0000000151" },
+            { id: 152, bottleQr: "CCA0000000152" },
+            { id: 153, bottleQr: "CCA0000000153" },
+            { id: 154, bottleQr: "CCA0000000154" },
+            { id: 155, bottleQr: "CCA0000000155" },
+            { id: 156, bottleQr: "CCA0000000156" },
+            
+        ]
     }
 ]
 
