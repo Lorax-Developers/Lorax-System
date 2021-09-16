@@ -47,6 +47,7 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
     e.preventDefault();
 
     register({ name, email, phone, role, province, city, password, access });
+    document.getElementById("sign-up-form").reset();
   };
   //LOGIN FUNCTIONALITY
 
@@ -114,7 +115,11 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
                 </div>
               </form>
 
-              <form onSubmit={(e) => onSubmit(e)} className="sign-up-form">
+              <form
+                onSubmit={(e) => onSubmit(e)}
+                id="sign-up-form"
+                className="sign-up-form"
+              >
                 <h1 className="heading">LORAX</h1>
                 <h2 className="title">Sign up to access account</h2>
                 <div className="input-field">
