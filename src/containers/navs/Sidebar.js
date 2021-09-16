@@ -138,7 +138,7 @@ class Sidebar extends Component {
                                 : item.id === "scanproduct"
                                 ? "block"
                                 : item.id === "dashboard"
-                                ? "block"
+                                ? "none"
                                 : item.id === "faq"
                                 ? "block"
                                 : item.id === "bottles"
