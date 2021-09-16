@@ -6,6 +6,18 @@ const data = [
     to: "/dashboard",
   },
   {
+    id: "insights",
+    icon: "iconsminds-administrator",
+    label: "Insights",
+    to: "/insights",
+  },
+  {
+    id: "deff-dashboard",
+    icon: "iconsminds-shop-4",
+    label: "DEFF Dashboard",
+    to: "/deff-dashboard",
+  },
+  {
     id: "scanproduct",
     icon: "iconsminds-qr-code",
     label: "Scan Product",
@@ -15,7 +27,7 @@ const data = [
     id: "bottles",
     icon: "iconsminds-can-2",
     label: "Bottles",
-    to: "/bottles"
+    to: "/bottles",
   },
   // {
   //   id: "search",
@@ -27,27 +39,25 @@ const data = [
     id: "admin",
     icon: "iconsminds-administrator",
     label: "Admin Stats",
-    to: "/admin"
+    to: "/admin",
   },
   {
     id: "manufacturer",
     icon: "iconsminds-administrator",
     label: "Manufacturer Profiling",
-    to: "/manufacturer"
+    to: "/manufacturer",
   },
   {
     id: "faq",
     icon: "simple-icon-question",
     label: "FAQ",
-    to: "/faq"
+    to: "/faq",
   },
   {
     id: "userprofile",
     icon: "iconsminds-user",
-    label: " User Profile",
-    to: "/userprofile"
-  }
-  
- 
+    label: "User Profile",
+    to: "/userprofile",
+  },
 ];
 export default data;

@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../models/User");
-const db = require("../../db");
 
 //@route    POST api/User
 //@desc     register user
@@ -57,6 +56,20 @@ router.post(
         access,
       });
 
+      if (role == "PRO") {
+        const pro = [];
+
+        user = new User({
+          name,
+          email,
+          phone,
+          password,
+          role,
+          city,
+          province,
+          access,
+        });
+      }
       //encrypt password
       //salt to hash
       const salt = await bcrypt.genSalt(10);
@@ -94,7 +107,7 @@ router.post(
 );
 
 //@route    POST api/user/update
-//@desc     register user
+//@desc     Update the user
 //access    Public (eg token needed?)
 router.post(
   "/update",
@@ -192,14 +205,13 @@ router.post(
 // Get list of manufacturers
 //@route    POST api/User/manufacturerlist
 
-router.get('/manufacturerlist', async (req, res) => {
-  User.find({ "role": "Manufacturer" }, (err, User) => {
+router.get("/manufacturerlist", async (req, res) => {
+  User.find({ role: "Manufacturer" }, (err, User) => {
     if (err) {
       res.send(err);
     }
     res.json(User);
-  })
-}
-);
+  });
+});
 
 module.exports = router;

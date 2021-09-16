@@ -1,8 +1,67 @@
-.admin{
-    flex: 4;
+.admin-container {
+  max-width: unset !important;
+  position: relative;
+  width: 100%;
+  background-color: #fff;
+  min-height: 30vh;
+  overflow: hidden;
 }
 
-.homeWidgets{
-    display: flex;
-    margin: 20px;
+.d-flex {
+  display: flex;
+  flex: wrap;
+}
+
+.update {
+  font-size: 2em;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-left: 1em;
+  margin-right: 1em;
+  color: greenyellow;
+  border-radius: 10%;
+}
+.delete {
+  font-size: 2em;
+  color: red;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-radius: 10%;
+}
+
+.inline {
+  display: inline-block;
+}
+
+table {
+  border-spacing: 20px;
+  writing-mode: 100%;
+}
+table td,
+table th {
+  padding: 0.75em;
+  vertical-align: top;
+  text-align: center;
+  border-top: 1px solid black;
+}
+
+@media only screen and (max-width: 780px) {
+  table thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+  .admin-table-thead {
+    display: none;
+  }
+
+  tr {
+    border: 1px solid black;
+  }
+  td {
+    border: none;
+    position: relative;
+  }
 }

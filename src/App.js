@@ -20,12 +20,18 @@ import UserProfile from "./views/UserProfile";
 import Faq from "./views/FAQ";
 import Landing from "./views/Landing";
 import Insights from "./views/Insights";
-import DEFFDashboard from "./views/DEFF-Dashboard"
+import DEFFDashboard from "./views/DEFF-Dashboard";
 import Bottles from "./views/Bottles";
 //redux
 import PrivateRoute from "./utils/privateRoute";
 import AdminPrivateRoute from "./utils/adminPrivateRoute";
 import PROPrivateRoute from "./utils/proPrivateRoute";
+import InsightsPrivateRoute from "./utils/InsightsPrivateRoute";
+import DEFFPrivateRoute from "./utils/DEFFPrivateRoute";
+import ManufacturerPrivateRoute from "./utils/ManufacturerPrivateRoute";
+import UserProfilePrivateRoute from "./utils/UserProfilePrivateRoute";
+import ScanPrivateRoute from "./utils/ScanPrivateRoute";
+import BottleHistoryPrivateRoute from "./utils/BottleHistoryPrivateRoute";
 
 import Alert from "./layout/Alert";
 
@@ -58,14 +64,13 @@ class App extends Component {
                 <Alert />
                 <Switch>
                   <Route path="/login" component={Login} />
-                  <PrivateRoute exact path="/dashboard" component={Dashboard} />
-                  <PrivateRoute exact path="/scan" component={Scan} />
-                  <PrivateRoute
+                  <ManufacturerPrivateRoute
                     exact
-                    path="/userprofile"
-                    component={UserProfile}
+                    path="/dashboard"
+                    component={Dashboard}
                   />
-                  <PrivateRoute
+                  <ScanPrivateRoute exact path="/scan" component={Scan} />
+                  <BottleHistoryPrivateRoute
                     exact
                     path="/bottles"
                     component={Bottles}
@@ -82,18 +87,18 @@ class App extends Component {
                     path="/manufacturer"
                     component={Manufacturer}
                   />
-                  <PrivateRoute
+                  <UserProfilePrivateRoute
                     exact
-                    path="/user-profile"
+                    path="/userprofile"
                     component={UserProfile}
                   />
                   <PrivateRoute exact path="/faq" component={Faq} />
-                  <PrivateRoute
+                  <InsightsPrivateRoute
                     exact
                     path="/insights"
                     component={Insights}
                   />
-                  <PrivateRoute
+                  <DEFFPrivateRoute
                     exact
                     path="/deff-dashboard"
                     component={DEFFDashboard}
