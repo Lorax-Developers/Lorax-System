@@ -187,29 +187,6 @@ const UserProfile = ({ auth: { user } }) => {
           </form>
         </div>
       </div>
-
-      <div
-        className="pt-3 border"
-        style={{
-          visibility:
-            user.role == "Consumer" || user.role == "Waste Picker"
-              ? "visible"
-              : "hidden",
-        }}
-      >
-        <div class="card ">
-          <div class="card-body text-center">
-            <h6 className="mb-2 text-primary">Number of bottles recycled</h6>
-            <p>100</p>
-          </div>
-        </div>
-        <div class="card ">
-          <div class="card-body text-center">
-            <h6 className="mb-2 text-primary">Lorax Tokens</h6>
-            <p>10</p>
-          </div>
-        </div>
-      </div>
     </AppLayout>
   );
 };

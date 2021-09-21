@@ -52,11 +52,16 @@ router.post(
 
       //match email and password
       const isMatch = await bcrypt.compare(password, user.password);
-
       if (!isMatch) {
         return res
           .status(400)
           .json({ errors: [{ msg: "Invalid Credentials" }] });
+      }
+      //Check if user has access
+      if (user.access == "Pending") {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "User not granted access" }] });
       }
 
       const payload = {

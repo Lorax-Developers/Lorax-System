@@ -72,7 +72,6 @@ export const register =
         type: REGISTER_SUCCESS,
         payload: res.data,
       });
-      dispatch(loadUser());
       Swal.fire({
         title: "Register Successful",
         text: "You are all set! If you are a Manufacturer/Recycling Depot/Retailer or PRO, we will get back to you as soon as your registration is approved!",
@@ -80,6 +79,7 @@ export const register =
         confirmButtonColor: "#6fb327",
         confirmButtonText: "Alright!",
       });
+      //dispatch(loadUser());
     } catch (err) {
       const errors = err.response.data.errors;
       if (errors) {
