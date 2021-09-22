@@ -42,17 +42,46 @@
   <div id="root">
       <div class="loading"></div>
   </div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+   
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!--      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> &lt;!&ndash; jQuery from Google Content Delivery Network (CDN)&ndash;&gt;-->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.ethers.io/scripts/ethers-v4.min.js"
+      charset="utf-8"
+      type="text/javascript"
+    ></script>
+    
+    <script type="text/javascript"
+        integrity="sha384-P7kncOVtpRwAc0fW/frkj2Aks3nkSbOQuAd6IWWU3RmjzdfharSfuvKQb2n+9r71"
+        crossorigin="anonymous"
+        src="https://cdn-cors.ethers.io/lib/ethers-5.0.19.umd.min.js"></script>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-
+    <script type="module">
+      import { ethers } from "https://cdn.ethers.io/lib/ethers-5.2.esm.min.js";
+</script>
+    <!-- This exposes the library as a global variable: ethers -->
+    <!--    <script src="scripts/main.js"></script> &lt;!&ndash; A basic JavaScript file that contains the logic for the popup on a button click &ndash;&gt; -->
+    <!-- Blockchain integration-->
+ 
+   
+    
     <div id="outdiv" style="display: none;"></div>
     <div id="result" style="display: none;"></div>
     <canvas id="qr-canvas" width="8" height="6"></canvas>
