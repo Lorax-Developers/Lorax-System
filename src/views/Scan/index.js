@@ -7,9 +7,7 @@ import './scan.scss';
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Swal from 'sweetalert2';
-//import ethers from "ethers";
 import web3 from "web3";
-//import Plasticbottle from "../../contracts/Plasticbottle.json";
 
 const Scan = (props) => {
     const [activeScan, setActiveScan2] = useState("single");
@@ -18,13 +16,13 @@ const Scan = (props) => {
 
     const [currentUser] = useState(retrievedUserDetails);
     const [isLoading, setIsLoading] = useState(false);
-    //const [roleOptions, setroleOptions] = useState([]);
+    
     const [data, setData] = useState({
         "manufacturer":{
             id: retrievedUserDetails._id,
             name: retrievedUserDetails.name
         },
-      //  "isBatch": false,
+    
         "sizeUnit":"ml",
         "qrCode":"",
         "bottleType": "PET",
@@ -49,39 +47,6 @@ const Scan = (props) => {
         }
     }
 
-    
-    // useEffect(() => {
-    //      //Declare the available status to each user role in arrays
-    //     const ManufacturerOptions = ["Manufactured", "Outgoing"];
-    //     const RetailerOptions = ["Delivered", "Purchased"];
-    //     const ConsumerOptions = ["Deposited"];
-    //     const WastePickerOptions = ["Deposited"];
-    //     const RecyclingDepotOptions = ["Recycled"]
-
-    //     if(currentUser.role === "Manufacturer"){
-    //         setroleOptions(ManufacturerOptions);
-    //         setData({...data,"bottleStatus":ManufacturerOptions[0]});
-    //     }
-    //     else if(currentUser.role === "Retailer"){
-    //         setroleOptions(RetailerOptions);
-    //         setData({...data,"bottleStatus":RetailerOptions[0]});
-    //     }
-    //     else if(currentUser.role === "Consumer"){
-    //         setroleOptions(ConsumerOptions);
-    //         setData({...data,"bottleStatus":ConsumerOptions[0]});
-    //     }
-    //     else if(currentUser.role === "Waste Picker"){
-    //         setroleOptions(WastePickerOptions);
-    //         setData({...data,"bottleStatus":WastePickerOptions[0]});
-    //     }
-    //     else if(currentUser.role === "Recycling Depot"){
-    //         setroleOptions(RecyclingDepotOptions);
-    //         setData({...data,"bottleStatus":RecyclingDepotOptions[0]});
-    //     }
-       
-   // }, [currentUser])
-
-    //Add the user's input into the data sent to the backend
     const setDataValue = e => {
         setData({...data, [e.target.name]:e.target.value});
     }
@@ -90,17 +55,14 @@ const Scan = (props) => {
         setData({...data, [state]:value});
     }
 
-    // const setActiveScan = e => {
-    //     setData({...data, "isBatch": e.target.value === "single" ? false : true})
-    //     setActiveScan2(e.target.value);
-    // }
-
     //Function to begin the scan after form is submitted
     const BeginScan = (e) => {
         //makes it inform user that it is loading
         setIsLoading(true);
         e.preventDefault();
+        //getAccount();
         addBottleToBlockchain();
+       
 
         let correctEndpoint = "addbottle";
         if(data.isNewScan === "true")
@@ -141,15 +103,20 @@ const Scan = (props) => {
         });
 
     }
+    //const ethereumButton = document.querySelector(".enableEthereumButton");
     const showAccount = document.querySelector(".showAccount");
+    
+
+ 
   let accounts;
   let PlasticbottleContractABI;
-  let PlasticbottleContractAddress;
-  let Plasticbottle;
+  //let PlasticbottleContractAddress;
+  let PlasticbottleContract;
   
 
   const isMetaMaskConnected = () => accounts && accounts.length > 0;
-  //const isMetaMaskConnected = () => accounts;
+ 
+  
 
     async function getAccount() {
         // old school way of checking if metamask is installed
@@ -182,105 +149,119 @@ const Scan = (props) => {
           console.log("Please install MetaMask");
         }
       }
-      PlasticbottleContractAddress = "0x17212a582201E83a221EFF939a6B9A3200b7F629";
-      PlasticbottleContractABI = (
+      
+      let PlasticbottleContractAddress = "0x0f826bBF0861E09f7Ec838E6b05367bd3201C585";
+      PlasticbottleContractABI = 
         [
           {
-            "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "uint256",
-          "name": "_bottleID",
-          "type": "uint256"
-        }
-      ],
-      "name": "registeredBottleEvent",
-      "type": "event"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "BottleArray",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "qrcode",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "title",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "bottleSize",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "sizeUnit",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_qrcode",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_title",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_bottleSize",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "_sizeUnit",
-          "type": "string"
-        }
-      ],
-      "name": "registerBottle",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "numberofBottles",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    }
-  ])
-           
+            anonymous: false,
+            inputs: [
+              {
+                indexed: true,
+                internalType: "uint256",
+                name: "_bottleID",
+                type: "uint256"
+              }
+            ],
+            name: "registeredBottleEvent",
+            type: "event"
+          },
+          {
+            constant: true,
+            inputs: [
+              {
+                internalType: "uint256",
+                name: "",
+                type: "uint256"
+              }
+            ],
+            name: "BottleArray",
+            outputs: [
+              {
+                internalType: "string",
+                name: "qrCode",
+                type: "string"
+              },
+              {
+                internalType: "string",
+                name: "title",
+                type: "string"
+              },
+              {
+                internalType: "uint256",
+                name: "bottleSize",
+                type: "uint256"
+              },
+              {
+                internalType: "string",
+                name: "sizeUnit",
+                type: "string"
+              },
+              {
+                internalType: "address",
+                name: "user",
+                type: "address"
+              }
+            ],
+            payable: false,
+            stateMutability: "view",
+            type: "function"
+          },
+          {
+            constant: false,
+            inputs: [
+              {
+                internalType: "string",
+                name: "_qrCode",
+                type: "string"
+              },
+              {
+                internalType: "string",
+                name: "_title",
+                type: "string"
+              },
+              {
+                internalType: "uint256",
+                name: "_bottleSize",
+                type: "uint256"
+              },
+              {
+                internalType: "string",
+                name: "_sizeUnit",
+                type: "string"
+              }
+            ],
+            name: "registerBottle",
+            outputs: [
+              {
+                internalType: "uint256",
+                name: "",
+                type: "uint256"
+              }
+            ],
+            payable: false,
+            stateMutability: "nonpayable",
+            type: "function"
+          },
+          {
+            constant: true,
+            inputs: [],
+            name: "numberofBottles",
+            outputs: [
+              {
+                internalType: "uint256",
+                name: "",
+                type: "uint256"
+              }
+            ],
+            payable: false,
+            stateMutability: "view",
+            type: "function"
+          }
+        ];
+
+       
+
       function handle_error(err) {
         console.log("function handle_error(err).");
         // var message_type = CONSTANTS.ERROR; //error or success
@@ -309,50 +290,43 @@ const Scan = (props) => {
     async function addBottleToBlockchain() {
 
         //bottle form data
-        var qrcode = $(this).data("qrCode");
+        var qrCode = $(this).data("qrCode");
         var title = $(this).data("title");
         var bottleSize = $(this).data("bottleSize");
         var sizeUnit= $(this).data("sizeUnit");
-    
     
         console.log("QrCode to add to blockchain - " + data.qrCode);
         console.log("bottleTitle to add to blockchain - " + data.title);
         console.log("bottleSize to add to blockchain - " + data.bottleSize);
         console.log("sizeUnit to add to blockchain - " + data.sizeUnit);
+      
     
+        
+
         // solidityContext required if you use msg object in contract function e.g. msg.sender
-        // var solidityContext = {from: web3.eth.accounts[1], gas:3000000}; //add gas to avoid out of gas exception
+       // var solidityContext = {from: web3.eth.accounts[1], gas:3000000}; //add gas to avoid out of gas exception
     
         // Day1Registry smart contract
-        // function registerUser(string calldata _name, string calldata _surname) external returns(uint)
-    
-        await getAccount();
-        
-        const ethers = require("ethers");
-      
-        
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider });
-        const signer = provider.getSigner();
-
+        //function registerBottle(string_name, string calldata _surname) external returns(uint){}
        
+        await getAccount();
+       
+        const ethers = require("ethers");
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        console.log({provider});
+        const signer = provider.getSigner();
         
-        
-        
-           Plasticbottle = new ethers.Contract(
-           PlasticbottleContractAddress,
-           PlasticbottleContractABI,
-          signer
-        );
+        PlasticbottleContract = new ethers.Contract(PlasticbottleContractAddress,PlasticbottleContractABI,signer);
+       
         try {
-          const transaction = await Plasticbottle.registerBottle(qrcode,title,bottleSize,sizeUnit);
-          const data = await transaction.wait();
+          //const bottleSize = parseInt(bottleSize);
+          const index = await PlasticbottleContract.registerBottle(qrCode,title,bottleSize,sizeUnit);
+          const data = await index.wait();
           console.log("data: ", data);
        } catch (err) {
           console.log("Error: ", err);
-          //console.log("Error: ");
+        
         }
-    
         var message_description = `Transaction submitted to Blockchain for processing. Check your Metamask for transaction update.`;
     
         //TODO - trigger notification
@@ -378,13 +352,13 @@ const Scan = (props) => {
             }); */
     
       // function to get count of user entries that have been previously added to the blockchain
-      // eslint-disable-next-line no-unused-vars
+      
       function numberofBottles() {
         if (typeof web3 === "undefined") {
           return handle_web3_undefined_error();
         }
     
-        Plasticbottle.numberofBottles(function (err, result) {
+        PlasticbottleContract.numberofBottles(function (err, result) {
           if (err) {
             return handle_error(err);
           }
@@ -398,7 +372,7 @@ const Scan = (props) => {
           return console.log(message_description);
         });
       }
-
+ 
     return(
         <AppLayout>
             <Row>
@@ -441,10 +415,13 @@ const Scan = (props) => {
                     <div className="card mb-4">
                         <div className="card-body">
                             <h5 className="mb-4">Product Details</h5>
-                            <p>Connected Account: <span class="showAccount"></span></p>
+                            
+                           
+                           
                             <form onSubmit={(e) => BeginScan(e)}>
                                 
-                              
+                            <button class="enableEthereumButton btn btn-success" onClick={getAccount}>Enable Ethereum & Connect to Wallet</button>
+                            <p>Connected Account: <span class="showAccount"></span></p>
 
                                     {/* <div className="form-group row">
                                         <label className="col-sm-2 col-form-label">Scan Type</label>
@@ -572,6 +549,8 @@ const Scan = (props) => {
             </div>
         </AppLayout>
     )
+    
 }
+
 
 export default Scan;
