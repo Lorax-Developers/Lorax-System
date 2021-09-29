@@ -65,10 +65,7 @@ router.post("/request/:id/:mId", auth, async (req, res) => {
       { _id: myID },
       {
         $set: {
-          pro: {
-            id: manID,
-            status: "Requested",
-          },
+          pro: { id: manID, status: "Requested" },
         },
       },
       {
