@@ -60,9 +60,8 @@ const Scan = (props) => {
         //makes it inform user that it is loading
         setIsLoading(true);
         e.preventDefault();
-        //getAccount();
-        addBottleToBlockchain();
-       
+      addBottleToBlockchain();
+      
 
         let correctEndpoint = "addbottle";
         if(data.isNewScan === "true")
@@ -103,168 +102,169 @@ const Scan = (props) => {
         });
 
     }
-    //const ethereumButton = document.querySelector(".enableEthereumButton");
+    
     const showAccount = document.querySelector(".showAccount");
     
 
  
   let accounts;
-  let PlasticbottleContractABI;
+  //let PlasticbottleContractABI;
   //let PlasticbottleContractAddress;
   let PlasticbottleContract;
   
 
   const isMetaMaskConnected = () => accounts && accounts.length > 0;
  
-  
-
-    async function getAccount() {
-        // old school way of checking if metamask is installed
-        if (typeof window.ethereum !== "undefined") {
-          console.log("MetaMask is installed!");
-          try {
-            /* Ask user permission to access his accounts, this will open the MetaMask UI
-                    "Connecting" or "logging in" to MetaMask effectively means "to access the user's Ethereum account(s)".
-                    You should only initiate a connection request in response to direct user action, such as clicking a button. 
-                    You should always disable the "connect" button while the connection request is pending. You should never initiate a 
-                    connection request on page load.*/
-            const { ethereum } = window;
-            accounts = await ethereum.request({
-              method: "eth_requestAccounts",
-            });
-            const account = accounts[0];
-            showAccount.innerHTML = account;
-            console.log(account || "Not able to get accounts");
-            console.log(isMetaMaskConnected());
-            if (isMetaMaskConnected()) {
-              console.log("Metamask is connected :)");
-            }
-          } catch (err) {
-            var message_description = "Access to your Ethereum account rejected.";
+  //request access to the user's MetaMask account
+async function getAccount() {
+    accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    showAccount.innerHTML = accounts[0];
+    console.log(accounts || "Not able to get accounts");
+    console.log(isMetaMaskConnected());
+  }
+    // async function getAccount() {
+    //     // old school way of checking if metamask is installed
+    //     //if (typeof window.ethereum !== "undefined") {
+    //      // console.log("MetaMask is installed!");
+    //      /* try {
+    //         /* Ask user permission to access his accounts, this will open the MetaMask UI
+    //                 "Connecting" or "logging in" to MetaMask effectively means "to access the user's Ethereum account(s)".
+    //                 You should only initiate a connection request in response to direct user action, such as clicking a button. 
+    //                 You should always disable the "connect" button while the connection request is pending. You should never initiate a 
+    //                 connection request on page load.*/
+    //         const {ethereum} = window;
+    //         accounts = await ethereum.request({
+    //           method: "eth_requestAccounts",
+    //         });
+    //         //const account = accounts[0];
+    //         showAccount.innerHTML = accounts;
+    //         console.log(accounts || "Not able to get accounts");
+    //         console.log(isMetaMaskConnected());
+    //         if (isMetaMaskConnected()) {
+    //           console.log("Metamask is connected :)");
+    //         }
+    //       } catch (err) {
+    //         var message_description = "Access to your Ethereum account rejected.";
     
-            //TODO - trigger pop up notification
-            return console.log(message_description);
-          }
-        } else {
-          console.log("Please install MetaMask");
-        }
-      }
-      
-      let PlasticbottleContractAddress = "0x0f826bBF0861E09f7Ec838E6b05367bd3201C585";
-      PlasticbottleContractABI = 
-        [
-          {
-            anonymous: false,
-            inputs: [
-              {
-                indexed: true,
-                internalType: "uint256",
-                name: "_bottleID",
-                type: "uint256"
-              }
-            ],
-            name: "registeredBottleEvent",
-            type: "event"
-          },
-          {
-            constant: true,
-            inputs: [
-              {
-                internalType: "uint256",
-                name: "",
-                type: "uint256"
-              }
-            ],
-            name: "BottleArray",
-            outputs: [
-              {
-                internalType: "string",
-                name: "qrCode",
-                type: "string"
-              },
-              {
-                internalType: "string",
-                name: "title",
-                type: "string"
-              },
-              {
-                internalType: "uint256",
-                name: "bottleSize",
-                type: "uint256"
-              },
-              {
-                internalType: "string",
-                name: "sizeUnit",
-                type: "string"
-              },
-              {
-                internalType: "address",
-                name: "user",
-                type: "address"
-              }
-            ],
-            payable: false,
-            stateMutability: "view",
-            type: "function"
-          },
-          {
-            constant: false,
-            inputs: [
-              {
-                internalType: "string",
-                name: "_qrCode",
-                type: "string"
-              },
-              {
-                internalType: "string",
-                name: "_title",
-                type: "string"
-              },
-              {
-                internalType: "uint256",
-                name: "_bottleSize",
-                type: "uint256"
-              },
-              {
-                internalType: "string",
-                name: "_sizeUnit",
-                type: "string"
-              }
-            ],
-            name: "registerBottle",
-            outputs: [
-              {
-                internalType: "uint256",
-                name: "",
-                type: "uint256"
-              }
-            ],
-            payable: false,
-            stateMutability: "nonpayable",
-            type: "function"
-          },
-          {
-            constant: true,
-            inputs: [],
-            name: "numberofBottles",
-            outputs: [
-              {
-                internalType: "uint256",
-                name: "",
-                type: "uint256"
-              }
-            ],
-            payable: false,
-            stateMutability: "view",
-            type: "function"
-          }
-        ];
+    //         return console.log(message_description);
+    //       }
+    //     } else {
+    //       console.log("Please install MetaMask");
+    //     }
+    //  */  }
 
-       
+      let PlasticbottleContractAddress = "0xe82Ec504f9FdA9ca1D08628B072Fb820D0Ea6788";
+      let PlasticbottleContractABI= 
+      [
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "_bottleID",
+              "type": "uint256"
+            }
+          ],
+          "name": "registeredBottleEvent",
+          "type": "event"
+        },
+        {
+          "constant": true,
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "BottleArray",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "qrCode",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "bottleSize",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "sizeUnit",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "_qrCode",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "_title",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_bottleSize",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "_sizeUnit",
+              "type": "string"
+            }
+          ],
+          "name": "registerBottle",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "numberofBottles",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ];
 
       function handle_error(err) {
         console.log("function handle_error(err).");
-        // var message_type = CONSTANTS.ERROR; //error or success
         var error_data = err.data;
         var message_description = "Bottle Smart contract call failed: " + err;
         if (typeof error_data !== "undefined") {
@@ -287,40 +287,43 @@ const Scan = (props) => {
         //TODO - trigger notification
         return console.log(message_description);
       }
-    async function addBottleToBlockchain() {
 
-        //bottle form data
-        var qrCode = $(this).data("qrCode");
-        var title = $(this).data("title");
-        var bottleSize = $(this).data("bottleSize");
-        var sizeUnit= $(this).data("sizeUnit");
-    
-        console.log("QrCode to add to blockchain - " + data.qrCode);
-        console.log("bottleTitle to add to blockchain - " + data.title);
-        console.log("bottleSize to add to blockchain - " + data.bottleSize);
-        console.log("sizeUnit to add to blockchain - " + data.sizeUnit);
-      
-    
-        
+    async function addBottleToBlockchain(){
 
-        // solidityContext required if you use msg object in contract function e.g. msg.sender
-       // var solidityContext = {from: web3.eth.accounts[1], gas:3000000}; //add gas to avoid out of gas exception
+        //bottle form data (non REACT)
+        //var qrCode_old = $(this).data("qrCode");
+        // var title = $(this).data("title");
+        // var bottleSize = $(this).data("bottleSize");
+        // var sizeUnit= $(this).data("sizeUnit");
+
+        //bottle form data (REACT)
+        var qrCode = data.qrCode;
+        var title =  data.title;
+        var bottleSize = data.bottleSize;
+        var sizeUnit= data.sizeUnit;
     
-        // Day1Registry smart contract
-        //function registerBottle(string_name, string calldata _surname) external returns(uint){}
-       
-        await getAccount();
-       
+        //console.log("QrCode to add to blockchain - " + qrCode_old);       
+        console.log("data.QrCode to add to blockchain - " + qrCode);
+        console.log("bottleTitle to add to blockchain - " + title);
+        console.log("bottleSize to add to blockchain - " + bottleSize);
+        console.log("sizeUnit to add to blockchain - " + sizeUnit);
+
+       await getAccount();
         const ethers = require("ethers");
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         console.log({provider});
-        const signer = provider.getSigner();
+        const signer = provider.getSigner();  // Your current metamask account;
+        const contractUser = await signer.getAddress();
+        console.log("contractUser:", contractUser );
+        //console.log({contractUser});
         
-        PlasticbottleContract = new ethers.Contract(PlasticbottleContractAddress,PlasticbottleContractABI,signer);
-       
+        let PlasticbottleContract = new ethers.Contract(PlasticbottleContractAddress,PlasticbottleContractABI,signer);
+        console.log("PlasticbottleContract:", PlasticbottleContract );
+
         try {
-          //const bottleSize = parseInt(bottleSize);
-          const index = await PlasticbottleContract.registerBottle(qrCode,title,bottleSize,sizeUnit);
+          //const index = await PlasticbottleContract.registerBottle(qrCode, title, parseInt(bottleSize), sizeUnit,{from: contractUser, value:5000});
+          const index = await PlasticbottleContract.registerBottle(qrCode, title, parseInt(bottleSize), sizeUnit);
+
           const data = await index.wait();
           console.log("data: ", data);
        } catch (err) {
@@ -415,14 +418,11 @@ const Scan = (props) => {
                     <div className="card mb-4">
                         <div className="card-body">
                             <h5 className="mb-4">Product Details</h5>
-                            
-                           
-                           
-                            <form onSubmit={(e) => BeginScan(e)}>
-                                
                             <button class="enableEthereumButton btn btn-success" onClick={getAccount}>Enable Ethereum & Connect to Wallet</button>
                             <p>Connected Account: <span class="showAccount"></span></p>
-
+                          
+                            <form onSubmit={(e) => BeginScan(e)}>
+                            
                                     {/* <div className="form-group row">
                                         <label className="col-sm-2 col-form-label">Scan Type</label>
                                         <div className="col-sm-10">
