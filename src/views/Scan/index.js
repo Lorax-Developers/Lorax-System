@@ -103,55 +103,50 @@ const Scan = (props) => {
 
     }
     
-    const showAccount = document.querySelector(".showAccount");
+  const showAccount = document.querySelector(".showAccount");
     
-
- 
   let accounts;
-  //let PlasticbottleContractABI;
-  //let PlasticbottleContractAddress;
   let PlasticbottleContract;
   
-
   const isMetaMaskConnected = () => accounts && accounts.length > 0;
  
   //request access to the user's MetaMask account
-async function getAccount() {
-    accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    showAccount.innerHTML = accounts[0];
-    console.log(accounts || "Not able to get accounts");
-    console.log(isMetaMaskConnected());
-  }
-    // async function getAccount() {
-    //     // old school way of checking if metamask is installed
-    //     //if (typeof window.ethereum !== "undefined") {
-    //      // console.log("MetaMask is installed!");
-    //      /* try {
-    //         /* Ask user permission to access his accounts, this will open the MetaMask UI
-    //                 "Connecting" or "logging in" to MetaMask effectively means "to access the user's Ethereum account(s)".
-    //                 You should only initiate a connection request in response to direct user action, such as clicking a button. 
-    //                 You should always disable the "connect" button while the connection request is pending. You should never initiate a 
-    //                 connection request on page load.*/
-    //         const {ethereum} = window;
-    //         accounts = await ethereum.request({
-    //           method: "eth_requestAccounts",
-    //         });
-    //         //const account = accounts[0];
-    //         showAccount.innerHTML = accounts;
-    //         console.log(accounts || "Not able to get accounts");
-    //         console.log(isMetaMaskConnected());
-    //         if (isMetaMaskConnected()) {
-    //           console.log("Metamask is connected :)");
-    //         }
-    //       } catch (err) {
-    //         var message_description = "Access to your Ethereum account rejected.";
+  // async function getAccount() {
+  //   accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+  //   showAccount.innerHTML = accounts[0];
+  //   console.log(accounts || "Not able to get accounts");
+  //   console.log(isMetaMaskConnected());
+  // }
+    async function getAccount() {
+        // // old school way of checking if metamask is installed
+        if (typeof window.ethereum !== "undefined") {
+        //  // console.log("MetaMask is installed!");
+        try {
+        //     /* Ask user permission to access his accounts, this will open the MetaMask UI
+        //             "Connecting" or "logging in" to MetaMask effectively means "to access the user's Ethereum account(s)".
+        //             You should only initiate a connection request in response to direct user action, such as clicking a button. 
+        //             You should always disable the "connect" button while the connection request is pending. You should never initiate a 
+        //            connection request on page load.*/
+            const {ethereum} = window;
+            accounts = await ethereum.request({
+              method: "eth_requestAccounts",
+            });
+            //const account = accounts[0];
+            showAccount.innerHTML = accounts;
+            console.log(accounts || "Not able to get accounts");
+            console.log(isMetaMaskConnected());
+            if (isMetaMaskConnected()) {
+              console.log("Metamask is connected :)");
+            }
+          } catch (err) {
+            var message_description = "Access to your Ethereum account rejected.";
     
-    //         return console.log(message_description);
-    //       }
-    //     } else {
-    //       console.log("Please install MetaMask");
-    //     }
-    //  */  }
+            return console.log(message_description);
+          }
+        } else {
+          console.log("Please install MetaMask");
+        }
+       }
 
       let PlasticbottleContractAddress = "0xe82Ec504f9FdA9ca1D08628B072Fb820D0Ea6788";
       let PlasticbottleContractABI= 
@@ -315,7 +310,7 @@ async function getAccount() {
         const signer = provider.getSigner();  // Your current metamask account;
         const contractUser = await signer.getAddress();
         console.log("contractUser:", contractUser );
-        //console.log({contractUser});
+        
         
         let PlasticbottleContract = new ethers.Contract(PlasticbottleContractAddress,PlasticbottleContractABI,signer);
         console.log("PlasticbottleContract:", PlasticbottleContract );
@@ -418,7 +413,7 @@ async function getAccount() {
                     <div className="card mb-4">
                         <div className="card-body">
                             <h5 className="mb-4">Product Details</h5>
-                            <button class="enableEthereumButton btn btn-success" onClick={getAccount}>Enable Ethereum & Connect to Wallet</button>
+                            {/* <button class="enableEthereumButton btn btn-success" onClick={getAccount}>Enable Ethereum & Connect to Wallet</button> */}
                             <p>Connected Account: <span class="showAccount"></span></p>
                           
                             <form onSubmit={(e) => BeginScan(e)}>
