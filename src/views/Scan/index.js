@@ -60,7 +60,7 @@ const Scan = (props) => {
         //makes it inform user that it is loading
         setIsLoading(true);
         e.preventDefault();
-      addBottleToBlockchain();
+      
       
 
         let correctEndpoint = "addbottle";
@@ -83,6 +83,7 @@ const Scan = (props) => {
         axios(config)
         //success
         .then(function (response) {
+          addBottleToBlockchain(response.data.bottleDetails);
             Swal.fire({
                 title: 'Scan Successful', 
                 text: response.data.message, 
@@ -283,7 +284,7 @@ const Scan = (props) => {
         return console.log(message_description);
       }
 
-    async function addBottleToBlockchain(){
+    async function addBottleToBlockchain(bottleDetails){
 
         //bottle form data (non REACT)
         //var qrCode_old = $(this).data("qrCode");
@@ -291,15 +292,27 @@ const Scan = (props) => {
         // var bottleSize = $(this).data("bottleSize");
         // var sizeUnit= $(this).data("sizeUnit");
 
+        //The different stuff available to you from the database
+                      // bottleQr,
+                      // bottleTitle,
+                      // manufacturer,
+                      // bottleStatus,
+                      // batchQr,
+                      // bottleSize,
+                      // sizeUnit,
+                      // bottleType,
+
         //bottle form data (REACT)
-        var qrCode = data.qrCode;
-        var title =  data.title;
+        var qrCode = bottleDetails.bottleQr;
+        var title =  bottleDetails.bottleTitle;
+        var status =  bottleDetails.bottleStatus;
         var bottleSize = data.bottleSize;
         var sizeUnit= data.sizeUnit;
     
         //console.log("QrCode to add to blockchain - " + qrCode_old);       
         console.log("data.QrCode to add to blockchain - " + qrCode);
         console.log("bottleTitle to add to blockchain - " + title);
+        console.log("bottleStatus to add to blockchain - " + status);
         console.log("bottleSize to add to blockchain - " + bottleSize);
         console.log("sizeUnit to add to blockchain - " + sizeUnit);
 
