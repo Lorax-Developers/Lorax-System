@@ -105,6 +105,7 @@ router.post(
                   res.status(200).json({
                     message: `Successfully added a new bottle with QR Code '${bottleQr}'`,
                     status: 200,
+                    //return info
                     bottleDetails: {
                       bottleQr,
                       bottleTitle: title,

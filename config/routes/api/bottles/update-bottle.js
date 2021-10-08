@@ -293,7 +293,7 @@ router.post(
                   res.status(200).json({
                     message: `Successfully updated single bottle status for bottle with QR Code '${bottleQr}' to '${bottleStatus}'. Was previously at '${checkExist.bottleStatus}'`,
                     status: 200,
-                    //returned info
+                    //return info
                       bottleDetails: {
                       bottleQr: checkExist.bottleQr,
                       bottleTitle: checkExist.bottleTitle,
