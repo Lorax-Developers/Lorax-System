@@ -6,6 +6,7 @@ contract Plasticbottle{
     struct Bottle {
         string qrCode;
         string title;
+        string status;
         uint bottleSize;
         string sizeUnit;
         address user;
@@ -20,9 +21,9 @@ contract Plasticbottle{
     Bottle[] public BottleArray;
 
     //Registering a bottle instance
-    function registerBottle(string calldata _qrCode, string calldata _title,  uint _bottleSize, string calldata _sizeUnit)
+    function registerBottle(string calldata _qrCode, string calldata _title, string calldata _status,  uint _bottleSize, string calldata _sizeUnit)
     external returns(uint){
-        uint index = BottleArray.push(Bottle(_qrCode, _title,_bottleSize, _sizeUnit, msg.sender))-1;
+        uint index = BottleArray.push(Bottle(_qrCode, _title, _status, _bottleSize, _sizeUnit, msg.sender))-1;
 
         
         // trigger registeredBottle event

@@ -149,7 +149,7 @@ const Scan = (props) => {
         }
        }
 
-      let PlasticbottleContractAddress = "0xe82Ec504f9FdA9ca1D08628B072Fb820D0Ea6788";
+      let PlasticbottleContractAddress = "0xbf9F9245c72B66209d490888EF7D13b5C161627C";
       let PlasticbottleContractABI= 
       [
         {
@@ -187,6 +187,11 @@ const Scan = (props) => {
               "type": "string"
             },
             {
+              "internalType": "string",
+              "name": "status",
+              "type": "string"
+            },
+            {
               "internalType": "uint256",
               "name": "bottleSize",
               "type": "uint256"
@@ -217,6 +222,11 @@ const Scan = (props) => {
             {
               "internalType": "string",
               "name": "_title",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "_status",
               "type": "string"
             },
             {
@@ -286,12 +296,6 @@ const Scan = (props) => {
 
     async function addBottleToBlockchain(bottleDetails){
 
-        //bottle form data (non REACT)
-        //var qrCode_old = $(this).data("qrCode");
-        // var title = $(this).data("title");
-        // var bottleSize = $(this).data("bottleSize");
-        // var sizeUnit= $(this).data("sizeUnit");
-
         //The different stuff available to you from the database
                       // bottleQr,
                       // bottleTitle,
@@ -306,8 +310,8 @@ const Scan = (props) => {
         var qrCode = bottleDetails.bottleQr;
         var title =  bottleDetails.bottleTitle;
         var status =  bottleDetails.bottleStatus;
-        var bottleSize = data.bottleSize;
-        var sizeUnit= data.sizeUnit;
+        var bottleSize = bottleDetails.bottleSize;
+        var sizeUnit= bottleDetails.sizeUnit;
     
         //console.log("QrCode to add to blockchain - " + qrCode_old);       
         console.log("data.QrCode to add to blockchain - " + qrCode);
@@ -330,7 +334,7 @@ const Scan = (props) => {
 
         try {
           //const index = await PlasticbottleContract.registerBottle(qrCode, title, parseInt(bottleSize), sizeUnit,{from: contractUser, value:5000});
-          const index = await PlasticbottleContract.registerBottle(qrCode, title, parseInt(bottleSize), sizeUnit);
+          const index = await PlasticbottleContract.registerBottle(qrCode, title, status, parseInt(bottleSize), sizeUnit);
 
           const data = await index.wait();
           console.log("data: ", data);
