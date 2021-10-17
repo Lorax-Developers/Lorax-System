@@ -32,8 +32,8 @@ const DataListView = ({ product, isSelect, settoggleModal }) => {
               {product.bottleSize}
               {product.sizeUnit}
               </p>
-              <p className="mb-1 text-muted text-small w-15 w-sm-100">
-                {product.dateAdded}
+              <p className="mb-1 text-muted text-small w-30 w-sm-100">
+                {new Date(product.dateAdded).toUTCString()}
               </p>
               <div className="w-15 w-sm-100">
                 <Badge color={product.bottleStatus} pill>

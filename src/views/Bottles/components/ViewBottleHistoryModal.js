@@ -68,7 +68,7 @@ const ViewBottleHistoryModal = ({ modalOpen, product, toggleModal }) => {
                       <tr>
                         <th scope="row">{i + 1}</th>
                         <td><span class></span>{history.status}</td>
-                        <td>{history.updated}</td>
+                        <td>{new Date(history.updated).toUTCString()}</td>
                         {/* <td>{history.userId}</td> */}
                       </tr>
                       )
