@@ -149,7 +149,7 @@ const Scan = (props) => {
         }
        }
 
-      let PlasticbottleContractAddress = "0xbf9F9245c72B66209d490888EF7D13b5C161627C";
+      let PlasticbottleContractAddress = "0xcCd9716739B8430AEA337714056FBcd220e582F0";
       let PlasticbottleContractABI= 
       [
         {
