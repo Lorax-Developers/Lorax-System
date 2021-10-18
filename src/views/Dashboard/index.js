@@ -57,62 +57,33 @@ const Dashboard = () => {
         });
     };
 
-    var config = {
-      method: "get",
-      url: `${server}/api/totalbottles?manufacturerId=${manufacturer}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    axios(config)
-      //Successful?
-      .then(function (response) {
-        setDataNumbers(response.data);
-        getFurtherData();
-      })
-      //Unsuccessful?
-      .catch(function (error) {
-        console.log(error);
-        setIsLoading(false);
-      });
-  }, []);
+    //Get further data for the supply chain cards 
+    const getCardData = () => {
+      var config = {
+        method: "get",
+        url: `${server}/api/totalbottles?manufacturerId=${manufacturer}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      axios(config)
+        //Successful?
+        .then(function (response) {
+          setDataNumbers(response.data);
+          setIsLoading(false);
 
-  //   return (
-  //     <AppLayout>
-  //       <Row>
-  //         <Colxx xxs="12">
-  //           <h1>LORAX Dashboard</h1>
-  //           <Separator className="mb-5" />
-  //         </Colxx>
-  //       </Row>
-  //       {isLoading ? (
-  //         "Please wait..."
-  //       ) : (
-  //         <>
-  //           <TotalManufacturedCard
-  //             dataNumbers={dataNumbers}
-  //           ></TotalManufacturedCard>
-  //           <SortableStaticticsRow dataNumbers={dataNumbers} />
-  //           <Row>
-  //             <Colxx sm="12" md="6" className="mb-4">
-  //               {/*Bar Chart*/}
-  //               <DashboardBarChart dataNumbersBarChart={dataNumbersBarChart} />
-  //             </Colxx>
-  //             <Colxx sm="12" md="6" className="mb-4">
-  //               {/*Polar Chart*/}
-  //               <SmartbinPieChart
-  //                 dataNumbers={dataNumbers}
-  //                 chartClass="dashboard-donut-chart"
-  //               />
-  //             </Colxx>
-  //           </Row>
-  //         </>
-  //       )}
-  //       <br />
-  //       <br />
-  //     </AppLayout>
-  //   );
-  // };
+        })
+        //Unsuccessful?
+        .catch(function (error) {
+          console.log(error);
+          setIsLoading(false);
+        });
+    }
+
+    getFurtherData();
+    getCardData();
+
+  }, [manufacturer]);
 
   return (
     <AppLayout>

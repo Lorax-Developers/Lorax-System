@@ -1,6 +1,5 @@
 import React from "react";
-import { Colxx } from "../../../components/common/CustomBootstrap";
-import IconCard from "../../../components/cards/IconCard";
+import IconCard from "../../../../src/components/cards/IconCard";
 
 const TotalManufacturedCard = (props) => {
     const dataNumbers = props.dataNumbers;

@@ -27,8 +27,57 @@ router.get("/", [
             errors: expressNotedErrors.array()
         })
     }
-    else {
+    if (manufacturerId === "1234") {
 
+        //Count for the first status
+        const countArray1 = [];
+        for (let i = startMonth; i <= parseInt(startMonth) + 5; i++) {
+            let count1 = await BottleModel.find({
+                dateAdded: {
+                    $gte: new Date(2021, i - 1),
+                    $lt: new Date(2021, i)
+                }
+            }).countDocuments()
+            countArray1.push(count1);
+        }
+
+        //Count for the second status
+        const countArray2 = [];
+        for (let i = startMonth; i <= parseInt(startMonth) + 5; i++) {
+            let count2 = await BottleModel.find({
+                bottleStatus: statusTwo,
+                dateUpdated: {
+                    $gte: new Date(2021, i - 1),
+                    $lt: new Date(2021, i)
+                }
+            }).countDocuments()
+            countArray2.push(count2);
+        }
+
+        res.status(200).json({
+            status: 200,
+            data: {
+                labels: getMonthsList(startMonth),
+                datasets: [
+                    {
+                        label: "Manufactured",
+                        borderColor: "#51c878",
+                        backgroundColor: "#eef9f1",
+                        data: countArray1,
+                        borderWidth: 2
+                    },
+                    {
+                        label: statusTwo,
+                        borderColor: "#6fb427",
+                        backgroundColor: "#f1f7eb",
+                        data: countArray2,
+                        borderWidth: 2
+                    }
+                ]
+            }
+        })
+    }
+    else {
 
         //Count for the first status
         const countArray1 = [];
