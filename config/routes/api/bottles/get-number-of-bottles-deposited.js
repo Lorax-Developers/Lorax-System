@@ -3,7 +3,6 @@ const TransactionsDepositedModel = require("../../models/bottles/TransactionsDep
 
 const returnCount = async (wastepickerId) => {
     let count;
-    console.log(wastepickerId);
     count = await TransactionsDepositedModel.countDocuments({ "userId": wastepickerId });
     return count;
 }

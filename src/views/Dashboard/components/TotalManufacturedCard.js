@@ -1,5 +1,4 @@
 import React from "react";
-import { Colxx } from "../../../components/common/CustomBootstrap";
 import IconCard from "../../../components/cards/IconCard";
 
 const TotalManufacturedCard = (props) => {

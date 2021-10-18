@@ -7,7 +7,7 @@ const LoraxTokensCard = (props) => {
     <IconCard
       icon={"iconsminds-money-bag"}
       title={'Lorax Tokens Balance'}
-      value={dataNumbers.TotalNumberAtDeposited * 10}
+      value={dataNumbers * 10}
     />
 
   );
