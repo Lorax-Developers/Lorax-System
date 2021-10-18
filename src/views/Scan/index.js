@@ -13,7 +13,6 @@ const Scan = (props) => {
     const [activeScan, setActiveScan2] = useState("single");
 
     let retrievedUserDetails = useSelector(state => state.auth.user);
-
     const [currentUser] = useState(retrievedUserDetails);
     const [isLoading, setIsLoading] = useState(false);
     
@@ -22,7 +21,7 @@ const Scan = (props) => {
             id: retrievedUserDetails._id,
             name: retrievedUserDetails.name
         },
-    
+        "userRole": retrievedUserDetails.role,
         "sizeUnit":"ml",
         "qrCode":"",
         "bottleType": "PET",

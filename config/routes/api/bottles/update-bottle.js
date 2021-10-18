@@ -12,6 +12,12 @@ const TransactionsDeliveredModel = require("../../models/bottles/TransactionsDel
 const TransactionsDepositedModel = require("../../models/bottles/TransactionsDepositedModel");
 const TransactionsRecycledModel = require("../../models/bottles/TransactionsRecycledModel");
 
+//Define roles and statuses they can access
+let ManufacturerArray = ["Manufactured", "Outgoing"];
+let RetailerArray = ["Purchased", "Delivered"];
+let WastePickerArray = ["Deposited"];
+let RecyclerArray = ["Recycled"];
+
 const deleteFromOldTransactionsDb = async (currentDb, bottleQr) => {
   let deleteFromOldTransactionDb;
 
@@ -191,11 +197,12 @@ router.post(
   "/",
   [
     check("userId", "Please provide scanner user ID").exists(),
+    check("userRole", "Please provide scanner role").exists(),
     check("qrCode", "Please provide the qrCode").exists(),
   ],
   async (req, res) => {
     //Define user request variables
-    const { qrCode, userId } = req.body;
+    const { qrCode, userId, userRole } = req.body;
 
     //Assign the bottle qr variable and batch qr variable to the qr code parameter
     const bottleQr = qrCode;
@@ -256,59 +263,101 @@ router.post(
               bottleStatus = "Recycled";
             }
 
-            var myquery = { bottleQr };
-            let date = Date.now();
-            var newvalues = { $set: { bottleStatus, dateUpdated: date } };
-            try {
-              await BottleModel.updateOne(myquery, newvalues);
+            //Make sure the user has access to update a bottle to the next step
+            if (
+              userRole == "Manufacturer" &&
+              !ManufacturerArray.includes(bottleStatus)
+            ) {
+              res.status(400).json({
+                status: 400,
+                errors: [
+                  `You are a ${userRole.toLowerCase()} and can't update a bottle to ${bottleStatus.toLowerCase()}`,
+                ],
+              });
+            } else if (
+              userRole == "Retailer" &&
+              !RetailerArray.includes(bottleStatus)
+            ) {
+              res.status(400).json({
+                status: 400,
+                errors: [
+                  `You are a ${userRole.toLowerCase()} and can't update a bottle to ${bottleStatus.toLowerCase()}`,
+                ],
+              });
+            } else if (
+              userRole == "Waste Picker" &&
+              !WastePickerArray.includes(bottleStatus)
+            ) {
+              res.status(400).json({
+                status: 400,
+                errors: [
+                  `You are a ${userRole.toLowerCase()} and can't update a bottle to ${bottleStatus.toLowerCase()}`,
+                ],
+              });
+            } else if (
+              userRole == "Recycling Depot" &&
+              !RecyclerArray.includes(bottleStatus)
+            ) {
+              res.status(400).json({
+                status: 400,
+                errors: [
+                  `You are a ${userRole.toLowerCase()} and can't update a bottle to ${bottleStatus.toLowerCase()}`,
+                ],
+              });
+            } else {
+              var myquery = { bottleQr };
+              let date = Date.now();
+              var newvalues = { $set: { bottleStatus, dateUpdated: date } };
+              try {
+                await BottleModel.updateOne(myquery, newvalues);
 
-              //Get the current transaction status collection holding this bottle
-              let currentDb =
-                "transactions-" + checkExist.bottleStatus.toLowerCase();
+                //Get the current transaction status collection holding this bottle
+                let currentDb =
+                  "transactions-" + checkExist.bottleStatus.toLowerCase();
 
-              //Set the next transaction status collection db based on the next status
-              let nextDb = "transactions-" + bottleStatus.toLowerCase();
+                //Set the next transaction status collection db based on the next status
+                let nextDb = "transactions-" + bottleStatus.toLowerCase();
 
-              //Find and Delete from the appropriate intial transaction status collection
-              deleteFromOldTransactionsDb(currentDb, bottleQr).then(() =>
-                //Find and Insert into the appropriate next transaction status collection
-                addToNewTransactionsDb(
-                  nextDb,
-                  bottleQr,
-                  checkExist,
-                  bottleStatus,
-                  userId
-                ).then(async () => {
-                  //Add new status to the history
-                  let newHistoryValue = {
-                    status: bottleStatus,
-                    updated: new Date(),
-                    userId,
-                  };
+                //Find and Delete from the appropriate intial transaction status collection
+                deleteFromOldTransactionsDb(currentDb, bottleQr).then(() =>
+                  //Find and Insert into the appropriate next transaction status collection
+                  addToNewTransactionsDb(
+                    nextDb,
+                    bottleQr,
+                    checkExist,
+                    bottleStatus,
+                    userId
+                  ).then(async () => {
+                    //Add new status to the history
+                    let newHistoryValue = {
+                      status: bottleStatus,
+                      updated: new Date(),
+                      userId,
+                    };
 
-                  var newvalues2 = { $push: { history: newHistoryValue } };
+                    var newvalues2 = { $push: { history: newHistoryValue } };
 
-                  await BottleHistoryModel.updateOne(myquery, newvalues2);
+                    await BottleHistoryModel.updateOne(myquery, newvalues2);
 
-                  res.status(200).json({
-                    message: `Successfully updated single bottle status for bottle with QR Code '${bottleQr}' to '${bottleStatus}'. Was previously at '${checkExist.bottleStatus}'`,
-                    status: 200,
-                    //return info
+                    res.status(200).json({
+                      message: `Successfully updated single bottle status for bottle with QR Code '${bottleQr}' to '${bottleStatus}'. Was previously at '${checkExist.bottleStatus}'`,
+                      status: 200,
                       bottleDetails: {
-                      bottleQr: checkExist.bottleQr,
-                      bottleTitle: checkExist.bottleTitle,
-                      manufacturer: checkExist.manufacturer,
-                      bottleStatus,
-                      batchQr: checkExist.batchQr,
-                      bottleSize: checkExist.bottleSize,
-                      sizeUnit: checkExist.sizeUnit,
-                      bottleType: checkExist.bottleType,
-                    },
-                  });
-                })
-              );
-            } catch (err) {
-              console.log(err);
+                        bottleQr: checkExist.bottleQr,
+                        bottleTitle: checkExist.bottleTitle,
+                        manufacturer: checkExist.manufacturer,
+                        bottleStatus,
+                        batchQr: checkExist.batchQr,
+                        bottleSize: checkExist.bottleSize,
+                        sizeUnit: checkExist.sizeUnit,
+                        bottleType: checkExist.bottleType,
+                      },
+                    });
+                  })
+                );
+              } catch (err) {
+                console.log(err);
+              }
             }
           }
         }
@@ -352,60 +401,103 @@ router.post(
               bottleStatus = "Recycled";
             }
 
-            //If it exists, update all the bottles tied to this batch code
-            var myquery = { batchQr };
-            let date = Date.now();
+            //Make sure the user has access to update a batch to the next step
+            if (
+              userRole == "Manufacturer" &&
+              !ManufacturerArray.includes(bottleStatus)
+            ) {
+              res.status(400).json({
+                status: 400,
+                errors: [
+                  `You are a ${userRole.toLowerCase()} and can't update a batch to ${bottleStatus.toLowerCase()}`,
+                ],
+              });
+            } else if (
+              userRole == "Retailer" &&
+              !RetailerArray.includes(bottleStatus)
+            ) {
+              res.status(400).json({
+                status: 400,
+                errors: [
+                  `You are a ${userRole.toLowerCase()} and can't update a batch to ${bottleStatus.toLowerCase()}`,
+                ],
+              });
+            } else if (
+              userRole == "Waste Picker" &&
+              !WastePickerArray.includes(bottleStatus)
+            ) {
+              res.status(400).json({
+                status: 400,
+                errors: [
+                  `You are a ${userRole.toLowerCase()} and can't update a batch to ${bottleStatus.toLowerCase()}`,
+                ],
+              });
+            } else if (
+              userRole == "Recycler" &&
+              !RecyclerArray.includes(bottleStatus)
+            ) {
+              res.status(400).json({
+                status: 400,
+                errors: [
+                  `You are a ${userRole.toLowerCase()} and can't update a batch to ${bottleStatus.toLowerCase()}`,
+                ],
+              });
+            } else {
+              //If it exists, update all the bottles tied to this batch code
+              var myquery = { batchQr };
+              let date = Date.now();
 
-            var newvalues = { $set: { bottleStatus, dateUpdated: date } };
+              var newvalues = { $set: { bottleStatus, dateUpdated: date } };
 
-            console.log("from " + currentStatus + " to " + bottleStatus);
-            try {
-              await BottleModel.updateMany(myquery, newvalues);
+              console.log("from " + currentStatus + " to " + bottleStatus);
+              try {
+                await BottleModel.updateMany(myquery, newvalues);
 
-              //Add new status to the history
-              let newHistoryValue = {
-                status: bottleStatus,
-                updated: new Date(),
-                userId,
-              };
+                //Add new status to the history
+                let newHistoryValue = {
+                  status: bottleStatus,
+                  updated: new Date(),
+                  userId,
+                };
 
-              var newvalues2 = { $push: { history: newHistoryValue } };
-              await BottleHistoryModel.updateMany(myquery, newvalues2);
+                var newvalues2 = { $push: { history: newHistoryValue } };
+                await BottleHistoryModel.updateMany(myquery, newvalues2);
 
-              //Get all the bottles in the batch
-              const batch2 = batchBottles.filter(
-                (item) => item.batchQr === batchQr
-              );
+                //Get all the bottles in the batch
+                const batch2 = batchBottles.filter(
+                  (item) => item.batchQr === batchQr
+                );
 
-              console.log(batch2[0].bottles.length);
-              //Get the current transaction status collection holding this batch
-              let currentDb =
-                "transactions-" + checkExist.bottleStatus.toLowerCase();
+                console.log(batch2[0].bottles.length);
+                //Get the current transaction status collection holding this batch
+                let currentDb =
+                  "transactions-" + checkExist.bottleStatus.toLowerCase();
 
-              //Set the next transaction status collection db based on the status provided by user
-              let nextDb = "transactions-" + bottleStatus.toLowerCase();
+                //Set the next transaction status collection db based on the status provided by user
+                let nextDb = "transactions-" + bottleStatus.toLowerCase();
 
-              //Find and Delete from the appropriate intial transaction status collection
-              deleteFromOldTransactionsDbBatch(currentDb, batchQr).then(
-                () =>
-                  //Loop through the bottles in the batch and insert into the appropriate transaction status collection
-                  batch2[0].bottles.map((item) => {
-                    addToNewTransactionsDbBatch(
-                      nextDb,
-                      item.bottleQr,
-                      checkExist,
-                      bottleStatus,
-                      userId
-                    );
-                  }),
-                //Success
-                res.status(200).json({
-                  message: `Successfully updated status of all bottles in batch with QR Code '${batchQr}' to '${bottleStatus}'. All bottles were previously at '${currentStatus}'`,
-                  status: 200,
-                })
-              );
-            } catch (err) {
-              console.log(err);
+                //Find and Delete from the appropriate intial transaction status collection
+                deleteFromOldTransactionsDbBatch(currentDb, batchQr).then(
+                  () =>
+                    //Lopp through the bottles in the batch and insert into the appropriate transaction status collection
+                    batch2[0].bottles.map((item) => {
+                      addToNewTransactionsDbBatch(
+                        nextDb,
+                        item.bottleQr,
+                        checkExist,
+                        bottleStatus,
+                        userId
+                      );
+                    }),
+                  //Success
+                  res.status(200).json({
+                    message: `Successfully updated status of all bottles in batch with QR Code '${batchQr}' to '${bottleStatus}'. All bottles were previously at '${currentStatus}'`,
+                    status: 200,
+                  })
+                );
+              } catch (err) {
+                console.log(err);
+              }
             }
           }
         }
