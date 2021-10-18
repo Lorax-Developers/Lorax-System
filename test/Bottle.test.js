@@ -30,6 +30,7 @@ contract("Plasticbottle", (accounts) => {
   let bottleInstance;
   const qrcode = "1234567890";
   const title = "Fanta";
+  const status = "manufactured";
   const bottleSize = 500;
   const sizeUnit = "ml";
 
@@ -58,7 +59,7 @@ contract("Plasticbottle", (accounts) => {
 
     it("should add a bottle to the registry", async function () {
       // register a user from account 0
-      await bottleInstance.registerBottle(qrcode, title, bottleSize, sizeUnit, {
+      await bottleInstance.registerBottle(qrcode, title, status, bottleSize, sizeUnit, {
         from: accounts[0],
       });
       // get the number of bottles
@@ -78,6 +79,7 @@ contract("Plasticbottle", (accounts) => {
       );
       assert.equal(bottle["qrcode"], qrcode, "bottleQR does not match");
       assert.equal(bottle["title"], title, "bottleTitle does not match");
+      assert.equal(bottle["status"], title, "bottleStatus does not match");
       assert.equal(bottle["bottleSize"], bottleSize, "bottleTitle does not match");
       assert.equal(bottle["sizeUnit"], sizeUnit, "size does not match");
      
