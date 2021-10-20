@@ -35,7 +35,9 @@ const ViewBottleHistoryModal = ({ modalOpen, product, toggleModal }) => {
         setIsLoading(false)
       });
   }, [])
+ 
   return (
+    
     <Modal
       isOpen={modalOpen}
       toggle={() => toggleModal(false)}
