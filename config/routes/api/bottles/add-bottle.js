@@ -48,20 +48,22 @@ router.post(
         errors: expressNotedErrors.array(),
       });
     } else {
-      //Check if the request is a batch or single request by checking the batch repository
-      const batch = batchBottles.filter((item) => item.batchQr === batchQr);
+      //Check if the request is a batch or single request by checking the QR CODE LENGTH
+      if (qrCode.length > 16) {
+        //The length is more than 16 meaning it's not a batch
 
-      if (batch.length < 1) {
-        //The search returned empty array meaning the batch qr was not found.
-
-        //This is not a batch request, make sure the qr code is more than 10 digits
-        if (qrCode.length < 10) {
+        //This is not a batch request, make sure the qr code is 19 characters
+        if (qrCode.length != 19) {
           res.status(400).json({
             status: 400,
-            errors: ["Please ensure the QR code is above 10 digits"],
+            errors: [
+              "Please ensure the bottle QR code is exactly 19 characters, what you have scanned is " +
+                qrCode.length +
+                " characters. Did you mean to scan a batch?",
+            ],
           });
         } else {
-          //If it was supplied, carry on
+          //If it was 19 carry on
 
           //check if the bottle QR has been scanned before and return error if so
           let checkExist = await BottleModel.findOne({ bottleQr });
@@ -105,7 +107,6 @@ router.post(
                   res.status(200).json({
                     message: `Successfully added a new bottle with QR Code '${bottleQr}'`,
                     status: 200,
-                    //return info
                     bottleDetails: {
                       bottleQr,
                       bottleTitle: title,
@@ -122,7 +123,9 @@ router.post(
             });
           }
         }
-      } else {
+      }
+      //If the qrcode is 16 characters, it's a batch
+      else if (qrCode.length == 16) {
         //check if the batch QR has been scanned before and return error if so
         let checkExist = await BottleModel.findOne({ batchQr });
         if (checkExist) {
@@ -130,15 +133,16 @@ router.post(
             status: 400,
             errors: [`Batch with QR code ${batchQr} scanned already`],
           });
-        } 
-        else {
-          //Get the batch from the batch repository to view bottles in it
-          const batch = batchBottles.filter((item) => item.batchQr === batchQr);
+        } else {
+          //Get total number of bottles in batch included in the QR (second two characters after the 'B')
+          const batchTotal = parseInt(batchQr.slice(1, -13));
 
-          //Can be verified? insert each bottle in the batch into the collection
-          batch[0].bottles.map((item) => {
+          //Loop through the batch and insert bottles based on the total number of items in the batch
+          for (x = 1; x <= batchTotal; x++) {
+            //Ternary to generate a bottle
+            let bottleQR = `${qrCode}-${x < 10 ? "0" + x : x}`;
             BottleModel.create({
-              bottleQr: item.bottleQr,
+              bottleQr: bottleQR,
               bottleTitle: title,
               manufacturer,
               bottleStatus,
@@ -146,16 +150,14 @@ router.post(
               sizeUnit,
               batchQr,
               bottleType,
-              //dateAdded:new Date("2021-06-13"),
             }).then(async () => {
-              //Use this id to insert into the relevant status tracking db (in this Transactions-Manufactured)
+              //Use this id to insert into the relevant status tracking db (in this case Transactions-Manufactured)
               TransactionsManufacturedModel.create({
-                bottleQr: item.bottleQr,
+                bottleQr: bottleQR,
                 userId,
                 batchQr,
                 bottleStatus,
               });
-
               let array = [];
               array.push({
                 status: "Manufactured",
@@ -165,17 +167,37 @@ router.post(
 
               //Insert into history db
               BottleHistoryModel.create({
-                bottleQr: item.bottleQr,
+                bottleQr: bottleQR,
                 batchQr,
                 history: array,
               });
             });
-          });
+          }
           //Send a success message
           res.status(200).json({
-            message: `Successfully scanned a batch containing ${batch[0].bottles.length} bottles with QR Code '${batchQr}`,
+            message: `Successfully scanned a batch containing ${batchTotal} bottles with Batch QR Code '${batchQr}`,
+            bottleDetails: {
+              bottleQr:batchQr,
+              bottleTitle:title,
+              manufacturer,
+              bottleStatus,
+              batchQr,
+              bottleSize,
+              sizeUnit,
+              bottleType,
+            },
           });
         }
+      } else {
+        //If the QR code is less than 16 characters, throw an error
+        res.status(400).json({
+          status: 400,
+          errors: [
+            "Please ensure the QR code is either 16 characters for a batch or 19 characters for a bottle. Your QR code is " +
+              qrCode.length +
+              " characters.",
+          ],
+        });
       }
     }
   }
