@@ -218,20 +218,20 @@ router.post(
         errors: expressNotedErrors.array(),
       });
     } else {
-      //Check if the request is a batch or single request by checking the batch repository
-      const batch = batchBottles.filter((item) => item.batchQr === batchQr);
-
-      if (batch.length < 1) {
-        //The search returned empty array meaning the batch qr was not found.
-
-        //This is not a batch request, make sure the qr code is more than 10 digits
-        if (qrCode.length < 10) {
+      //Check if the request is a batch or single request by checking the QR CODE LENGTH
+      if (qrCode.length > 16) {
+        //This is not a batch request, make sure the qr code is 19 characters
+        if (qrCode.length != 19) {
           res.status(400).json({
             status: 400,
-            errors: ["Please ensure the QR code is above 10 digits"],
+            errors: [
+              "Please ensure the bottle QR code is exactly 19 characters, what you have scanned is " +
+                qrCode.length +
+                " characters. Did you mean to scan a batch",
+            ],
           });
         } else {
-          //If it was more than 10 carry on
+          //If it was 19 carry on
 
           //Check if this bottle has been scanned before
           let checkExist = await BottleModel.findOne({ bottleQr });
@@ -295,7 +295,7 @@ router.post(
                 ],
               });
             } else if (
-              userRole == "Recycling Depot" &&
+              userRole == "Recycler" &&
               !RecyclerArray.includes(bottleStatus)
             ) {
               res.status(400).json({
@@ -362,12 +362,13 @@ router.post(
           }
         }
       } else {
-        //it's a batch, and the batch qr was found
+        //it's a batch
 
         let checkExist = await BottleModel.findOne({ batchQr });
 
+        //Check if the batch has been scanned before
         if (!checkExist) {
-          //If btach hasn't been scanned by manufacturer, return an error
+          //If batch hasn't been scanned by manufacturer, return an error
           res.status(400).json({
             status: 400,
             errors: [
@@ -410,6 +411,7 @@ router.post(
                 status: 400,
                 errors: [
                   `You are a ${userRole.toLowerCase()} and can't update a batch to ${bottleStatus.toLowerCase()}`,
+                  `Your batch scan failed because of user role restrictions. It's also possible that a bottle in this batch has been scanned independently to a status you do not control.`,
                 ],
               });
             } else if (
@@ -420,6 +422,7 @@ router.post(
                 status: 400,
                 errors: [
                   `You are a ${userRole.toLowerCase()} and can't update a batch to ${bottleStatus.toLowerCase()}`,
+                  `Your batch scan failed because of user role restrictions. It's also possible that a bottle in this batch has been scanned independently to a status you do not control.`,
                 ],
               });
             } else if (
@@ -430,6 +433,7 @@ router.post(
                 status: 400,
                 errors: [
                   `You are a ${userRole.toLowerCase()} and can't update a batch to ${bottleStatus.toLowerCase()}`,
+                  `Your batch scan failed because of user role restrictions. It's also possible that a bottle in this batch has been scanned independently to a status you do not control.`,
                 ],
               });
             } else if (
@@ -440,63 +444,93 @@ router.post(
                 status: 400,
                 errors: [
                   `You are a ${userRole.toLowerCase()} and can't update a batch to ${bottleStatus.toLowerCase()}`,
+                  `Your batch scan failed because of user role restrictions. It's also possible that a bottle in this batch has been scanned independently to a status you do not control.`,
                 ],
               });
             } else {
-              //If it exists, update all the bottles tied to this batch code
-              var myquery = { batchQr };
-              let date = Date.now();
+              //Check if this batch has been broken up
 
-              var newvalues = { $set: { bottleStatus, dateUpdated: date } };
+              //Get the number of bottles in the batch
+              const batchTotal = parseInt(batchQr.slice(1, -13));
 
-              console.log("from " + currentStatus + " to " + bottleStatus);
-              try {
-                await BottleModel.updateMany(myquery, newvalues);
+              //Count the number of bottles in the database belonging to this batch that have a uniform status
+              const checkBottlesWithMatchingStatus = await BottleModel.find({
+                batchQr,
+                bottleStatus: currentStatus,
+              });
 
-                //Add new status to the history
-                let newHistoryValue = {
-                  status: bottleStatus,
-                  updated: new Date(),
-                  userId,
-                };
+              //If the count doesn't match the total number of bottles in the batch, it has been broken up
+              if (checkBottlesWithMatchingStatus.length != batchTotal) {
+                res.status(400).json({
+                  status: 400,
+                  errors: [
+                    "This batch has been broken up and can not be scanned as a batch anymore.",
+                  ],
+                });
+              } else {
+                var myquery = { batchQr };
+                let date = Date.now();
 
-                var newvalues2 = { $push: { history: newHistoryValue } };
-                await BottleHistoryModel.updateMany(myquery, newvalues2);
+                var newvalues = { $set: { bottleStatus, dateUpdated: date } };
 
-                //Get all the bottles in the batch
-                const batch2 = batchBottles.filter(
-                  (item) => item.batchQr === batchQr
-                );
+                console.log("from " + currentStatus + " to " + bottleStatus);
+                try {
+                  await BottleModel.updateMany(myquery, newvalues);
 
-                console.log(batch2[0].bottles.length);
-                //Get the current transaction status collection holding this batch
-                let currentDb =
-                  "transactions-" + checkExist.bottleStatus.toLowerCase();
+                  //Add new status to the history
+                  let newHistoryValue = {
+                    status: bottleStatus,
+                    updated: new Date(),
+                    userId,
+                  };
 
-                //Set the next transaction status collection db based on the status provided by user
-                let nextDb = "transactions-" + bottleStatus.toLowerCase();
+                  var newvalues2 = { $push: { history: newHistoryValue } };
+                  await BottleHistoryModel.updateMany(myquery, newvalues2);
 
-                //Find and Delete from the appropriate intial transaction status collection
-                deleteFromOldTransactionsDbBatch(currentDb, batchQr).then(
-                  () =>
-                    //Lopp through the bottles in the batch and insert into the appropriate transaction status collection
-                    batch2[0].bottles.map((item) => {
-                      addToNewTransactionsDbBatch(
-                        nextDb,
-                        item.bottleQr,
-                        checkExist,
-                        bottleStatus,
-                        userId
-                      );
-                    }),
+                  console.log(batchTotal);
+                  //Get the current transaction status collection holding this batch
+                  let currentDb =
+                    "transactions-" + checkExist.bottleStatus.toLowerCase();
+
+                  //Set the next transaction status collection db based on the status provided by user
+                  let nextDb = "transactions-" + bottleStatus.toLowerCase();
+
+                  //Find and Delete from the appropriate intial transaction status collection
+                  deleteFromOldTransactionsDbBatch(currentDb, batchQr);
+
+                  //Loop through the bottles in the batch and insert into the appropriate transaction status collection
+
+                  for (x = 1; x <= batchTotal; x++) {
+                    //Generate a bottle
+                    let bottleQR = `${qrCode}-${x < 10 ? "0" + x : x}`;
+                    console.log(bottleQR);
+                    addToNewTransactionsDbBatch(
+                      nextDb,
+                      bottleQR,
+                      checkExist,
+                      bottleStatus,
+                      userId
+                    );
+                  }
+
                   //Success
                   res.status(200).json({
-                    message: `Successfully updated status of all bottles in batch with QR Code '${batchQr}' to '${bottleStatus}'. All bottles were previously at '${currentStatus}'`,
+                    message: `Successfully updated status of all ${batchTotal} bottles in batch with QR Code '${batchQr}' to '${bottleStatus}'. All bottles were previously at '${currentStatus}'`,
                     status: 200,
-                  })
-                );
-              } catch (err) {
-                console.log(err);
+                    bottleDetails: {
+                      bottleQr: batchQr,
+                      bottleTitle: checkExist.bottleTitle,
+                      manufacturer: checkExist.manufacturer,
+                      bottleStatus,
+                      batchQr: batchQr,
+                      bottleSize: checkExist.bottleSize,
+                      sizeUnit: checkExist.sizeUnit,
+                      bottleType: checkExist.bottleType,
+                    },
+                  });
+                } catch (err) {
+                  console.log(err);
+                }
               }
             }
           }

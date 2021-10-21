@@ -23,6 +23,7 @@ const Scan = (props) => {
         },
         "userRole": retrievedUserDetails.role,
         "sizeUnit":"ml",
+        "bottleSize":"300",
         "qrCode":"",
         "bottleType": "PET",
         "isNewScan":retrievedUserDetails.role === "Manufacturer" ? "true" : "false",
@@ -82,7 +83,7 @@ const Scan = (props) => {
         axios(config)
         //success
         .then(function (response) {
-          addBottleToBlockchain(response.data.bottleDetails);
+          
             Swal.fire({
                 title: 'Scan Successful', 
                 text: response.data.message, 
@@ -91,12 +92,22 @@ const Scan = (props) => {
                 confirmButtonText: 'Alright!'
             })
             setIsLoading(false);
+
+            if(response.data.bottleDetails !== undefined && response.data.bottleDetails !== null){
+              addBottleToBlockchain(response.data.bottleDetails);
+            }
+          
         })
         //error
         .catch(function (error) {
             let errorList = error.response.data.errors;
             for(let i = 0; i < errorList.length; i++){
-                toast.error(errorList[i])
+                if(errorList[i].msg !== undefined && errorList[i].msg !== null){
+                  toast.error(errorList[i].msg)
+                }
+                else{
+                  toast.error(errorList[i])
+                }
             }
             setIsLoading(false);
         });
@@ -366,7 +377,7 @@ const Scan = (props) => {
             }); */
     
       // function to get count of user entries that have been previously added to the blockchain
-      
+      //not being used. Can we remove?
       function numberofBottles() {
         if (typeof web3 === "undefined") {
           return handle_web3_undefined_error();
@@ -529,7 +540,18 @@ const Scan = (props) => {
                                     <div className="form-group row">
                                         <label className="col-sm-2 col-form-label">Bottle Size</label>
                                         <div className="col-sm-10">
-                                            <input type="number" required name="bottleSize" onChange={(e) => setDataValue(e)}  className="form-control" />
+                                            <select required  className="form-control" name="bottleSize" onChange={(e) => setDataValue(e)}>
+                                                <option>300</option>
+                                                <option>330</option>
+                                                <option>440</option>
+                                                <option>500</option>
+                                                <option>750</option>
+                                                <option>1</option>
+                                                <option>1.5</option>
+                                                <option>2</option>
+                                                <option>2.25</option>
+                                                <option>Other</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div className="form-group row">
