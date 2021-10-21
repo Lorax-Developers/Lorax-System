@@ -59,17 +59,6 @@ class ListPageHeading extends Component {
               </Button>
               {"  "}
             </div>
-
-            <div className="text-zero top-right-button-container">
-              <Button href= "https://ropsten.etherscan.io/address/0xccd9716739b8430aea337714056fbcd220e582f0"
-                color="primary"
-                size="lg"
-                className="top-right-button">
-                Explore Blockchain 
-              </Button>
-              {"  "}
-       
-            </div>
           </div>
 
           <div className="mb-2">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, } from "react";
 import AppLayout from '../../layout/AppLayout';
-import { Row } from "reactstrap";
+import { Row, Button, } from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
 import "./dashboard.scss"
 
@@ -167,8 +167,10 @@ function DEFFDashboard(props) {
             <AppLayout>
                 <Row>
                     <Colxx xxs="12">
-                        <h1>DEFF Dashboard</h1>
+                        <h1>DEFF Dashboard</h1>  
+                       
                     </Colxx>
+                    
                     <Colxx>
                         <Separator className="mb-5" />
                         <Select options={dropDownData} placeholder={"Please select an option"} onChange={onChangeInput}>
@@ -213,7 +215,17 @@ function DEFFDashboard(props) {
                 <Row>
                     <Colxx xxs="12">
                         <h1>DEFF Dashboard</h1>
+                        <div className="text-zero top-right-button-container">
+                        <Button target="_blank" href= "https://ropsten.etherscan.io/address/0xccd9716739b8430aea337714056fbcd220e582f0"
+                         color="primary"
+                         size="lg"
+                         className="top-right-button">
+                         Explore Blockchain 
+                         </Button>
+                         {"  "}
+                        </div>
                     </Colxx>
+                   
                     <Colxx>
                         <Separator className="mb-5" />
                         <Select options={dropDownData} placeholder={"Please select an option"} onChange={onChangeInput}>
