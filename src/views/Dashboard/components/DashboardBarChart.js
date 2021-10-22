@@ -8,7 +8,6 @@ import {
 
 
 const DashboardBarChart = (props) => {
-  console.log(props.dataNumbersBarChart)
   return (
     <Card>
       <CardBody>

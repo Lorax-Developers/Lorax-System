@@ -5,12 +5,12 @@ import {
     BarChart,
 } from "../../../components/charts";
 
-const TotalRecycledChart = (props) => {
+const RetailerBarChart = (props) => {
     return (
         <Card>
             <CardBody>
                 <CardTitle>
-                    Number of bottles recycled per month
+                    Number of bottles delivered vs purchased by consumers per month
                 </CardTitle>
                 <div className="chart-container">
                     <BarChart data={props.dataNumbersBarChart} />
@@ -20,4 +20,4 @@ const TotalRecycledChart = (props) => {
     )
 }
 
-export default TotalRecycledChart;
+export default RetailerBarChart;
