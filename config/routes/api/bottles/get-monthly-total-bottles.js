@@ -4,18 +4,17 @@ const BottleModel = require("../../models/bottles/BottleModel");
 
 let getMonthsList = (start) => {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let removeFirst = months.splice(0, start - 1);
-    let newMonth = months.filter(item => !removeFirst.includes(item))
-    newMonth.length = 6;
-    return newMonth;
+    months.length = 12;
+    return months;
 }
 router.get("/", [
     check("startMonth", "Please provide a start month").exists(),
     check("statusTwo", "Please provide the next status").exists(),
     check("manufacturerId", "Please provide the manufacturerId").exists(),
+    check("year", "Please provide the year").exists(),
 ], async (req, res) => {
     //Define user request variables
-    const { startMonth, statusTwo, manufacturerId } = req.query;
+    const { startMonth, statusTwo, manufacturerId, year } = req.query;
 
     //Check if any of the error tests mentioned above were failed
     const expressNotedErrors = validationResult(req);
@@ -31,11 +30,11 @@ router.get("/", [
 
         //Count for the first status
         const countArray1 = [];
-        for (let i = startMonth; i <= parseInt(startMonth) + 5; i++) {
+        for (let i = 1; i <= parseInt(0) + 11; i++) {
             let count1 = await BottleModel.find({
                 dateAdded: {
-                    $gte: new Date(2021, i - 1),
-                    $lt: new Date(2021, i)
+                    $gte: new Date(year, i - 1),
+                    $lt: new Date(year, i)
                 }
             }).countDocuments()
             countArray1.push(count1);
@@ -43,12 +42,12 @@ router.get("/", [
 
         //Count for the second status
         const countArray2 = [];
-        for (let i = startMonth; i <= parseInt(startMonth) + 5; i++) {
+        for (let i = 1; i <= parseInt(0) + 11; i++) {
             let count2 = await BottleModel.find({
                 bottleStatus: statusTwo,
                 dateUpdated: {
-                    $gte: new Date(2021, i - 1),
-                    $lt: new Date(2021, i)
+                    $gte: new Date(year, i - 1),
+                    $lt: new Date(year, i)
                 }
             }).countDocuments()
             countArray2.push(count2);
@@ -81,12 +80,12 @@ router.get("/", [
 
         //Count for the first status
         const countArray1 = [];
-        for (let i = startMonth; i <= parseInt(startMonth) + 5; i++) {
+        for (let i = 1; i <= parseInt(0) + 11; i++) {
             let count1 = await BottleModel.find({
                 "manufacturer.id": manufacturerId,
                 dateAdded: {
-                    $gte: new Date(2021, i - 1),
-                    $lt: new Date(2021, i)
+                    $gte: new Date(year, i - 1),
+                    $lt: new Date(year, i)
                 }
             }).countDocuments()
             countArray1.push(count1);
@@ -94,13 +93,13 @@ router.get("/", [
 
         //Count for the second status
         const countArray2 = [];
-        for (let i = startMonth; i <= parseInt(startMonth) + 5; i++) {
+        for (let i = 1; i <= parseInt(0) + 11; i++) {
             let count2 = await BottleModel.find({
                 "manufacturer.id": manufacturerId,
                 bottleStatus: statusTwo,
                 dateUpdated: {
-                    $gte: new Date(2021, i - 1),
-                    $lt: new Date(2021, i)
+                    $gte: new Date(year, i - 1),
+                    $lt: new Date(year, i)
                 }
             }).countDocuments()
             countArray2.push(count2);

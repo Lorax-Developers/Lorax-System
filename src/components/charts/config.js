@@ -162,9 +162,9 @@ export const barChartOptions = {
         },
         ticks: {
           beginAtZero: true,
-          stepSize: 10,
+          stepSize: 50,
           min: 0,
-          max: 60,
+          max: 700,
           padding: 20
         }
       }
