@@ -49,6 +49,14 @@ const Scan = (props) => {
 
     const setDataValue = e => {
         setData({...data, [e.target.name]:e.target.value});
+        if(e.target.name == "bottleSize"){
+          if(parseInt(e.target.value) < 300){
+            document.getElementById("sizeUnit").selectedIndex="1";
+          }
+          else{
+            document.getElementById("sizeUnit").selectedIndex="0";
+          }
+        }
     }
 
     const setDataValue2 = (state, value) => {
@@ -557,7 +565,7 @@ const Scan = (props) => {
                                     <div className="form-group row">
                                         <label className="col-sm-2 col-form-label">Bottle Size Unit</label>
                                         <div className="col-sm-10">
-                                        <select required  className="form-control" name="sizeUnit" onChange={(e) => setDataValue(e)}>
+                                        <select required  className="form-control" name="sizeUnit" id="sizeUnit" onChange={(e) => setDataValue(e)}>
                                                 <option value="ml">ML (Millilitre)</option>
                                                 <option value="l">L (Litre)</option>
                                             </select>
