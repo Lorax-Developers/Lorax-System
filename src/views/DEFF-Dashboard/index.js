@@ -1,6 +1,6 @@
 import React, { useEffect, useState, } from "react";
 import AppLayout from '../../layout/AppLayout';
-import { Row } from "reactstrap";
+import { Row, Button, } from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
 import "./dashboard.scss"
 
@@ -184,8 +184,20 @@ function DEFFDashboard(props) {
         return (
             <AppLayout>
                 <Row>
-                    <Colxx xxs="12">
+                    <Colxx xl="8" lg="8" md="12">
+
                         <h1>Department of Environment, Forestry and Fisheries Dashboard</h1>
+                    </Colxx>
+                    <Colxx xl="4" lg="4" md="12">
+                        <div className="text-zero top-right-button-container">
+                            <Button target="_blank" href="https://ropsten.etherscan.io/address/0xccd9716739b8430aea337714056fbcd220e582f0"
+                                color="primary"
+                                size="lg"
+                                className="top-right-button">
+                                Explore Blockchain
+                            </Button>
+                            {"  "}
+                        </div>
                     </Colxx>
                 </Row>
                 <Row>
@@ -253,12 +265,23 @@ function DEFFDashboard(props) {
         return (
             <AppLayout>
                 <Row>
-                    <Colxx xxs="12">
+                    <Colxx xl="8" lg="8" md="12">
                         <h1>Department of Environment, Forestry and Fisheries Dashboard</h1>
+                    </Colxx>
+                    <Colxx xl="4" lg="4" md="12">
+                        <div className="text-zero top-right-button-container">
+                            <Button target="_blank" href="https://ropsten.etherscan.io/address/0xccd9716739b8430aea337714056fbcd220e582f0"
+                                color="primary"
+                                size="lg"
+                                className="top-right-button">
+                                Explore Blockchain
+                            </Button>
+                            {"  "}
+                        </div>
                     </Colxx>
                 </Row>
                 <Row>
-                    <Colxx xl="6" lg="6" md="12">
+                    <Colxx>
                         <Select options={dropDownData} placeholder={"Please select an option"} onChange={onChangeInput}>
                         </Select>
                         <Separator className="mb-5" />
