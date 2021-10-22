@@ -9,6 +9,9 @@ import SmartbinPieChart from "./components/SmartbinPieChart";
 import DashboardBarChart from "./components/DashboardBarChart";
 import TotalManufacturedCard from "./components/TotalManufacturedCard"
 import ManufacturerDetailsCard from "./components/ManufacturerDetailsCard";
+import TotalManufacturedCardSA from "./components/TotalManufacturedCardSA";
+import TotalRecycledCardSA from "./components/TotalRecycledCardSA";
+
 import UserTable from "./components/UsersTable";
 import axios from "axios";
 import Select from "react-select";
@@ -17,14 +20,24 @@ function DEFFDashboard(props) {
 
     //variable, variable updating function, default value
     const [dropDownData, setDropDownData] = useState([]);
-    const [selectedUser, setSelectedUser] = useState();
+    const [selectedUser, setSelectedUser] = useState({});
     const [manufacturerData, setManufacturerData] = useState({});
     const [dataNumbers, setDataNumbers] = useState({});
     const [dataNumbersBarChart, setDataNumbersBarChart] = useState({});
     const [usersTableData, setUsersTableData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [madeChoice, setmadeChoice] = useState(true);
+
+    const [selectedYear, setSelectedYear] = useState(2021);
+    const yearsData = [{ value: 2021, label: 2021 }, { value: 2020, label: 2020 }, { value: 2019, label: 2019 }, { value: 2018, label: 2018 }, { value: 2017, label: 2017 }];
+
+
     let server = 'http://localhost:5000';
+
+    // Get Years for drop down   
+    function onChangeDate({ value }) {
+        setSelectedYear(value);
+    }
 
 
     //Get Manufacturer Data for drop down list 
@@ -51,6 +64,7 @@ function DEFFDashboard(props) {
     }
     getManufacturers();
 
+
     function onChangeInput({ value }) {
         setSelectedUser(value);
         setmadeChoice(false);
@@ -60,7 +74,8 @@ function DEFFDashboard(props) {
 
     useEffect(() => {
 
-        let server = 'http://localhost:5000';
+        setIsLoading(true);
+
 
         // if (isLoading === false) {
         if (madeChoice === false) {
@@ -116,10 +131,11 @@ function DEFFDashboard(props) {
                 let thisMonth = new Date().getMonth() - 4;
                 let statusOne = "Manufactured";
                 let statusTwo = "Recycled";
+                // let selectedYear = 2021;
 
                 var config = {
                     method: 'get',
-                    url: `${server}/api/totalbottlesmonthly?startMonth=${thisMonth}&statusOne=${statusOne}&statusTwo=${statusTwo}&manufacturerId=${selectedUser}`,
+                    url: `${server}/api/totalbottlesmonthly?startMonth=${thisMonth}&statusOne=${statusOne}&statusTwo=${statusTwo}&manufacturerId=${selectedUser}&year=${selectedYear}`,
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -147,6 +163,7 @@ function DEFFDashboard(props) {
                     //Successful?
                     .then(function (response) {
                         setUsersTableData(response.data);
+                        // console.log(usersTableData)
                     })
                     //Unsuccessful?
                     .catch(function (error) {
@@ -161,17 +178,25 @@ function DEFFDashboard(props) {
         }
 
 
-    }, [selectedUser, isLoading, madeChoice])
+    }, [selectedUser, isLoading, madeChoice, selectedYear, setSelectedYear])
+    // If South Africa is selected from the list, display these components 
     if (selectedUser === "1234") {
         return (
             <AppLayout>
                 <Row>
                     <Colxx xxs="12">
-                        <h1>DEFF Dashboard</h1>
+                        <h1>Department of Environment, Forestry and Fisheries Dashboard</h1>
                     </Colxx>
-                    <Colxx>
-                        <Separator className="mb-5" />
+                </Row>
+                <Row>
+                    <Colxx xl="6" lg="6" md="12">
                         <Select options={dropDownData} placeholder={"Please select an option"} onChange={onChangeInput}>
+                        </Select>
+                        <Separator className="mb-5" />
+                    </Colxx>
+
+                    <Colxx xl="6" lg="6" md="12">
+                        <Select options={yearsData} placeholder={"2021"} onChange={onChangeDate}>
                         </Select>
                         <Separator className="mb-5" />
                     </Colxx>
@@ -183,22 +208,39 @@ function DEFFDashboard(props) {
                         :
                         <>
                             <Row>
-                                <SortableStaticticsRow dataNumbers={dataNumbers}></SortableStaticticsRow>
+                                <Colxx xl="6" lg="6" md="6" className="mb-4">
+                                    <TotalManufacturedCardSA dataNumbers={dataNumbers}></TotalManufacturedCardSA>
+                                </Colxx>
+                                <Colxx xl="6" lg="6" md="6" className="mb-4">
+                                    <TotalRecycledCardSA dataNumbers={dataNumbers} ></TotalRecycledCardSA>
+                                </Colxx>
                             </Row>
                             <Row>
-                                <Colxx sm="12" md="6" className="mb-4">
-                                    <SmartbinPieChart dataNumbers={dataNumbers} chartClass="dashboard-donut-chart"> </SmartbinPieChart>
-                                </Colxx>
-                                <Colxx sm="12" md="6" className="mb-4">
+                                <Colxx sm="12" md="12" className="mb-4">
                                     <DashboardBarChart dataNumbersBarChart={dataNumbersBarChart} />
                                 </Colxx>
-
                             </Row>
-                            <Colxx sm="12" md="6" className="mb-4">
-                                <UserTable usersTableData={usersTableData}></UserTable>
+
+                            <Colxx xxs="12" className="mb-4">
+                                <br></br>
+                                <h1>Supply Chain Analysis</h1>
+                                <Separator className="mb-5" />
+                            </Colxx>
+                            <SortableStaticticsRow dataNumbers={dataNumbers}></SortableStaticticsRow>
+                            <Colxx sm="12" md="12" className="mb-4">
+                                <SmartbinPieChart dataNumbers={dataNumbers} chartClass="dashboard-donut-chart"> </SmartbinPieChart>
                             </Colxx>
 
-
+                            <Row>
+                                <Colxx xxs="12">
+                                    <br></br>
+                                    <h1>Lorax Users Analysis</h1>
+                                    <Separator className="mb-5" />
+                                </Colxx>
+                                <Colxx sm="12" md="12" className="mb-4">
+                                    <UserTable usersTableData={usersTableData}></UserTable>
+                                </Colxx>
+                            </Row>
                         </>
                 }
                 <br />
@@ -206,17 +248,23 @@ function DEFFDashboard(props) {
             </AppLayout >
         )
     }
-
+    // If a specific manufacturer is selected from the list, display these components on the dashboard
     else {
         return (
             <AppLayout>
                 <Row>
                     <Colxx xxs="12">
-                        <h1>DEFF Dashboard</h1>
+                        <h1>Department of Environment, Forestry and Fisheries Dashboard</h1>
                     </Colxx>
-                    <Colxx>
-                        <Separator className="mb-5" />
+                </Row>
+                <Row>
+                    <Colxx xl="6" lg="6" md="12">
                         <Select options={dropDownData} placeholder={"Please select an option"} onChange={onChangeInput}>
+                        </Select>
+                        <Separator className="mb-5" />
+                    </Colxx>
+                    <Colxx xl="6" lg="6" md="12">
+                        <Select options={yearsData} placeholder={"2021"} onChange={onChangeDate}>
                         </Select>
                         <Separator className="mb-5" />
                     </Colxx>
@@ -228,6 +276,7 @@ function DEFFDashboard(props) {
                         :
                         <>
                             <Row>
+                                <Separator className="mb-5" />
                                 <Colxx xl="6" lg="6" md="6" className="mb-4">
                                     <ManufacturerDetailsCard manufacturerData={manufacturerData}> </ManufacturerDetailsCard>
                                 </Colxx>
@@ -236,37 +285,23 @@ function DEFFDashboard(props) {
                                 </Colxx>
                             </Row>
                             <Row>
-                                <SortableStaticticsRow dataNumbers={dataNumbers}></SortableStaticticsRow>
-                            </Row>
-                            <Row>
-                                <Colxx sm="12" md="6" className="mb-4">
-                                    <SmartbinPieChart dataNumbers={dataNumbers} chartClass="dashboard-donut-chart"> </SmartbinPieChart>
-                                </Colxx>
-                                <Colxx sm="12" md="6" className="mb-4">
+                                <Colxx sm="12" md="12" className="mb-4">
                                     <DashboardBarChart dataNumbersBarChart={dataNumbersBarChart} />
                                 </Colxx>
-
                             </Row>
 
-                            <Row>
-                                <Colxx xxs="12">
-                                    <h1>Lorax Users Analysis</h1>
-                                </Colxx>
-                                <Colxx>
-                                    <Separator className="mb-5" />
-                                    <Colxx sm="12" md="6" className="mb-4">
-                                        <UserTable usersTableData={usersTableData}></UserTable>
-                                    </Colxx>
-
-                                    <Separator className="mb-5" />
-                                </Colxx>
-                            </Row>
-
-
+                            <Colxx xxs="12" className="mb-4">
+                                <br></br>
+                                <h1>Supply Chain Analysis</h1>
+                                <Separator className="mb-5" />
+                            </Colxx>
+                            <SortableStaticticsRow dataNumbers={dataNumbers}></SortableStaticticsRow>
+                            <Colxx sm="12" md="12" className="mb-4">
+                                <SmartbinPieChart dataNumbers={dataNumbers} chartClass="dashboard-donut-chart"> </SmartbinPieChart>
+                            </Colxx>
                         </>
                 }
                 <br />
-
             </AppLayout>
         )
     }

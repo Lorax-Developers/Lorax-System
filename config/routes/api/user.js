@@ -244,6 +244,45 @@ router.get("/userCount", async (req, res) => {
   let RecyclingDepotCount = await User.countDocuments({ role: "Recycling Depot" })
   let ProCount = await User.countDocuments({ role: "PRO" })
 
+  const provinces = ["Eastern Cape", "Free State", "Gauteng", "KwaZulu-Natal", "Limpopo", "Mpumalanga", "Northern Cape", "North West", "Western Cape"] // 9 provinces
+  const manufacturerArray = [];
+  const retailerArray = [];
+  const consumerArray = [];
+  const wastepickerArray = [];
+  const recyclingdepotArray = [];
+  const proArray = [];
+
+  for (let i = 0; i < 9; i++) {
+
+    let count = await User.countDocuments({ role: "Manufacturer", province: provinces[i] })
+    manufacturerArray.push(count);
+  }
+  for (let i = 0; i < 9; i++) {
+
+    let count = await User.countDocuments({ role: "Retailer", province: provinces[i] })
+    retailerArray.push(count);
+  }
+  for (let i = 0; i < 9; i++) {
+
+    let count = await User.countDocuments({ role: "Consumer", province: provinces[i] })
+    consumerArray.push(count);
+  }
+  for (let i = 0; i < 9; i++) {
+
+    let count = await User.countDocuments({ role: "Waste Picker", province: provinces[i] })
+    wastepickerArray.push(count);
+  }
+  for (let i = 0; i < 9; i++) {
+
+    let count = await User.countDocuments({ role: "Recycling Depot", province: provinces[i] })
+    recyclingdepotArray.push(count);
+  }
+  for (let i = 0; i < 9; i++) {
+
+    let count = await User.countDocuments({ role: "PRO", province: provinces[i] })
+    proArray.push(count);
+  }
+
   res.status(200).json({
     statusType: "Number of Registered Users",
     ManufacturerCount,
@@ -252,6 +291,8 @@ router.get("/userCount", async (req, res) => {
     WastePickerCount,
     RecyclingDepotCount,
     ProCount,
+    provinces,
+    manufacturerArray, retailerArray, consumerArray, wastepickerArray, recyclingdepotArray, proArray,
     status: 200
   })
 })
