@@ -216,7 +216,7 @@ class Sidebar extends Component {
                                 : item.id === "insights"
                                 ? "none"
                                 : item.id === "bottles"
-                                ? "block"
+                                ? "none"
                                 : "block"
                               : "block",
 
