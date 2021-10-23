@@ -110,7 +110,7 @@ class Admin extends React.Component {
 
         <Row>
           <Colxx xxs="12">
-            <h2>PRO Manufacturer requests</h2>
+            <h2 className="SubHeader">PRO Manufacturer requests</h2>
             <Separator className="mb-5" />
           </Colxx>
         </Row>

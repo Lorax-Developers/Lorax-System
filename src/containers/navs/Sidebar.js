@@ -180,7 +180,7 @@ class Sidebar extends Component {
                                 : item.id === "scanproduct"
                                 ? "none"
                                 : item.id === "dashboard"
-                                ? "block"
+                                ? "none"
                                 : item.id === "faq"
                                 ? "none"
                                 : item.id === "manufacturer"

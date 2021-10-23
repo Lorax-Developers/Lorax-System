@@ -5,6 +5,10 @@
   background-color: #fff;
   min-height: 30vh;
   overflow: hidden;
+  border-radius: 10px;
+}
+.SubHeader {
+  margin-top: 10px;
 }
 
 .d-flex {
@@ -12,23 +16,33 @@
   flex: wrap;
 }
 
+/*Buttons */
 .update {
   font-size: 2em;
   padding-left: 1em;
   padding-right: 1em;
   margin-left: 1em;
   margin-right: 1em;
-  color: greenyellow;
+  background-color: rgb(230, 230, 230);
+  color: #6fb327;
   border-radius: 10%;
+  box-shadow: 8px 10px 10px 1px rgba(0, 0, 0, 0.5);
+}
+.update:hover {
+  background-color: white;
 }
 .delete {
   font-size: 2em;
   color: red;
+  background-color: rgb(230, 230, 230);
   padding-left: 1em;
   padding-right: 1em;
   border-radius: 10%;
+  box-shadow: 8px 10px 10px 1px rgba(0, 0, 0, 0.5);
 }
-
+.delete:hover {
+  background-color: white;
+}
 .inline {
   display: inline-block;
 }
@@ -37,12 +51,23 @@ table {
   border-spacing: 20px;
   writing-mode: 100%;
 }
-table td,
-table th {
+table .admin-table-thead {
   padding: 0.75em;
   vertical-align: top;
   text-align: center;
   border-top: 1px solid black;
+}
+
+table th {
+  padding: 0.75em;
+  vertical-align: top;
+  text-align: center;
+  background-color: #7ac42b;
+  color: #fff;
+}
+
+table tr:hover {
+  background-color: rgb(233, 233, 233);
 }
 
 @media only screen and (max-width: 780px) {
