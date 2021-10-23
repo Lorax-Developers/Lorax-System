@@ -6,7 +6,7 @@ const TotalRecycledCard = (props) => {
   return (
     <IconCard
       icon={"iconsminds-factory"}
-      title={'Total number of bottles recycled'}
+      title={'Total number of bottles recycled since registering with Lorax'}
       value={dataNumbers}
     />
   );
