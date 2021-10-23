@@ -21,7 +21,7 @@ function DEFFDashboard(props) {
 
     //variable, variable updating function, default value
     const [dropDownData, setDropDownData] = useState([]);
-    const [selectedUser, setSelectedUser] = useState({});
+    const [selectedUser, setSelectedUser] = useState(1234);
     const [manufacturerData, setManufacturerData] = useState({});
     const [dataNumbers, setDataNumbers] = useState({});
     const [dataNumbersBarChart, setDataNumbersBarChart] = useState({});
@@ -68,41 +68,20 @@ function DEFFDashboard(props) {
     //Set selectedUser variable when when a manufacturer is selected from the drop down list
     function onChangeInput({ value }) {
         setSelectedUser(value);
-        setmadeChoice(false);
+        // setmadeChoice(false);
         setIsLoading(true);
     };
 
     //Runs when page loads
 
     useEffect(() => {
-        if (madeChoice === false) {
-            if (selectedUser !== "1234") {
-                // Get Data for the manufacturer details Card 
-                let getManufacturerDetails = () => {
-                    var config = {
-                        method: 'get',
-                        url: `${server}/api/user/userdetails/${selectedUser}`,
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    };
-                    axios(config)
-                        //Successful?
-                        .then(function (response) {
-                            setManufacturerData(response.data);
-                        })
-                        //Unsuccessful?
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                }
-                getManufacturerDetails();
-            }
-            //Get further data for the supply chain cards 
-            let getCardData = () => {
+        // if (madeChoice === false) {
+        if (selectedUser !== "1234") {
+            // Get Data for the manufacturer details Card 
+            let getManufacturerDetails = () => {
                 var config = {
                     method: 'get',
-                    url: `${server}/api/totalbottles?manufacturerId=${selectedUser}`,
+                    url: `${server}/api/user/userdetails/${selectedUser}`,
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -110,66 +89,87 @@ function DEFFDashboard(props) {
                 axios(config)
                     //Successful?
                     .then(function (response) {
-                        setDataNumbers(response.data);
+                        setManufacturerData(response.data);
                     })
                     //Unsuccessful?
                     .catch(function (error) {
                         console.log(error);
                     });
             }
-
-            getCardData();
-
-            //Get further data for the Registered Users table
-            let getUsersData = () => {
-                var config = {
-                    method: 'get',
-                    url: `${server}/api/user/userCount`,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                };
-                axios(config)
-                    //Successful?
-                    .then(function (response) {
-                        setUsersTableData(response.data);
-                    })
-                    //Unsuccessful?
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            }
-
-            //Further Data for Manufactured Vs Recycled Bar Chart 
-            let getMonthlyData = () => {
-                let thisMonth = new Date().getMonth() - 4;
-                let statusOne = "Manufactured";
-                let statusTwo = "Recycled";
-
-                var config = {
-                    method: 'get',
-                    url: `${server}/api/totalbottlesmonthly?startMonth=${thisMonth}&statusOne=${statusOne}&statusTwo=${statusTwo}&manufacturerId=${selectedUser}&year=${selectedYear}`,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                };
-                axios(config)
-                    .then(function (response) {
-                        setDataNumbersBarChart(response.data.data)
-                        setIsLoading(false);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            }
-
-            getMonthlyData();
-            getUsersData();
+            getManufacturerDetails();
         }
+        //Get further data for the supply chain cards 
+        let getCardData = () => {
+            var config = {
+                method: 'get',
+                url: `${server}/api/totalbottles?manufacturerId=${selectedUser}`,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            axios(config)
+                //Successful?
+                .then(function (response) {
+                    setDataNumbers(response.data);
+                })
+                //Unsuccessful?
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        getCardData();
+
+        //Get further data for the Registered Users table
+        let getUsersData = () => {
+            var config = {
+                method: 'get',
+                url: `${server}/api/user/userCount`,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            axios(config)
+                //Successful?
+                .then(function (response) {
+                    setUsersTableData(response.data);
+                })
+                //Unsuccessful?
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        //Further Data for Manufactured Vs Recycled Bar Chart 
+        let getMonthlyData = () => {
+            let thisMonth = new Date().getMonth() - 4;
+            let statusOne = "Manufactured";
+            let statusTwo = "Recycled";
+
+            var config = {
+                method: 'get',
+                url: `${server}/api/totalbottlesmonthly?startMonth=${thisMonth}&statusOne=${statusOne}&statusTwo=${statusTwo}&manufacturerId=${selectedUser}&year=${selectedYear}`,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            axios(config)
+                .then(function (response) {
+                    setDataNumbersBarChart(response.data.data)
+                    setIsLoading(false);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        getMonthlyData();
+        getUsersData();
+        // }
 
     }, [selectedUser, isLoading, madeChoice, selectedYear, setSelectedYear])
     // If South Africa is selected from the list, display these components 
-    if (selectedUser === "1234") {
+    if (selectedUser === 1234) {
         return (
             <AppLayout>
                 <Row>
@@ -190,7 +190,7 @@ function DEFFDashboard(props) {
                 </Row>
                 <Row>
                     <Colxx xl="6" lg="6" md="12">
-                        <Select options={dropDownData} placeholder={"Please select an option"} onChange={onChangeInput}>
+                        <Select options={dropDownData} placeholder={"South Africa"} onChange={onChangeInput}>
                         </Select>
                         <Separator className="mb-5" />
                     </Colxx>
@@ -270,7 +270,7 @@ function DEFFDashboard(props) {
                 </Row>
                 <Row>
                     <Colxx>
-                        <Select options={dropDownData} placeholder={"Please select an option"} onChange={onChangeInput}>
+                        <Select options={dropDownData} placeholder={"South Africa"} onChange={onChangeInput}>
                         </Select>
                         <Separator className="mb-5" />
                     </Colxx>

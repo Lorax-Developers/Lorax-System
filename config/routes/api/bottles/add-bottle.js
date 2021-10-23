@@ -53,13 +53,13 @@ router.post(
         //The length is more than 16 meaning it's not a batch
 
         //This is not a batch request, make sure the qr code is 19 characters
-        if (qrCode.length != 19) {
+        if (qrCode.length !== 19) {
           res.status(400).json({
             status: 400,
             errors: [
               "Please ensure the bottle QR code is exactly 19 characters, what you have scanned is " +
-                qrCode.length +
-                " characters. Did you mean to scan a batch?",
+              qrCode.length +
+              " characters. Did you mean to scan a batch?",
             ],
           });
         } else {
@@ -125,7 +125,7 @@ router.post(
         }
       }
       //If the qrcode is 16 characters, it's a batch
-      else if (qrCode.length == 16) {
+      else if (qrCode.length === 16) {
         //check if the batch QR has been scanned before and return error if so
         let checkExist = await BottleModel.findOne({ batchQr });
         if (checkExist) {
@@ -136,7 +136,7 @@ router.post(
         } else {
           //Get total number of bottles in batch included in the QR (second two characters after the 'B')
           const batchTotal = parseInt(batchQr.slice(1, -13));
-
+          let x;
           //Loop through the batch and insert bottles based on the total number of items in the batch
           for (x = 1; x <= batchTotal; x++) {
             //Ternary to generate a bottle
@@ -177,8 +177,8 @@ router.post(
           res.status(200).json({
             message: `Successfully scanned a batch containing ${batchTotal} bottles with Batch QR Code '${batchQr}`,
             bottleDetails: {
-              bottleQr:batchQr,
-              bottleTitle:title,
+              bottleQr: batchQr,
+              bottleTitle: title,
               manufacturer,
               bottleStatus,
               batchQr,
@@ -194,8 +194,8 @@ router.post(
           status: 400,
           errors: [
             "Please ensure the QR code is either 16 characters for a batch or 19 characters for a bottle. Your QR code is " +
-              qrCode.length +
-              " characters.",
+            qrCode.length +
+            " characters.",
           ],
         });
       }

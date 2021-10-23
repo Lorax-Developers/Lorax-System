@@ -151,7 +151,6 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
-      dateUpdated: new Date("2021-10-23"),
     });
   } else if (nextDb === "transactions-outgoing") {
     addToNewTransactionDb = await TransactionsOutgoingModel.create({
@@ -159,7 +158,6 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
-      //dateUpdated: new Date("2021-10-23"),
     });
   } else if (nextDb === "transactions-purchased") {
     addToNewTransactionDb = await TransactionsPurchasedModel.create({
@@ -167,7 +165,6 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
-      //dateUpdated: new Date("2021-10-23"),
     });
   } else if (nextDb === "transactions-delivered") {
     addToNewTransactionDb = await TransactionsDeliveredModel.create({
@@ -175,7 +172,6 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
-      //dateUpdated: new Date("2021-10-23"),
     });
   } else if (nextDb === "transactions-deposited") {
     addToNewTransactionDb = await TransactionsDepositedModel.create({
@@ -183,7 +179,6 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
-      //dateUpdated: new Date("2021-10-23"),
     });
   } else if (nextDb === "transactions-recycled") {
     addToNewTransactionDb = await TransactionsRecycledModel.create({
@@ -191,7 +186,6 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
-      //dateUpdated: new Date("2021-10-23"),
     });
   }
   console.log(
@@ -227,13 +221,13 @@ router.post(
       //Check if the request is a batch or single request by checking the QR CODE LENGTH
       if (qrCode.length > 16) {
         //This is not a batch request, make sure the qr code is 19 characters
-        if (qrCode.length != 19) {
+        if (qrCode.length !== 19) {
           res.status(400).json({
             status: 400,
             errors: [
               "Please ensure the bottle QR code is exactly 19 characters, what you have scanned is " +
-                qrCode.length +
-                " characters. Did you mean to scan a batch",
+              qrCode.length +
+              " characters. Did you mean to scan a batch",
             ],
           });
         } else {
@@ -271,7 +265,7 @@ router.post(
 
             //Make sure the user has access to update a bottle to the next step
             if (
-              userRole == "Manufacturer" &&
+              userRole === "Manufacturer" &&
               !ManufacturerArray.includes(bottleStatus)
             ) {
               res.status(400).json({
@@ -281,7 +275,7 @@ router.post(
                 ],
               });
             } else if (
-              userRole == "Retailer" &&
+              userRole === "Retailer" &&
               !RetailerArray.includes(bottleStatus)
             ) {
               res.status(400).json({
@@ -291,7 +285,7 @@ router.post(
                 ],
               });
             } else if (
-              userRole == "Waste Picker" &&
+              userRole === "Waste Picker" &&
               !WastePickerArray.includes(bottleStatus)
             ) {
               res.status(400).json({
@@ -301,7 +295,7 @@ router.post(
                 ],
               });
             } else if (
-              userRole == "Recycler" &&
+              userRole === "Recycler" &&
               !RecyclerArray.includes(bottleStatus)
             ) {
               res.status(400).json({
@@ -410,7 +404,7 @@ router.post(
 
             //Make sure the user has access to update a batch to the next step
             if (
-              userRole == "Manufacturer" &&
+              userRole === "Manufacturer" &&
               !ManufacturerArray.includes(bottleStatus)
             ) {
               res.status(400).json({
@@ -421,7 +415,7 @@ router.post(
                 ],
               });
             } else if (
-              userRole == "Retailer" &&
+              userRole === "Retailer" &&
               !RetailerArray.includes(bottleStatus)
             ) {
               res.status(400).json({
@@ -432,7 +426,7 @@ router.post(
                 ],
               });
             } else if (
-              userRole == "Waste Picker" &&
+              userRole === "Waste Picker" &&
               !WastePickerArray.includes(bottleStatus)
             ) {
               res.status(400).json({
@@ -443,7 +437,7 @@ router.post(
                 ],
               });
             } else if (
-              userRole == "Recycler" &&
+              userRole === "Recycler" &&
               !RecyclerArray.includes(bottleStatus)
             ) {
               res.status(400).json({
@@ -466,7 +460,7 @@ router.post(
               });
 
               //If the count doesn't match the total number of bottles in the batch, it has been broken up
-              if (checkBottlesWithMatchingStatus.length != batchTotal) {
+              if (checkBottlesWithMatchingStatus.length !== batchTotal) {
                 res.status(400).json({
                   status: 400,
                   errors: [
@@ -475,9 +469,7 @@ router.post(
                 });
               } else {
                 var myquery = { batchQr };
-                //let date = Date.now();
-                //let date = new Date("2021-10-23");
-
+                let date = Date.now();
 
                 var newvalues = { $set: { bottleStatus, dateUpdated: date } };
 
@@ -489,7 +481,6 @@ router.post(
                   let newHistoryValue = {
                     status: bottleStatus,
                     updated: new Date(),
-                    //updated: new Date("2021-10-23"),
                     userId,
                   };
 
@@ -508,7 +499,7 @@ router.post(
                   deleteFromOldTransactionsDbBatch(currentDb, batchQr);
 
                   //Loop through the bottles in the batch and insert into the appropriate transaction status collection
-
+                  let x;
                   for (x = 1; x <= batchTotal; x++) {
                     //Generate a bottle
                     let bottleQR = `${qrCode}-${x < 10 ? "0" + x : x}`;
