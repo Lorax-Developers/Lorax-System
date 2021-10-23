@@ -49,6 +49,14 @@ const Scan = (props) => {
 
     const setDataValue = e => {
         setData({...data, [e.target.name]:e.target.value});
+        if(e.target.name == "bottleSize"){
+          if(parseInt(e.target.value) < 300){
+            document.getElementById("sizeUnit").selectedIndex="1";
+          }
+          else{
+            document.getElementById("sizeUnit").selectedIndex="0";
+          }
+        }
     }
 
     const setDataValue2 = (state, value) => {
@@ -355,7 +363,7 @@ const Scan = (props) => {
           return console.log(message_description);
         });
       }
- 
+    const SizesArray = ["300","330","440","500","750","1","1.5","2","2.25"];
     return(
         <AppLayout>
             <Row>
@@ -498,23 +506,24 @@ const Scan = (props) => {
                                         <label className="col-sm-2 col-form-label">Bottle Size</label>
                                         <div className="col-sm-10">
                                             <select required  className="form-control" name="bottleSize" onChange={(e) => setDataValue(e)}>
-                                                <option>300</option>
-                                                <option>330</option>
-                                                <option>440</option>
-                                                <option>500</option>
-                                                <option>750</option>
-                                                <option>1</option>
-                                                <option>1.5</option>
-                                                <option>2</option>
-                                                <option>2.25</option>
+                                                {
+                                                  SizesArray.map(size =>
+                                                    <option>{size}</option>
+                                                    )
+                                                }
                                                 <option>Other</option>
                                             </select>
+                                            <br></br>
+                                            {
+                                              !SizesArray.includes(data.bottleSize) && 
+                                              <input value={data.bottleSize != "Other" ? data.bottleSize:""} required className="form-control" name="bottleSize" onChange={(e) => setDataValue(e)}></input>
+                                            }
                                         </div>
                                     </div>
                                     <div className="form-group row">
                                         <label className="col-sm-2 col-form-label">Bottle Size Unit</label>
                                         <div className="col-sm-10">
-                                        <select required  className="form-control" name="sizeUnit" onChange={(e) => setDataValue(e)}>
+                                        <select required  className="form-control" name="sizeUnit" id="sizeUnit" onChange={(e) => setDataValue(e)}>
                                                 <option value="ml">ML (Millilitre)</option>
                                                 <option value="l">L (Litre)</option>
                                             </select>
