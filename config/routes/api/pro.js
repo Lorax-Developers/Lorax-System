@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require("../../../middleware/auth");
 const User = require("../models/User");
 var mongoose = require("mongoose");
+const { ControlPointSharp } = require("@material-ui/icons");
 
 //@route    GET api/pro
 //@desc     Gets manufacturers
@@ -50,8 +51,8 @@ router.get("/manufacturers/:id", auth, async (req, res) => {
 //@route    POST api/pro
 //@desc     Request Manufacturer for PRO
 //access    Public
-router.post("/request/:id/:mId", auth, async (req, res) => {
-  console.log("In express function");
+router.post("/request/:id/:mId/:mName", auth, async (req, res) => {
+  console.log("Request Manufacturer Function");
   try {
     if (!req.body) {
       return res
@@ -61,14 +62,13 @@ router.post("/request/:id/:mId", auth, async (req, res) => {
 
     const manID = req.params.mId;
     const myID = req.params.id;
+    const manName = req.params.mName;
+
     User.findOneAndUpdate(
       { _id: myID },
       {
         $set: {
-          pro: {
-            id: manID,
-            status: "Requested",
-          },
+          pro: { id: manID, name: manName, status: "Requested" },
         },
       },
       {

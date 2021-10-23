@@ -70,4 +70,52 @@ router.delete("/remove/:id", auth, async (req, res) => {
     });
 });
 
+//@route    GET api/admin
+//@desc     Gets PRO users with requested manfuacturers
+//access    Public
+router.get("/pro", auth, async (req, res) => {
+  try {
+    User.find({ "pro.status": "Requested" })
+      .then((user) => {
+        res.send(user);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || "Error Occured while retrieving user information",
+        });
+      });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+//@route    PUT api/admin
+//@desc     Grants PRO Access to manufacturer
+//access    Public
+router.put("/pro/update/:id", auth, async (req, res) => {
+  try {
+    if (!req.body) {
+      return res
+        .status(400)
+        .send({ message: "Can not update user, user doesnt exist" });
+    }
+    const id = req.params.id;
+    User.findByIdAndUpdate(id, { "pro.status": "granted" })
+      .then((data) => {
+        if (!data) {
+          res.status(404).send({ message: "User not found" });
+        } else {
+          res.send({ message: "User has been granted PRO access" });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({ message: "Cannot update user" });
+      });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 module.exports = router;
