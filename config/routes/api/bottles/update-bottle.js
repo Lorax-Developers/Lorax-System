@@ -151,6 +151,7 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
+      dateUpdated: new Date("2021-10-23"),
     });
   } else if (nextDb === "transactions-outgoing") {
     addToNewTransactionDb = await TransactionsOutgoingModel.create({
@@ -158,6 +159,7 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
+      //dateUpdated: new Date("2021-10-23"),
     });
   } else if (nextDb === "transactions-purchased") {
     addToNewTransactionDb = await TransactionsPurchasedModel.create({
@@ -165,6 +167,7 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
+      //dateUpdated: new Date("2021-10-23"),
     });
   } else if (nextDb === "transactions-delivered") {
     addToNewTransactionDb = await TransactionsDeliveredModel.create({
@@ -172,6 +175,7 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
+      //dateUpdated: new Date("2021-10-23"),
     });
   } else if (nextDb === "transactions-deposited") {
     addToNewTransactionDb = await TransactionsDepositedModel.create({
@@ -179,6 +183,7 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
+      //dateUpdated: new Date("2021-10-23"),
     });
   } else if (nextDb === "transactions-recycled") {
     addToNewTransactionDb = await TransactionsRecycledModel.create({
@@ -186,6 +191,7 @@ const addToNewTransactionsDbBatch = async (
       userId,
       batchQr: checkExist.batchQr,
       bottleStatus,
+      //dateUpdated: new Date("2021-10-23"),
     });
   }
   console.log(
@@ -469,7 +475,9 @@ router.post(
                 });
               } else {
                 var myquery = { batchQr };
-                let date = Date.now();
+                //let date = Date.now();
+                //let date = new Date("2021-10-23");
+
 
                 var newvalues = { $set: { bottleStatus, dateUpdated: date } };
 
@@ -481,6 +489,7 @@ router.post(
                   let newHistoryValue = {
                     status: bottleStatus,
                     updated: new Date(),
+                    //updated: new Date("2021-10-23"),
                     userId,
                   };
 
