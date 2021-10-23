@@ -55,7 +55,7 @@ table .admin-table-thead {
   padding: 0.75em;
   vertical-align: top;
   text-align: center;
-  border-top: 1px solid black;
+  border: 1px solid grey;
 }
 
 table th {
@@ -64,6 +64,11 @@ table th {
   text-align: center;
   background-color: #7ac42b;
   color: #fff;
+}
+
+table td {
+  vertical-align: center;
+  text-align: center;
 }
 
 table tr:hover {
