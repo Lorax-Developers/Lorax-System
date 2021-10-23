@@ -138,7 +138,7 @@ router.get("/monthlyOneVariable", [
     check("userID", "Please provide the userID").exists(),
 ], async (req, res) => {
     //Define user request variables
-    const { startMonth, statusOne, userID } = req.query;
+    const { startMonth, statusOne, userID, year } = req.query;
 
     //Check if any of the error tests mentioned above were failed
     const expressNotedErrors = validationResult(req);
@@ -160,8 +160,8 @@ router.get("/monthlyOneVariable", [
                     $elemMatch: {
                         status: statusOne,
                         updated: {
-                            $gte: new Date(2021, i - 1),
-                            $lt: new Date(2021, i)
+                            $gte: new Date(year, i - 1),
+                            $lt: new Date(year, i)
                         },
                         userId: userID
                     }
@@ -177,8 +177,8 @@ router.get("/monthlyOneVariable", [
                 datasets: [
                     {
                         label: statusOne,
-                        borderColor: "#6fb427",
-                        backgroundColor: "#f1f7eb",
+                        borderColor: "#51c878",
+                        backgroundColor: "#eef9f1",
                         data: countArray1,
                         borderWidth: 2
                     }
@@ -198,7 +198,7 @@ router.get("/monthlyTwoVariables", [
     check("userID", "Please provide the userID").exists(),
 ], async (req, res) => {
     //Define user request variables
-    const { startMonth, statusOne, statusTwo, userID } = req.query;
+    const { startMonth, statusOne, statusTwo, userID, year } = req.query;
 
     //Check if any of the error tests mentioned above were failed
     const expressNotedErrors = validationResult(req);
@@ -220,8 +220,8 @@ router.get("/monthlyTwoVariables", [
                     $elemMatch: {
                         status: statusOne,
                         updated: {
-                            $gte: new Date(2021, i - 1),
-                            $lt: new Date(2021, i)
+                            $gte: new Date(year, i - 1),
+                            $lt: new Date(year, i)
                         },
                         userId: userID
                     }
@@ -236,8 +236,8 @@ router.get("/monthlyTwoVariables", [
                     $elemMatch: {
                         status: statusTwo,
                         updated: {
-                            $gte: new Date(2021, i - 1),
-                            $lt: new Date(2021, i)
+                            $gte: new Date(year, i - 1),
+                            $lt: new Date(year, i)
                         },
                         userId: userID
                     }
@@ -253,8 +253,8 @@ router.get("/monthlyTwoVariables", [
                 datasets: [
                     {
                         label: statusOne,
-                        borderColor: "#6fb427",
-                        backgroundColor: "#f1f7eb",
+                        borderColor: "#51c878",
+                        backgroundColor: "#eef9f1",
                         data: countArray1,
                         borderWidth: 2
                     },

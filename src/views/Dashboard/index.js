@@ -33,36 +33,41 @@ const Dashboard = () => {
 
 
   const [selectedYear, setSelectedYear] = useState(2021);
-  const yearsData = [{ value: 2021, label: 2021 }, { value: 2020, label: 2020 }, { value: 2019, label: 2019 }, { value: 2018, label: 2018 }, { value: 2017, label: 2017 }];
-
+  const yearsData = [{ value: 2021, label: 2021 }, { value: 2020, label: 2020 }, { value: 2019, label: 2019 }];
 
   // Get Years for drop down   
   function onChangeInput({ value }) {
     setSelectedYear(value);
-    console.log(selectedYear)
+    setIsLoading(true);
   }
-
-  //Get a list of the past three years for the drop down list 
-  // function generateArrayOfYears() {
-  //   var max = new Date().getFullYear()
-  //   var min = max - 3
-  //   var years = []
-
-  //   for (var i = max; i >= min; i--) {
-  //     years.push({ value: i, label: i })
-  //   }
-  //   setyearsData(years)
-  // }
-
-  // generateArrayOfYears();
 
   //runs when page loads
   useEffect(() => {
 
     let server = "http://localhost:5000";
 
+    //Get further data for the supply chain cards 
+    const getCardData = () => {
+      var config = {
+        method: "get",
+        url: `${server}/api/totalbottles?manufacturerId=${manufacturer}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      axios(config)
+        //Successful?
+        .then(function (response) {
+          setDataNumbers(response.data);
+        })
+        //Unsuccessful?
+        .catch(function (error) {
+          console.log(error);
+          setIsLoading(false);
+        });
+    }
 
-    //Further data for the bar chart
+    //Get data for the bar chart
     const getFurtherData = () => {
       let thisMonth = new Date().getMonth() - 4;
       let statusOne = "Manufactured";
@@ -86,29 +91,6 @@ const Dashboard = () => {
         });
     };
 
-    //Get further data for the supply chain cards 
-    const getCardData = () => {
-      var config = {
-        method: "get",
-        url: `${server}/api/totalbottles?manufacturerId=${manufacturer}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      axios(config)
-        //Successful?
-        .then(function (response) {
-          setDataNumbers(response.data);
-          setIsLoading(false);
-
-        })
-        //Unsuccessful?
-        .catch(function (error) {
-          console.log(error);
-          setIsLoading(false);
-        });
-    }
-
     getFurtherData();
     getCardData();
 
@@ -130,7 +112,6 @@ const Dashboard = () => {
       </Colxx>
 
       {
-
         isLoading ? (
           <LoraxLoader />
         ) : (
@@ -180,5 +161,4 @@ const Dashboard = () => {
     </AppLayout>
   )
 }
-
 export default Dashboard;

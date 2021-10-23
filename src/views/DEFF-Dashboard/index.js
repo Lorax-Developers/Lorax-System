@@ -3,6 +3,7 @@ import AppLayout from '../../layout/AppLayout';
 import { Row, Button, } from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
 import "./dashboard.scss"
+import { LoraxLoader } from "../../components/LoraxLoader";
 
 import SortableStaticticsRow from './components/SortableStaticticsRow';
 import SmartbinPieChart from "./components/SmartbinPieChart";
@@ -29,7 +30,7 @@ function DEFFDashboard(props) {
     const [madeChoice, setmadeChoice] = useState(true);
 
     const [selectedYear, setSelectedYear] = useState(2021);
-    const yearsData = [{ value: 2021, label: 2021 }, { value: 2020, label: 2020 }, { value: 2019, label: 2019 }, { value: 2018, label: 2018 }, { value: 2017, label: 2017 }];
+    const yearsData = [{ value: 2021, label: 2021 }, { value: 2020, label: 2020 }, { value: 2019, label: 2019 }];
 
 
     let server = 'http://localhost:5000';
@@ -37,8 +38,8 @@ function DEFFDashboard(props) {
     // Get Years for drop down   
     function onChangeDate({ value }) {
         setSelectedYear(value);
+        setIsLoading(true);
     }
-
 
     //Get Manufacturer Data for drop down list 
     const getManufacturers = () => {
@@ -64,22 +65,17 @@ function DEFFDashboard(props) {
     }
     getManufacturers();
 
-
+    //Set selectedUser variable when when a manufacturer is selected from the drop down list
     function onChangeInput({ value }) {
         setSelectedUser(value);
         setmadeChoice(false);
+        setIsLoading(true);
     };
 
     //Runs when page loads
 
     useEffect(() => {
-
-        setIsLoading(true);
-
-
-        // if (isLoading === false) {
         if (madeChoice === false) {
-
             if (selectedUser !== "1234") {
                 // Get Data for the manufacturer details Card 
                 let getManufacturerDetails = () => {
@@ -100,10 +96,8 @@ function DEFFDashboard(props) {
                             console.log(error);
                         });
                 }
-
                 getManufacturerDetails();
             }
-
             //Get further data for the supply chain cards 
             let getCardData = () => {
                 var config = {
@@ -126,31 +120,7 @@ function DEFFDashboard(props) {
 
             getCardData();
 
-            //Further Data for Manufactured Vs Recycled Bar Chart 
-            let getMonthlyData = () => {
-                let thisMonth = new Date().getMonth() - 4;
-                let statusOne = "Manufactured";
-                let statusTwo = "Recycled";
-                // let selectedYear = 2021;
-
-                var config = {
-                    method: 'get',
-                    url: `${server}/api/totalbottlesmonthly?startMonth=${thisMonth}&statusOne=${statusOne}&statusTwo=${statusTwo}&manufacturerId=${selectedUser}&year=${selectedYear}`,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                };
-                axios(config)
-                    .then(function (response) {
-                        setDataNumbersBarChart(response.data.data)
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            }
-
             //Get further data for the Registered Users table
-
             let getUsersData = () => {
                 var config = {
                     method: 'get',
@@ -163,7 +133,6 @@ function DEFFDashboard(props) {
                     //Successful?
                     .then(function (response) {
                         setUsersTableData(response.data);
-                        // console.log(usersTableData)
                     })
                     //Unsuccessful?
                     .catch(function (error) {
@@ -171,12 +140,32 @@ function DEFFDashboard(props) {
                     });
             }
 
+            //Further Data for Manufactured Vs Recycled Bar Chart 
+            let getMonthlyData = () => {
+                let thisMonth = new Date().getMonth() - 4;
+                let statusOne = "Manufactured";
+                let statusTwo = "Recycled";
+
+                var config = {
+                    method: 'get',
+                    url: `${server}/api/totalbottlesmonthly?startMonth=${thisMonth}&statusOne=${statusOne}&statusTwo=${statusTwo}&manufacturerId=${selectedUser}&year=${selectedYear}`,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+                axios(config)
+                    .then(function (response) {
+                        setDataNumbersBarChart(response.data.data)
+                        setIsLoading(false);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+
             getMonthlyData();
             getUsersData();
-            setIsLoading(false);
-
         }
-
 
     }, [selectedUser, isLoading, madeChoice, selectedYear, setSelectedYear])
     // If South Africa is selected from the list, display these components 
@@ -185,7 +174,6 @@ function DEFFDashboard(props) {
             <AppLayout>
                 <Row>
                     <Colxx xl="8" lg="8" md="12">
-
                         <h1>Department of Environment, Forestry and Fisheries Dashboard</h1>
                     </Colxx>
                     <Colxx xl="4" lg="4" md="12">
@@ -214,10 +202,9 @@ function DEFFDashboard(props) {
                     </Colxx>
                 </Row>
                 {
-                    isLoading ?
-
-                        "Please wait..."
-                        :
+                    isLoading ? (
+                        <LoraxLoader />
+                    ) : (
                         <>
                             <Row>
                                 <Colxx xl="6" lg="6" md="6" className="mb-4">
@@ -253,9 +240,10 @@ function DEFFDashboard(props) {
                                     <UserTable usersTableData={usersTableData}></UserTable>
                                 </Colxx>
                             </Row>
+                            <br />
                         </>
+                    )
                 }
-                <br />
 
             </AppLayout >
         )
@@ -293,10 +281,9 @@ function DEFFDashboard(props) {
                     </Colxx>
                 </Row>
                 {
-                    isLoading ?
-
-                        "Please wait..."
-                        :
+                    isLoading ? (
+                        <LoraxLoader />
+                    ) : (
                         <>
                             <Row>
                                 <Separator className="mb-5" />
@@ -323,13 +310,12 @@ function DEFFDashboard(props) {
                                 <SmartbinPieChart dataNumbers={dataNumbers} chartClass="dashboard-donut-chart"> </SmartbinPieChart>
                             </Colxx>
                         </>
+                    )
                 }
                 <br />
             </AppLayout>
         )
     }
-
 }
-
 export default DEFFDashboard;
 
