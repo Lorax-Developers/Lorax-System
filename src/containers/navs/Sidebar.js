@@ -107,7 +107,7 @@ class Sidebar extends Component {
                                                 : item.id === "deff-dashboard"
                                                   ? "none"
                                                   : item.id === "insights"
-                                                    ? "none"
+                                                    ? "block"
                                                     : item.id === "bottles"
                                                       ? "none"
                                                       : "block"
@@ -195,7 +195,7 @@ class Sidebar extends Component {
                                                             : item.id === "insights"
                                                               ? "none"
                                                               : item.id === "bottles"
-                                                                ? "none"
+                                                                ? "block"
                                                                 : "block"
                                           : this.props.user.role === "DEFF"
                                             ? item.id === "admin"
@@ -215,7 +215,7 @@ class Sidebar extends Component {
                                                           : item.id === "insights"
                                                             ? "none"
                                                             : item.id === "bottles"
-                                                              ? "block"
+                                                              ? "none"
                                                               : "block"
                                             : "block",
 
