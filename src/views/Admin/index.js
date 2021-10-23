@@ -60,23 +60,23 @@ class Admin extends React.Component {
           <form className="">
             <table className="admin-table admin-container">
               <thead className="admin-table-thead">
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Contact Number</th>
-                <th>Role</th>
-                <th>Grant Access</th>
+                <th className="admin-tableHeader">ID</th>
+                <th className="admin-tableHeader">Name</th>
+                <th className="admin-tableHeader">Email</th>
+                <th className="admin-tableHeader">Contact Number</th>
+                <th className="admin-tableHeader">Role</th>
+                <th className="admin-tableHeader">Grant Access</th>
               </thead>
               <tbody>
                 {items.map(function (item, index) {
                   return (
-                    <tr key={index}>
-                      <td>{item._id}</td>
-                      <td>{item.name}</td>
-                      <td>{item.email}</td>
-                      <td>{item.phone}</td>
-                      <td>{item.role}</td>
-                      <td>
+                    <tr className="admin-tableRow" key={index}>
+                      <td className="admin-tableData">{item._id}</td>
+                      <td className="admin-tableData">{item.name}</td>
+                      <td className="admin-tableData">{item.email}</td>
+                      <td className="admin-tableData">{item.phone}</td>
+                      <td className="admin-tableData">{item.role}</td>
+                      <td className="admin-tableData">
                         <button
                           className=" update"
                           onClick={function () {
@@ -118,25 +118,25 @@ class Admin extends React.Component {
           <form className="">
             <table className="admin-table admin-container">
               <thead className="admin-table-thead">
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Contact Number</th>
-                <th>Manufacturer</th>
-                <th>Manufacturer ID</th>
-                <th>Grant Access</th>
+                <th className="admin-tableHeader">PRO ID</th>
+                <th className="admin-tableHeader">Name</th>
+                <th className="admin-tableHeader">Email</th>
+                <th className="admin-tableHeader">Contact Number</th>
+                <th className="admin-tableHeader">Manufacturer</th>
+                <th className="admin-tableHeader">Manufacturer ID</th>
+                <th className="admin-tableHeader">Grant Access</th>
               </thead>
               <tbody>
                 {pro_items.map(function (pro_item, index) {
                   return (
-                    <tr key={index}>
-                      <td>{pro_item._id}</td>
-                      <td>{pro_item.name}</td>
-                      <td>{pro_item.email}</td>
-                      <td>{pro_item.phone}</td>
-                      <td>{pro_item.pro.name}</td>
-                      <td>{pro_item.pro.id}</td>
-                      <td>
+                    <tr className="admin-tableRow" key={index}>
+                      <td className="admin-tableData">{pro_item._id}</td>
+                      <td className="admin-tableData">{pro_item.name}</td>
+                      <td className="admin-tableData">{pro_item.email}</td>
+                      <td className="admin-tableData">{pro_item.phone}</td>
+                      <td className="admin-tableData">{pro_item.pro.name}</td>
+                      <td className="admin-tableData">{pro_item.pro.id}</td>
+                      <td className="admin-tableData">
                         <button
                           className=" update"
                           onClick={function () {
