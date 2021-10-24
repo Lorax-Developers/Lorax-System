@@ -8,7 +8,6 @@ import { LoraxLoader } from "../../components/LoraxLoader";
 import axios from "axios";
 import { toast } from "react-toastify";
 import ViewBottleHistoryModal from "./components/ViewBottleHistoryModal";
-
 import "./bottles.scss";
 import { useSelector } from "react-redux";
 
@@ -21,6 +20,8 @@ const Bottles = () => {
     const [endDate, setendDate] = useState("");
     const [loading, setIsLoading] = useState(false);
     const [bottles, setBottles] = useState([]);
+    const [pageSize, setpageSize] = useState(20);
+    const [pageNumber, setpageNumber] = useState(1);
     
     let retrievedUserDetails = useSelector(state => state.auth.user);
 
@@ -30,7 +31,7 @@ const Bottles = () => {
             setIsLoading(true);
             var config = {
                 method: 'get',
-                url: `http://localhost:5000/api/manufacturerbottles?manufacturerId=${manufacturerId}&bottleStatus=${sortingStatus}&startDate=${startDate}&endDate=${endDate}`,
+                url: `http://localhost:5000/api/manufacturerbottles?manufacturerId=${manufacturerId}&bottleStatus=${sortingStatus}&startDate=${startDate}&endDate=${endDate}&pageSize=${pageSize}&pageNumber=${pageNumber}`,
                 headers: { }
               };
               
@@ -47,8 +48,13 @@ const Bottles = () => {
                 toast.error("Something went wrong while getting bottles")
               });
 
-    }, [sortingStatus, startDate, endDate])
-    return(
+            }, [sortingStatus, startDate, endDate, pageNumber, pageSize]);    
+            
+            const onChangePage = (i) => {
+                setpageNumber(i);
+              };
+            
+            return(
         <AppLayout>
         <div className="disable-text-selection">
             <ListPageHeading
@@ -90,11 +96,12 @@ const Bottles = () => {
                         )
                     }
                 </Row>
-                {/* <Pagination
-                    currentPage={currentPage}
-                    totalPage={totalPage}
-                    onChangePage={i => this.onChangePage(i)}
-                /> */}
+                <Pagination
+              currentPage={pageNumber}
+              totalPage={totalPage}
+              onChangePage={(i) => onChangePage(i)}
+              numberLimit={10}
+            />
                 </>
             }
            

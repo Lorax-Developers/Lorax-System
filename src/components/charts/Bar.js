@@ -32,9 +32,7 @@ export default class Bar extends React.Component {
       <ChartComponent
         ref={ref => (this.chart_instance = ref && ref.chart_instance)}
         type={shadow ? "barWithShadow" : "bar"}
-        options={{
-          ...barChartOptions
-        }}
+        options={this.props.config ? this.props.config : barChartOptions}
         data={data}
       />
     );
