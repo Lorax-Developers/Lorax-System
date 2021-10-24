@@ -5,8 +5,7 @@ const BottleModel = require("../../models/bottles/BottleModel");
 //Custom function to count based on bottle status
 const returnCount = async (bottleStatus, manufacturerId) => {
     let count;
-    if (manufacturerId === undefined || manufacturerId === null || manufacturerId === "") {
-        console.log("there is no manufacturer id");
+    if (manufacturerId === undefined || manufacturerId === null || manufacturerId === "" || manufacturerId === "1234") {
         count = await BottleModel.countDocuments({ bottleStatus });
     }
     else {
@@ -21,10 +20,12 @@ router.get("/", async (req, res) => {
     //Define request variables
     const { manufacturerId } = req.query;
 
+
     //check if the manufacturer id is provided, if not show the status of all the bottles in the db
-    if (manufacturerId === undefined || manufacturerId === null || manufacturerId === "") {
+    if (manufacturerId === undefined || manufacturerId === null || manufacturerId === "" || manufacturerId === "1234") {
         //Count the number of manufactured bottles
         let TotalNumberAtManufactured = await returnCount("Manufactured")
+
 
         //Count the number of outgoing bottles
         let TotalNumberAtOutgoing = await returnCount("Outgoing")

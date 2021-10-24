@@ -114,7 +114,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: res.data,
     });
     dispatch(loadUser());
-    dispatch(setAlert("Logged in successfully 🎉", "success"));
+    dispatch(setAlert("Logged in successfully", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {

@@ -58,7 +58,6 @@ class ListPageHeading extends Component {
                 Scan a new bottle
               </Button>
               {"  "}
-       
             </div>
           </div>
 

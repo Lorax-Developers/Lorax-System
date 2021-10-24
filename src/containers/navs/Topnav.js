@@ -282,12 +282,9 @@ class TopNav extends Component {
                 >
                   Account
                 </DropdownItem>
-                <DropdownItem>Features</DropdownItem>
                 <DropdownItem onClick={() => (window.location = "/faq")}>
                   FAQ{" "}
                 </DropdownItem>
-                <DropdownItem>History</DropdownItem>
-                <DropdownItem>Support</DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem onClick={() => this.handleLogout()}>
                   {}

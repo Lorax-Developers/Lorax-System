@@ -11,16 +11,16 @@ const BottleHistoryPrivateRoute = ({
   <Route
     {...rest}
     render={(props) =>
-      loading ? null : isAuthenticated && user.role == "Manufacturer" ? (
+      loading ? null : isAuthenticated &&
+        user.role !==
+          ("Consumer" ||
+            "Waste Picker" ||
+            "Recycling Depot" ||
+            "Retailer" ||
+            "Admin") ? (
         <Component {...props} />
-      ) : user.role == "PRO" ? (
-        <Component {...props} />
-      ) : user.role == "DEFF" ? (
-        <Redirect to="/deff-dashboard" />
-      ) : user.role == "admin" ? (
-        <Redirect to="/admin" />
       ) : (
-        <Redirect to="/scan" />
+        <Redirect to="/login" />
       )
     }
   />

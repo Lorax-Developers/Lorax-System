@@ -1,5 +1,4 @@
 import React from "react";
-import { Colxx } from "../../../components/common/CustomBootstrap";
 import {
   Card, CardText, CardBody,
   CardTitle,
@@ -7,14 +6,16 @@ import {
 
 const ManufacturerDetailsCard = (props) => {
 
+  const manufacturerData = props.manufacturerData;
   let today = new Date().toLocaleDateString()
 
   return (
     <div>
-
       <Card>
         <CardBody>
-          <CardTitle tag="h5" style={{ fontweight: "bold" }}>Overview of South African manufacturers</CardTitle>
+          <CardTitle tag="h5" style={{ fontweight: "bold" }}>{manufacturerData.myName} </CardTitle>
+          <CardText tag="h6" className="mb-2 text-muted">City: {manufacturerData.myCity}</CardText>
+          <CardText tag="h6" className="mb-2 text-muted">Province: {manufacturerData.myProvince}</CardText>
           <CardText tag="h6" className="mb-2 text-muted">Date: {today}</CardText>
         </CardBody>
       </Card>

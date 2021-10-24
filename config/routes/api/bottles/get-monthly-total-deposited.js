@@ -34,7 +34,7 @@ router.get("/", [
         for (let i = 1; i <= parseInt(0) + 11; i++) {
             let count1 = await TransactionsDepositedModel.find({
                 "userId": wastepickerId,
-                dateUpdated: {
+                updated: {
                     $gte: new Date(2021, i - 1),
                     $lt: new Date(2021, i)
                 }

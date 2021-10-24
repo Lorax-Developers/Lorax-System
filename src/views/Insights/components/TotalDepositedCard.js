@@ -6,8 +6,8 @@ const TotalDepositedCard = (props) => {
   return (
     <IconCard
       icon={"iconsminds-factory"}
-      title={'Total number of bottles deposited'}
-      value={dataNumbers.TotalNumberAtDeposited}
+      title={'Total number of bottles deposited since registering with Lorax'}
+      value={dataNumbers}
     />
 
   );

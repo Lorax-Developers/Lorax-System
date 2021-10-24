@@ -11,14 +11,11 @@ const ScanPrivateRoute = ({
   <Route
     {...rest}
     render={(props) =>
-      loading ? null : (isAuthenticated && user.role == "Manufacturer") ||
-        user.role == "Consumer" ||
-        user.role == "Retailer" ||
-        user.role == "Recycling Depot" ||
-        user.role == "Waste Picker" ? (
+      loading ? null : isAuthenticated &&
+        user.role !== ("PRO" || "DEFF" || "Admin") ? (
         <Component {...props} />
       ) : (
-        <Redirect to="/dashboard" />
+        <Redirect to="/login" />
       )
     }
   />

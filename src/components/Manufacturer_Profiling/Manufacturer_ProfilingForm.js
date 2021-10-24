@@ -1,76 +1,145 @@
-import React, { useEffect, useState } from "react";
-import { Grid } from "@material-ui/core";
+import React, { useEffect } from 'react'
+import { Grid, } from '@material-ui/core';
 import Controls from "../controls/Controls";
-import { useForm, Form } from "../useForm";
+import { useForm, Form } from '../useForm';
+import * as employeeService from "../../services/employeeService";
+
+
+const genderItems = [
+    { id: 'male', title: 'Public' },
+    { id: 'female', title: 'Private' },
+    { id: 'other', title: 'Other' },
+]
 
 const initialFValues = {
-  id: 0,
-  fullName: "",
-  email: "",
-  mobile: "",
-  province: "",
-  manufacturer: "",
-};
+    id: 0,
+    fullName: '',
+    email: '',
+    mobile: '',
+    city: '',
+    gender: 'male',
+    departmentId: '',
+    hireDate: new Date(),
+    isPermanent: false,
+}
 
 export default function Manufacturer_ProfilingForm(props) {
-  const { addOrEdit, recordForEdit } = props;
+    const { addOrEdit, recordForEdit } = props
 
-  const { values, setValues, errors, handleInputChange, resetForm } = useForm(
-    initialFValues,
-    true
-  );
+    const validate = (fieldValues = values) => {
+        let temp = { ...errors }
+        if ('fullName' in fieldValues)
+            temp.fullName = fieldValues.fullName ? "" : "This field is required."
+        if ('email' in fieldValues)
+            temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? "" : "Email is not valid."
+        if ('mobile' in fieldValues)
+            temp.mobile = fieldValues.mobile.length > 9 ? "" : "Minimum 10 numbers required."
+        if ('departmentId' in fieldValues)
+            temp.departmentId = fieldValues.departmentId.length !== 0 ? "" : "This field is required."
+        setErrors({
+            ...temp
+        })
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+        if (fieldValues === values)
+            return Object.values(temp).every(x => x === "")
+    }
 
-    addOrEdit(values, resetForm);
-  };
+    const {
+        values,
+        setValues,
+        errors,
+        setErrors,
+        handleInputChange,
+        resetForm
+    } = useForm(initialFValues, true, validate);
 
-  useEffect(() => {
-    if (recordForEdit != null)
-      setValues({
-        ...recordForEdit,
-      });
-  }, [recordForEdit, setValues]);
+    const handleSubmit = e => {
+        e.preventDefault()
+        if (validate()) {
+            addOrEdit(values, resetForm);
+        }
+    }
 
-  return (
-    <Form onSubmit={handleSubmit}>
-      <Controls.Select
-        name="manufacturer"
-        label="Manufacturer"
-        value={values.manufacturer}
-        onChange={handleInputChange}
-      />
-      <Grid container>
-        <Grid item xs={6}>
-          <Controls.Input
-            label="Email"
-            name="email"
-            value={values.email}
-            onChange={handleInputChange}
-            disabled
-          />
-          <Controls.Input
-            label="Mobile"
-            name="mobile"
-            value={values.mobile}
-            onChange={handleInputChange}
-            disabled
-          />
-          <Controls.Input
-            label="Province"
-            name="province"
-            value={values.city}
-            onChange={handleInputChange}
-            disabled
-          />
+    useEffect(() => {
+        if (recordForEdit != null)
+            setValues({
+                ...recordForEdit
+            })
+    }, [recordForEdit,setValues])
 
-          <div>
-            <Controls.Button type="submit" text="Submit" />
-            <Controls.Button text="Reset" color="default" onClick={resetForm} />
-          </div>
-        </Grid>
-      </Grid>
-    </Form>
-  );
+    return (
+        <Form onSubmit={handleSubmit}>
+            <Grid container>
+                <Grid item xs={6}>
+                    <Controls.Input
+                        name="fullName"
+                        label="Company Name"
+                        value={values.fullName}
+                        onChange={handleInputChange}
+                        error={errors.fullName}
+                    />
+                    <Controls.Input
+                        label="Email"
+                        name="email"
+                        value={values.email}
+                        onChange={handleInputChange}
+                        error={errors.email}
+                    />
+                    <Controls.Input
+                        label="Mobile"
+                        name="mobile"
+                        value={values.mobile}
+                        onChange={handleInputChange}
+                        error={errors.mobile}
+                    />
+                    <Controls.Input
+                        label="City"
+                        name="city"
+                        value={values.city}
+                        onChange={handleInputChange}
+                    />
+
+                </Grid>
+                <Grid item xs={6}>
+                    <Controls.RadioGroup
+                        name="gender"
+                        label="Companytype"
+                        value={values.gender}
+                        onChange={handleInputChange}
+                        items={genderItems}
+                    />
+                    <Controls.Select
+                        name="departmentId"
+                        label="Status"
+                        value={values.departmentId}
+                        onChange={handleInputChange}
+                        options={employeeService.getDepartmentCollection()}
+                        error={errors.departmentId}
+                    />
+                    <Controls.DatePicker
+                        name="hireDate"
+                        label="Entry Date"
+                        value={values.hireDate}
+                        onChange={handleInputChange}
+                    />
+                    <Controls.Checkbox
+                        name="isPermanent"
+                        label="Permanent Member"
+                        value={values.isPermanent}
+                        onChange={handleInputChange}
+                    />
+
+                    <div>
+                        <Controls.Button
+                            type="submit"
+                            text="Submit" />
+                        <Controls.Button
+                            text="Reset"
+                            color="default"
+                            onClick={resetForm} />
+                    </div>
+                </Grid>
+            </Grid>
+        </Form>
+    )
 }
