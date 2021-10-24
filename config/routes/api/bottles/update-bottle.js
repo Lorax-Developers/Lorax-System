@@ -145,6 +145,7 @@ const addToNewTransactionsDbBatch = async (
 ) => {
   //Find and Insert into the appropriate next transaction status collection
   let addToNewTransactionDb;
+  //Step 1 - Add dateUpdated after every bottleStatus
   if (nextDb === "transactions-manufactured") {
     addToNewTransactionDb = await TransactionsManufacturedModel.create({
       bottleQr,
@@ -470,6 +471,8 @@ router.post(
               } else {
                 var myquery = { batchQr };
                 let date = Date.now();
+                //Step 2
+                //let date = new Date("2021-05-28");
 
                 var newvalues = { $set: { bottleStatus, dateUpdated: date } };
 
@@ -480,6 +483,8 @@ router.post(
                   //Add new status to the history
                   let newHistoryValue = {
                     status: bottleStatus,
+                    //Step 3
+                    //updated: new Date("2021-05-28"),
                     updated: new Date(),
                     userId,
                   };

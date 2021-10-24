@@ -30,8 +30,8 @@ class Pagination extends React.Component {
     } else {
       startPoint = totalPage - (numberLimit - 1);
       endPoint = totalPage;
-    }
-    startPoint = startPoint === 0 ? 1 : startPoint;
+    } 
+   
     const points = [];
     for (var i = startPoint; i <= endPoint; i++) {
       points.push(i);
@@ -86,11 +86,11 @@ class Pagination extends React.Component {
           </NavItem>
           {lastIsActive && (
             <NavItem className={`page-item ${lastPageButtonClassName}`}>
-              <NavLink
+              {/* <NavLink
                 className="page-link last"
                 onClick={() => this.onChangePage(totalPage)}>
                 <i className="simple-icon-control-end" />
-              </NavLink>
+              </NavLink> */}
             </NavItem>
           )}
         </Nav>
