@@ -36,7 +36,7 @@ router.put("/update/:id", auth, async (req, res) => {
         .send({ message: "Can not update user, user doesnt exist" });
     }
     const id = req.params.id;
-    User.findByIdAndUpdate(id, { access: "granted" })
+    User.findByIdAndUpdate(id, { access: "Granted" })
       .then((data) => {
         if (!data) {
           res.status(404).send({ message: "User not found" });

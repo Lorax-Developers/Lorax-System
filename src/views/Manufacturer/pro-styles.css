@@ -21,6 +21,14 @@ table {
   border-spacing: 20px;
   writing-mode: 100%;
 }
+.noProMessage {
+  margin: 15px;
+}
+
+table .pro-tableData {
+  vertical-align: center;
+  text-align: center;
+}
 
 /*PRO REQUEST PAGE*/
 .form-group {

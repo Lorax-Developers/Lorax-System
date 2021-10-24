@@ -22,6 +22,7 @@ import Landing from "./views/Landing";
 import Insights from "./views/Insights";
 import DEFFDashboard from "./views/DEFF-Dashboard";
 import Bottles from "./views/Bottles";
+import Pro_request from "./views/Manufacturer/pro_request";
 //redux
 import PrivateRoute from "./utils/privateRoute";
 import AdminPrivateRoute from "./utils/adminPrivateRoute";
@@ -86,6 +87,11 @@ class App extends Component {
                     exact
                     path="/manufacturer"
                     component={Manufacturer}
+                  />
+                  <PROPrivateRoute
+                    exact
+                    path="/pro_request"
+                    component={Pro_request}
                   />
                   <UserProfilePrivateRoute
                     exact
