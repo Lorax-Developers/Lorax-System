@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import AppLayout from "../../layout/AppLayout";
 import { Row } from "reactstrap";
 import { Colxx, Separator } from "../../components/common/CustomBootstrap";
-
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Select from "react-select";
@@ -76,6 +76,18 @@ const Pro_request = (props) => {
     console.log(manufacturerData);
   }, [selectedUser]);
 
+  function onSubmit() {
+    axios.post(
+      "http://localhost:5000/api/pro/request/" +
+        props.auth.user._id +
+        "/" +
+        manufacturerData.myId +
+        "/" +
+        manufacturerData.myName
+    );
+    <Redirect to="/manufacturer" />;
+  }
+
   return (
     <AppLayout>
       <Row>
@@ -92,7 +104,7 @@ const Pro_request = (props) => {
             are correct before requesting below
           </p>
           <div className="request-table">
-            <form method="POST" id="request_manufacturer" href="./">
+            <div id="request_manufacturer">
               <label for="manufacturer">Manufacturer</label>
               <Select
                 options={dropDownData}
@@ -128,24 +140,16 @@ const Pro_request = (props) => {
                 value={manufacturerData.myCity}
               ></input>
               <br />
-
-              <input
-                type="submit"
-                name="submit"
-                className="btn btn-primary"
-                value="Submit Request"
-                onClick={function () {
-                  axios.delete(
-                    "http://localhost:5000/api/pro/request/" +
-                      props.state.auth.user._id +
-                      "/" +
-                      manufacturerData.myId +
-                      "/" +
-                      manufacturerData.myName
-                  );
-                }}
-              />
-            </form>
+              <a href="./manufacturer">
+                <button
+                  className="btn btn-primary"
+                  value="Submit Request"
+                  onClick={onSubmit}
+                >
+                  Submit request
+                </button>
+              </a>
+            </div>
           </div>
         </div>
       </Row>
