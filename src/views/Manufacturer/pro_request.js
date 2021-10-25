@@ -126,7 +126,9 @@ const Pro_request = (props) => {
               ></Select>
               <br />
 
-              <label for="email">Email</label>
+              <label for="email" className="pro-label">
+                Email
+              </label>
               <input
                 type="text"
                 name="email"
@@ -135,7 +137,9 @@ const Pro_request = (props) => {
               ></input>
               <br />
 
-              <label for="number">Contact Number</label>
+              <label for="number" className="pro-label">
+                Contact Number
+              </label>
               <input
                 type="text"
                 name="number"
@@ -145,7 +149,9 @@ const Pro_request = (props) => {
 
               <br />
 
-              <label for="city">City</label>
+              <label for="city" className="pro-label">
+                City
+              </label>
               <input
                 type="text"
                 name="city"

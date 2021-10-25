@@ -46,7 +46,7 @@ table .pro-tableData {
   padding-top: 1rem;
 }
 
-label {
+.pro-label {
   text-align: right;
   width: 120px;
   padding-right: 2em;
