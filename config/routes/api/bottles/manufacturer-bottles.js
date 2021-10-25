@@ -19,7 +19,7 @@ router.get("/", [
 
         // bottleStatus == "all" && bottleStatus == "all"
         //Define request variables
-        const {manufacturerId, bottleStatus, startDate, endDate} = req.query;
+        const {manufacturerId, bottleStatus, startDate, endDate, pageSize, pageNumber,} = req.query;
 
         //Define the type of search to conduct (in case of a filter)
         let findQuery;
@@ -64,10 +64,14 @@ router.get("/", [
         }
         //Search the collection
         const bottles = await BottleModel.find(findQuery)
+        .limit(parseInt(pageSize))
+        .skip(pageNumber == 1 ? 0 : (parseInt(pageNumber) - 1) * pageSize);
+
+        const bottleCount = await BottleModel.count();
 
         res.status(200).json({
             status:200,
-            count:bottles.length,
+            count: bottleCount,
             startDate:new Date(startDate),
             endDate:(endDate === "") ? new Date() : new Date(endDate),
             bottleStatus,

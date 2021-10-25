@@ -104,8 +104,9 @@ class ListPageHeading extends Component {
                 </div>
               </div>
               <div className="float-md-right pt-1">
-                <span className="text-muted text-small mr-1">Showing all {this.props.totalPage} bottles by Coca Cola</span>
-                
+                <span className="text-muted text-small mr-1">
+                  Total number of bottles: {this.props.totalPage}
+                </span>
               </div>
             </Collapse>
           </div>
