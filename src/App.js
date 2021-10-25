@@ -34,6 +34,7 @@ import ManufacturerPrivateRoute from "./utils/ManufacturerPrivateRoute";
 import UserProfilePrivateRoute from "./utils/UserProfilePrivateRoute";
 import ScanPrivateRoute from "./utils/ScanPrivateRoute";
 import BottleHistoryPrivateRoute from "./utils/BottleHistoryPrivateRoute";
+import ProdashboardPrivateRoute from "./utils/prodashboardPrivateRoute";
 
 import Alert from "./layout/Alert";
 
@@ -82,7 +83,7 @@ class App extends Component {
                     exact
                     render={() => <h1>Error page</h1>}
                   />
-                  <Route
+                  <ProdashboardPrivateRoute
                     path="/pro_dashboard"
                     exact
                     component={Pro_dashboard}

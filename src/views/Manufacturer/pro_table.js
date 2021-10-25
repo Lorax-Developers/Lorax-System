@@ -6,7 +6,8 @@ const TableBody = (props) => {
   const items = props.items;
   const user = props.user;
 
-  var _id, name, email, phone, status;
+  var _id, name, email, phone;
+  let status = false;
   function data() {
     console.log(items);
     var list = new Map(Object.entries(items));
@@ -22,6 +23,9 @@ const TableBody = (props) => {
       } else if (key == "pro") {
         let pro = value;
         status = pro.status;
+      }
+      if (status == false) {
+        status = "Requested";
       }
     });
     if (user.pro) {
@@ -43,7 +47,7 @@ const TableBody = (props) => {
               <td className="pro-tableData">{name}</td>
               <td className="pro-tableData">{email}</td>
               <td className="pro-tableData">{phone}</td>
-              <td className="pro-tableData">{status}</td>
+              <td className="pro-tableData">{user.pro.status}</td>
               <td className="pro-tableData">
                 <button
                   className=" delete"

@@ -15,6 +15,7 @@ import Chart from "../../components/chart/Chart";
 import { userData } from "../../dummyData";
 import WidgetSm from "../../components/widgetSm/WidgetSm";
 import WidgetLg from "../../components/widgetLg/WidgetLg";
+import Swal from "sweetalert2";
 const axios = require("axios");
 
 const Pro_request = (props) => {
@@ -77,15 +78,27 @@ const Pro_request = (props) => {
   }, [selectedUser]);
 
   function onSubmit() {
-    axios.post(
-      "http://localhost:5000/api/pro/request/" +
-        props.auth.user._id +
-        "/" +
-        manufacturerData.myId +
-        "/" +
-        manufacturerData.myName
-    );
-    <Redirect to="/manufacturer" />;
+    if (props.auth.user.hasOwnProperty("pro")) {
+      Swal.fire({
+        title: "Please remove current manufacturer",
+        text: "You need to remove current manufacturer to request a new one",
+        icon: "failure",
+        confirmButtonColor: "#ff0000",
+        confirmButtonText: "Alright!",
+      }).then(function () {
+        window.location = "http://localhost:3000/manufacturer";
+      });
+    } else {
+      axios.post(
+        "http://localhost:5000/api/pro/request/" +
+          props.auth.user._id +
+          "/" +
+          manufacturerData.myId +
+          "/" +
+          manufacturerData.myName
+      );
+      window.location = "http://localhost:3000/manufacturer";
+    }
   }
 
   return (
@@ -140,15 +153,14 @@ const Pro_request = (props) => {
                 value={manufacturerData.myCity}
               ></input>
               <br />
-              <a href="./manufacturer">
-                <button
-                  className="btn btn-primary"
-                  value="Submit Request"
-                  onClick={onSubmit}
-                >
-                  Submit request
-                </button>
-              </a>
+
+              <button
+                className="btn btn-primary"
+                value="Submit Request"
+                onClick={onSubmit}
+              >
+                Submit request
+              </button>
             </div>
           </div>
         </div>
