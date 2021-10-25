@@ -6,6 +6,12 @@ const data = [
     to: "/dashboard",
   },
   {
+    id: "pro-dashboard",
+    icon: "iconsminds-shop-4",
+    label: "PRO Dashboard",
+    to: "/pro_dashboard",
+  },
+  {
     id: "insights",
     icon: "iconsminds-administrator",
     label: "Insights",

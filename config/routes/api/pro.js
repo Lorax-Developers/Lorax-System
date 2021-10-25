@@ -29,7 +29,7 @@ router.get("/", auth, async (req, res) => {
 //@route    GET api/pro
 //@desc     Gets PRO Manufacturers
 //access    Public
-router.get("/manufacturers/:id", auth, async (req, res) => {
+router.get("/manufacturers/:id", async (req, res) => {
   try {
     const myID = req.params.id;
     User.findById(myID)

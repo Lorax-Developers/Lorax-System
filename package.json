@@ -64,6 +64,7 @@
     "react-tagsinput": "^3.19.0",
     "react-toastify": "^7.0.4",
     "react-transition-group": "^4.2.2",
+    "react-usestateref": "^1.0.8",
     "react-yandex-maps": "^3.0.2",
     "reactstrap": "^8.10.0",
     "recharts": "^2.1.5",

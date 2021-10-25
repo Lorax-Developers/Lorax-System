@@ -22,6 +22,8 @@ import Landing from "./views/Landing";
 import Insights from "./views/Insights";
 import DEFFDashboard from "./views/DEFF-Dashboard";
 import Bottles from "./views/Bottles";
+import Pro_request from "./views/Manufacturer/pro_request";
+import Pro_dashboard from "./views/Manufacturer/pro_dashboard";
 //redux
 import PrivateRoute from "./utils/privateRoute";
 import AdminPrivateRoute from "./utils/adminPrivateRoute";
@@ -32,6 +34,7 @@ import ManufacturerPrivateRoute from "./utils/ManufacturerPrivateRoute";
 import UserProfilePrivateRoute from "./utils/UserProfilePrivateRoute";
 import ScanPrivateRoute from "./utils/ScanPrivateRoute";
 import BottleHistoryPrivateRoute from "./utils/BottleHistoryPrivateRoute";
+import ProdashboardPrivateRoute from "./utils/prodashboardPrivateRoute";
 
 import Alert from "./layout/Alert";
 
@@ -80,12 +83,22 @@ class App extends Component {
                     exact
                     render={() => <h1>Error page</h1>}
                   />
+                  <ProdashboardPrivateRoute
+                    path="/pro_dashboard"
+                    exact
+                    component={Pro_dashboard}
+                  />
                   <Route path="/" exact component={Landing} />
                   <AdminPrivateRoute exact path="/admin" component={Admin} />
                   <PROPrivateRoute
                     exact
                     path="/manufacturer"
                     component={Manufacturer}
+                  />
+                  <PROPrivateRoute
+                    exact
+                    path="/pro_request"
+                    component={Pro_request}
                   />
                   <UserProfilePrivateRoute
                     exact
