@@ -31,7 +31,7 @@ table .pro-tableData {
 }
 
 /*PRO REQUEST PAGE*/
-.form-group {
+.pro-form-group {
   max-width: unset !important;
   position: relative;
   width: 100%;

@@ -110,7 +110,7 @@ const Pro_request = (props) => {
         </Colxx>
       </Row>
       <Row>
-        <div className="form-group ">
+        <div className="pro-form-group ">
           <h2 className="form-header">New request</h2>
           <p className="form-instruction">
             Select a manufacturer from the dropdown list and ensure the details
