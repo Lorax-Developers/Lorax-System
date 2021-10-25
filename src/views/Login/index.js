@@ -47,7 +47,7 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
     e.preventDefault();
 
     register({ name, email, phone, role, province, city, password, access });
-    document.getElementById("sign-up-form").reset();
+    //document.getElementById("sign-up-form").reset();
   };
   //LOGIN FUNCTIONALITY
 

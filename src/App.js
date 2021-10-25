@@ -23,6 +23,7 @@ import Insights from "./views/Insights";
 import DEFFDashboard from "./views/DEFF-Dashboard";
 import Bottles from "./views/Bottles";
 import Pro_request from "./views/Manufacturer/pro_request";
+import Pro_dashboard from "./views/Manufacturer/pro_dashboard";
 //redux
 import PrivateRoute from "./utils/privateRoute";
 import AdminPrivateRoute from "./utils/adminPrivateRoute";
@@ -80,6 +81,11 @@ class App extends Component {
                     path="/error"
                     exact
                     render={() => <h1>Error page</h1>}
+                  />
+                  <Route
+                    path="/pro_dashboard"
+                    exact
+                    component={Pro_dashboard}
                   />
                   <Route path="/" exact component={Landing} />
                   <AdminPrivateRoute exact path="/admin" component={Admin} />

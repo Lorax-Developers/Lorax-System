@@ -19,7 +19,62 @@ const axios = require("axios");
 
 const Pro_request = (props) => {
   const [dropDownData, setDropDownData] = useState([]);
-  const [selectedUser, setSelectedUser] = useState({});
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [manufacturerData, setManufacturerData] = useState({});
+
+  const getManufacturers = () => {
+    let server = "http://localhost:5000";
+    var config = {
+      method: "get",
+      url: `${server}/api/User/manufacturerlist`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    axios(config)
+      .then(function (response) {
+        let options = response.data.map((d) => ({
+          value: d._id,
+          label: d.name,
+        }));
+        setDropDownData(options);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  getManufacturers();
+
+  //Set selectedUser variable when when a manufacturer is selected from the drop down list
+  function onChangeInput({ value }) {
+    setSelectedUser(value);
+  }
+  useEffect(() => {
+    let server = "http://localhost:5000";
+    //Get Manufacturer Data for drop down list
+    let getManufacturerDetails = () => {
+      var config = {
+        method: "get",
+        url: `${server}/api/user/userdetails/${selectedUser}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      axios(config)
+        //Successful?
+        .then(function (response) {
+          setManufacturerData(response.data);
+        })
+        //Unsuccessful?
+        .catch(function (error) {
+          console.log(error);
+        });
+    };
+    if (selectedUser !== null) {
+      getManufacturerDetails();
+    }
+    console.log(manufacturerData);
+  }, [selectedUser]);
 
   return (
     <AppLayout>
@@ -39,19 +94,39 @@ const Pro_request = (props) => {
           <div className="request-table">
             <form method="POST" id="request_manufacturer" href="./">
               <label for="manufacturer">Manufacturer</label>
-              <input type="select" name="manufacturer"></input>
+              <Select
+                options={dropDownData}
+                placeholder={"Select a user"}
+                onChange={onChangeInput}
+              ></Select>
               <br />
 
               <label for="email">Email</label>
-              <input type="text" name="email" className="pro_fields"></input>
+              <input
+                type="text"
+                name="email"
+                className="pro_fields"
+                value={manufacturerData.myEmail}
+              ></input>
               <br />
 
               <label for="number">Contact Number</label>
-              <input type="text" name="number" className="pro_fields"></input>
+              <input
+                type="text"
+                name="number"
+                className="pro_fields"
+                value={manufacturerData.myPhone}
+              ></input>
+
               <br />
 
               <label for="city">City</label>
-              <input type="text" name="city" className="pro_fields"></input>
+              <input
+                type="text"
+                name="city"
+                className="pro_fields"
+                value={manufacturerData.myCity}
+              ></input>
               <br />
 
               <input
@@ -59,6 +134,16 @@ const Pro_request = (props) => {
                 name="submit"
                 className="btn btn-primary"
                 value="Submit Request"
+                onClick={function () {
+                  axios.delete(
+                    "http://localhost:5000/api/pro/request/" +
+                      props.state.auth.user._id +
+                      "/" +
+                      manufacturerData.myId +
+                      "/" +
+                      manufacturerData.myName
+                  );
+                }}
               />
             </form>
           </div>
