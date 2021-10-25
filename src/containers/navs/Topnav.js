@@ -223,17 +223,19 @@ class TopNav extends Component {
               id="searchKeyword"
               //placeholder={messages["menu.search"]}
               value={this.state.searchKeyword}
-              onChange={(e) => this.handleSearchInputChange(e)}
-              onKeyPress={(e) => this.handleSearchInputKeyPress(e)}
+             // onChange={(e) => this.handleSearchInputChange(e)}
+             // onKeyPress={(e) => this.handleSearchInputKeyPress(e)}
             />
             <span
               className="search-icon"
-              onClick={(e) => this.handleSearchIconClick(e)}
+              //onClick={(e) => this.handleSearchIconClick(e)}
             >
               <i className="simple-icon-magnifier" />
             </span>
           </div>
-
+          {this.props.user.role == "PRO" || this.props.user.role == "admin" || this.props.user.role == "DEFF" ?
+          ""
+          :
           <div className="position-relative d-none d-none d-lg-inline-block">
             <a
               className="btn btn-primary btn-sm ml-2"
@@ -243,7 +245,7 @@ class TopNav extends Component {
               <i class="iconsminds-qr-code"></i>
               &nbsp; SCAN
             </a>
-          </div>
+          </div>}
         </div>
         <a className="navbar-logo" href="/">
           <span className="logo d-none d-xs-block" />
