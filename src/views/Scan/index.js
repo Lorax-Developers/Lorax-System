@@ -49,7 +49,7 @@ const Scan = (props) => {
 
     const setDataValue = e => {
         setData({...data, [e.target.name]:e.target.value});
-        if(e.target.name == "bottleSize"){
+        if(e.target.name === "bottleSize"){
           if(parseInt(e.target.value) < 300){
             document.getElementById("sizeUnit").selectedIndex="1";
           }
@@ -344,6 +344,7 @@ const Scan = (props) => {
       }
     
       // function to get count of bottle entries that have been previously added to the blockchain
+      // eslint-disable-next-line no-unused-vars
       function numberofBottles() {
         if (typeof web3 === "undefined") {
           return handle_web3_undefined_error();
@@ -516,7 +517,7 @@ const Scan = (props) => {
                                             <br></br>
                                             {
                                               !SizesArray.includes(data.bottleSize) && 
-                                              <input value={data.bottleSize != "Other" ? data.bottleSize:""} required className="form-control" name="bottleSize" onChange={(e) => setDataValue(e)}></input>
+                                              <input value={data.bottleSize !== "Other" ? data.bottleSize:""} required className="form-control" name="bottleSize" onChange={(e) => setDataValue(e)}></input>
                                             }
                                         </div>
                                     </div>
