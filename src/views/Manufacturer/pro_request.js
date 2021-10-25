@@ -165,7 +165,7 @@ const Pro_request = (props) => {
                 value="Submit Request"
                 onClick={onSubmit}
               >
-                Submit request
+                <span>Submit request</span>
               </button>
             </div>
           </div>
