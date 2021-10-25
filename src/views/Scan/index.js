@@ -100,7 +100,7 @@ const Scan = (props) => {
                 confirmButtonText: 'Alright!'
             })
             setIsLoading(false);
-
+            // calling addtoBlockchain function and ensuring that bottledetails is not empty
             if(response.data.bottleDetails !== undefined && response.data.bottleDetails !== null){
               addBottleToBlockchain(response.data.bottleDetails);
             }
@@ -126,31 +126,19 @@ const Scan = (props) => {
     
   let accounts;
   let PlasticbottleContract;
-  
+
+  //Checking if user is connected to Metamask
   const isMetaMaskConnected = () => accounts && accounts.length > 0;
- 
-  //request access to the user's MetaMask account
-  // async function getAccount() {
-  //   accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-  //   showAccount.innerHTML = accounts[0];
-  //   console.log(accounts || "Not able to get accounts");
-  //   console.log(isMetaMaskConnected());
-  // }
+
+ //request access to the user's MetaMask account
     async function getAccount() {
-        // // old school way of checking if metamask is installed
         if (typeof window.ethereum !== "undefined") {
-        //  // console.log("MetaMask is installed!");
         try {
-        //     /* Ask user permission to access his accounts, this will open the MetaMask UI
-        //             "Connecting" or "logging in" to MetaMask effectively means "to access the user's Ethereum account(s)".
-        //             You should only initiate a connection request in response to direct user action, such as clicking a button. 
-        //             You should always disable the "connect" button while the connection request is pending. You should never initiate a 
-        //            connection request on page load.*/
+        /* Ask user permission to access his accounts, this will open the MetaMask UI*/
             const {ethereum} = window;
             accounts = await ethereum.request({
               method: "eth_requestAccounts",
             });
-            //const account = accounts[0];
             showAccount.innerHTML = accounts;
             console.log(accounts || "Not able to get accounts");
             console.log(isMetaMaskConnected());
@@ -313,25 +301,14 @@ const Scan = (props) => {
       }
 
     async function addBottleToBlockchain(bottleDetails){
-
-        //The different stuff available to you from the database
-                      // bottleQr,
-                      // bottleTitle,
-                      // manufacturer,
-                      // bottleStatus,
-                      // batchQr,
-                      // bottleSize,
-                      // sizeUnit,
-                      // bottleType,
-
-        //bottle form data (REACT)
+        //bottle data pulled from the database to blockchain (REACT)
         var qrCode = bottleDetails.bottleQr;
         var title =  bottleDetails.bottleTitle;
         var status =  bottleDetails.bottleStatus;
         var bottleSize = bottleDetails.bottleSize;
         var sizeUnit= bottleDetails.sizeUnit;
     
-        //console.log("QrCode to add to blockchain - " + qrCode_old);       
+             
         console.log("data.QrCode to add to blockchain - " + qrCode);
         console.log("bottleTitle to add to blockchain - " + title);
         console.log("bottleStatus to add to blockchain - " + status);
@@ -351,7 +328,7 @@ const Scan = (props) => {
         console.log("PlasticbottleContract:", PlasticbottleContract );
 
         try {
-          //const index = await PlasticbottleContract.registerBottle(qrCode, title, parseInt(bottleSize), sizeUnit,{from: contractUser, value:5000});
+          //invoking the smart contract
           const index = await PlasticbottleContract.registerBottle(qrCode, title, status, parseInt(bottleSize), sizeUnit);
 
           const data = await index.wait();
@@ -366,26 +343,7 @@ const Scan = (props) => {
         console.log(message_description);
       }
     
-      //Watch for registeredDay1UserEvent, returns  fname and lname
-      /* 
-            var registeredDay1UserEvent = day1Contract.registeredDay1UserEvent();
-            registeredDay1UserEvent.watch(function(error, result){
-                if (!error)
-                    {
-                        console.log("registeredDay1UserEvent");
-                        // TODO - enable button if applicable?
-                        // Remove spinner from button if applicable
-                        //update text /  notification
-                        //(`Added to Blockchain`);
-                        // TODO - Update status in DB via ajax post then update UI button
-                    } else {
-                        console.log(error);
-                        // TODO - Update status in DB via ajax post then update UI button
-                    }
-            }); */
-    
-      // function to get count of user entries that have been previously added to the blockchain
-      //not being used. Can we remove?
+      // function to get count of bottle entries that have been previously added to the blockchain
       function numberofBottles() {
         if (typeof web3 === "undefined") {
           return handle_web3_undefined_error();
@@ -450,7 +408,6 @@ const Scan = (props) => {
                             <h5 className="mb-4">Product Details</h5>
                             {/* <button class="enableEthereumButton btn btn-success" onClick={getAccount}>Enable Ethereum & Connect to Wallet</button> */}
                             <p>Connected Account: <span class="showAccount"></span></p>
-                          
                             <form onSubmit={(e) => BeginScan(e)}>
                             
                                     {/* <div className="form-group row">
