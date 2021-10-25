@@ -223,6 +223,11 @@ const Login = ({ setAlert, register, login, isAuthenticated }) => {
                   Kindly click on the sign up icon below and fill in the
                   necessary details to access the LORAX System.
                 </p>
+                <a href="./">
+                  <button className="btn transparent" id="home-button">
+                    Home page
+                  </button>
+                </a>
                 <button
                   className="btn transparent"
                   id="sign-up-btn"
