@@ -34,6 +34,7 @@
     "moment": "2.22.2",
     "mongoose": "^5.13.12",
     "mousetrap": "^1.6.3",
+    "netlify-cli": "^6.14.4",
     "node-pre-gyp": "^0.17.0",
     "prop-types": "^15.7.2",
     "rc-slider": "^8.6.1",
