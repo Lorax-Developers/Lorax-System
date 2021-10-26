@@ -78,7 +78,8 @@ const TableBody = (props) => {
   return (
     <div className="PRO-Table">
       <a href="/pro_request" className="requestbtn btn btn-primary">
-        <i className="simple-icon-user"> Make request</i>
+        <i className="simple-icon-user "></i>
+        <span className="requestText"> Make request </span>
       </a>
       <form className="form-group">{data()}</form>
     </div>
