@@ -1,5 +1,5 @@
 
-
+// eslint-disable-next-line no-undef
 var BottleArtifact = artifacts.require("Plasticbottle");
 
 module.exports = function (deployer) {

@@ -7,11 +7,11 @@ var code1 = "Plastic Bottle";
 const hash1 = crypto.createHash("sha256").update(code1).digest("base64");
 console.log("First hash: " + hash1);
 
-var code2 = "Plastic Bottle";
+var code2 = "Plastic Bottle2";
 const hash2 = crypto.createHash("sha256").update(code2).digest("base64");
 console.log("Second hash: " + hash2);
 
-var code3 = "Plastic Bottle";
+var code3 = "Plastic Bottle3";
 const hash3 = crypto.createHash("sha256").update(code3).digest("base64");
 console.log("Third hash: " + hash3);
 
@@ -57,7 +57,7 @@ console.log(
 // Step 2 - Encryption
 
 // This is the data we want to encrypt
-const data = "Welcome to UCT FinTech 2021";
+const data = "Lorax plastic bottles";
 
 const encryptedData = crypto.publicEncrypt(
   {

@@ -22,13 +22,13 @@ Ref - https://www.trufflesuite.com/docs/truffle/testing/writing-tests-in-javascr
 */
 
 // eslint-disable-next-line no-undef
-const Bottle = artifacts.require("Plasticbottle"); //const Day1Registry = artifacts.require("../contracts/Day1Registry.sol");
+const Bottle = artifacts.require("Plasticbottle"); 
 
 // eslint-disable-next-line no-undef
 contract("Plasticbottle", (accounts) => {
   // predefine parameters
   let bottleInstance;
-  const qrcode = "1234567890";
+  const qrcode = "B24CCA0000000041-02";
   const title = "Fanta";
   const status = "manufactured";
   const bottleSize = 500;
@@ -57,18 +57,18 @@ contract("Plasticbottle", (accounts) => {
       assert.equal(bottleCounter, 0, "initial number not equal to zero");
     });
 
-    it("should add a bottle to the registry", async function () {
+    it("should add a bottle to the ganache", async function () {
       // register a user from account 0
       await bottleInstance.registerBottle(qrcode, title, status, bottleSize, sizeUnit, {
         from: accounts[0],
       });
       // get the number of bottles
       let bottleCounter = await bottleInstance.NumberofBottles();
-      // check that there is one bottle now registered
+      // check that there is one bottle now uploaded
       assert.equal(bottleCounter, 1, "bottle was not successfully uploaded");
     });
 
-    it("retrieve added bottle from the registry", async function () {
+    it("retrieve added bottle from the local blockchain", async function () {
       // retrieve the bottle details
       let bottle = await bottleInstance.BottleArray(0);
       // check that they match the original bottle details
@@ -80,10 +80,9 @@ contract("Plasticbottle", (accounts) => {
       assert.equal(bottle["qrcode"], qrcode, "bottleQR does not match");
       assert.equal(bottle["title"], title, "bottleTitle does not match");
       assert.equal(bottle["status"], title, "bottleStatus does not match");
-      assert.equal(bottle["bottleSize"], bottleSize, "bottleTitle does not match");
-      assert.equal(bottle["sizeUnit"], sizeUnit, "size does not match");
-     
-      //assert.equal(user["surname"], surname2, "surname does not match - decoy test");
+      assert.equal(bottle["bottleSize"], bottleSize, "bottleSize does not match");
+      assert.equal(bottle["sizeUnit"], sizeUnit, "sizeUnit does not match");
+
     });
   });
 });
