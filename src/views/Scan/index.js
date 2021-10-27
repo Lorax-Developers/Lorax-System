@@ -121,9 +121,8 @@ const Scan = (props) => {
         });
 
     }
-    
+   //showing the metamask account logged in on the form 
   const showAccount = document.querySelector(".showAccount");
-    
   let accounts;
   let PlasticbottleContract;
 
