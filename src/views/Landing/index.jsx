@@ -128,7 +128,7 @@ const NewLanding = (props) => {
                   <h4 className="title">Immutable and trusted data</h4>
                   <p className="description">
                     The immutable aspect of Blockchain ensures that data cannot
-                    not been tampered with, resulting in accurate and
+                    be tampered with, resulting in accurate and
                     trustworthy reporting.
                   </p>
                 </div>

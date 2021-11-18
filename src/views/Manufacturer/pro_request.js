@@ -110,7 +110,7 @@ const Pro_request = (props) => {
         </Colxx>
       </Row>
       <Row>
-        <div className="form-group ">
+        <div className="pro-form-group ">
           <h2 className="form-header">New request</h2>
           <p className="form-instruction">
             Select a manufacturer from the dropdown list and ensure the details
@@ -126,7 +126,9 @@ const Pro_request = (props) => {
               ></Select>
               <br />
 
-              <label for="email">Email</label>
+              <label for="email" className="pro-label">
+                Email
+              </label>
               <input
                 type="text"
                 name="email"
@@ -135,7 +137,9 @@ const Pro_request = (props) => {
               ></input>
               <br />
 
-              <label for="number">Contact Number</label>
+              <label for="number" className="pro-label">
+                Contact Number
+              </label>
               <input
                 type="text"
                 name="number"
@@ -145,7 +149,9 @@ const Pro_request = (props) => {
 
               <br />
 
-              <label for="city">City</label>
+              <label for="city" className="pro-label">
+                City
+              </label>
               <input
                 type="text"
                 name="city"
@@ -159,7 +165,7 @@ const Pro_request = (props) => {
                 value="Submit Request"
                 onClick={onSubmit}
               >
-                Submit request
+                <span>Submit request</span>
               </button>
             </div>
           </div>

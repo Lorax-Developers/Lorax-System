@@ -29,9 +29,12 @@ table .pro-tableData {
   vertical-align: center;
   text-align: center;
 }
+.request-sub .requestbtn .requestText {
+  font-family: "Nunito", sans-serif;
+}
 
 /*PRO REQUEST PAGE*/
-.form-group {
+.pro-form-group {
   max-width: unset !important;
   position: relative;
   width: 100%;
@@ -46,7 +49,7 @@ table .pro-tableData {
   padding-top: 1rem;
 }
 
-label {
+.pro-label {
   text-align: right;
   width: 120px;
   padding-right: 2em;

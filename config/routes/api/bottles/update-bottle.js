@@ -296,6 +296,16 @@ router.post(
                 ],
               });
             } else if (
+              userRole === "Consumer" &&
+              !WastePickerArray.includes(bottleStatus)
+            ) {
+              res.status(400).json({
+                status: 400,
+                errors: [
+                  `You are a ${userRole.toLowerCase()} and can't update a bottle to ${bottleStatus.toLowerCase()}`,
+                ],
+              });
+            } else if (
               userRole === "Recycler" &&
               !RecyclerArray.includes(bottleStatus)
             ) {
@@ -428,6 +438,17 @@ router.post(
               });
             } else if (
               userRole === "Waste Picker" &&
+              !WastePickerArray.includes(bottleStatus)
+            ) {
+              res.status(400).json({
+                status: 400,
+                errors: [
+                  `You are a ${userRole.toLowerCase()} and can't update a batch to ${bottleStatus.toLowerCase()}`,
+                  `Your batch scan failed because of user role restrictions. It's also possible that a bottle in this batch has been scanned independently to a status you do not control.`,
+                ],
+              });
+            } else if (
+              userRole === "Consumer" &&
               !WastePickerArray.includes(bottleStatus)
             ) {
               res.status(400).json({

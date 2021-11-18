@@ -56,21 +56,7 @@ router.post(
         access,
       });
 
-      if (role == "PRO") {
-        const pro = [];
-
-        user = new User({
-          name,
-          email,
-          phone,
-          password,
-          role,
-          city,
-          province,
-          access,
-        });
-      }
-      //encrypt password
+      //hash password
       //salt to hash
       const salt = await bcrypt.genSalt(10);
 
