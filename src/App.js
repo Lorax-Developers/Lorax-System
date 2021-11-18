@@ -8,8 +8,6 @@ import {
 import { IntlProvider } from "react-intl";
 import AppLocale from "./lang";
 import NotificationContainer from "./components/common/react-notifications/NotificationContainer";
-import { getDirection } from "./helpers/Utils";
-
 //APP PAGES
 import Dashboard from "./views/Dashboard";
 import Scan from "./views/Scan";
@@ -41,14 +39,6 @@ import Alert from "./layout/Alert";
 class App extends Component {
   constructor(props) {
     super(props);
-    const direction = getDirection();
-    if (direction.isRtl) {
-      document.body.classList.add("rtl");
-      document.body.classList.remove("ltr");
-    } else {
-      document.body.classList.add("ltr");
-      document.body.classList.remove("rtl");
-    }
   }
 
   render = () => {

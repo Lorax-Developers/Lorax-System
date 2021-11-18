@@ -4,21 +4,25 @@ import "react-circular-progressbar/dist/styles.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-table/react-table.css";
-import 'react-image-lightbox/style.css';
-import "video.js/dist/video-js.css";
+import "react-image-lightbox/style.css";
 
-
-import { isMultiColorActive, defaultColor,themeColorStorageKey,isDarkSwitchActive } from "./constants/defaultValues";
+import {
+  isMultiColorActive,
+  defaultColor,
+  themeColorStorageKey,
+  isDarkSwitchActive,
+} from "./constants/defaultValues";
 const color =
-  (isMultiColorActive||isDarkSwitchActive ) && localStorage.getItem(themeColorStorageKey)
+  (isMultiColorActive || isDarkSwitchActive) &&
+  localStorage.getItem(themeColorStorageKey)
     ? localStorage.getItem(themeColorStorageKey)
     : defaultColor;
 
 localStorage.setItem(themeColorStorageKey, color);
-let render = () => { 
+let render = () => {
   // import('./assets/css/sass/themes/gogo.' + color + '.scss').then(x => {
-  import('./assets/css/sass/themes/gogo.light.green.scss').then(x => {
-     require('./AppRenderer');
+  import("./assets/css/sass/themes/gogo.light.green.scss").then((x) => {
+    require("./AppRenderer");
   });
 };
 render();

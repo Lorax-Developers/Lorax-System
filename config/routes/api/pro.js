@@ -52,7 +52,6 @@ router.get("/manufacturers/:id", async (req, res) => {
 //@desc     Request Manufacturer for PRO
 //access    Public
 router.post("/request/:id/:mId/:mName", auth, async (req, res) => {
-  console.log("Request Manufacturer Function");
   try {
     if (!req.body) {
       return res
@@ -95,7 +94,6 @@ router.post("/request/:id/:mId/:mName", auth, async (req, res) => {
 //@desc     Delete manufacturer from PRO array of PRO user
 //access    Public
 router.delete("/remove/:id/:mId", auth, async (req, res) => {
-  console.log("In express function");
   try {
     if (!req.body) {
       return res

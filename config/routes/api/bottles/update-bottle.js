@@ -102,7 +102,7 @@ const addToNewTransactionsDb = async (
       bottleStatus,
     });
   }
-  console.log("added " + bottleQr + " to " + nextDb);
+  //console.log("added " + bottleQr + " to " + nextDb);
 };
 
 const deleteFromOldTransactionsDbBatch = async (currentDb, batchQr) => {
@@ -189,9 +189,7 @@ const addToNewTransactionsDbBatch = async (
       bottleStatus,
     });
   }
-  console.log(
-    "added " + bottleQr + " to " + nextDb + " under batch " + checkExist.batchQr
-  );
+  //console.log("added " + bottleQr + " to " + nextDb + " under batch " + checkExist.batchQr);
 };
 
 router.post(
@@ -227,8 +225,8 @@ router.post(
             status: 400,
             errors: [
               "Please ensure the bottle QR code is exactly 19 characters, what you have scanned is " +
-              qrCode.length +
-              " characters. Did you mean to scan a batch",
+                qrCode.length +
+                " characters. Did you mean to scan a batch",
             ],
           });
         } else {
@@ -497,7 +495,7 @@ router.post(
 
                 var newvalues = { $set: { bottleStatus, dateUpdated: date } };
 
-                console.log("from " + currentStatus + " to " + bottleStatus);
+                //console.log("from " + currentStatus + " to " + bottleStatus);
                 try {
                   await BottleModel.updateMany(myquery, newvalues);
 
@@ -513,7 +511,7 @@ router.post(
                   var newvalues2 = { $push: { history: newHistoryValue } };
                   await BottleHistoryModel.updateMany(myquery, newvalues2);
 
-                  console.log(batchTotal);
+                  //console.log(batchTotal);
                   //Get the current transaction status collection holding this batch
                   let currentDb =
                     "transactions-" + checkExist.bottleStatus.toLowerCase();
@@ -529,7 +527,7 @@ router.post(
                   for (x = 1; x <= batchTotal; x++) {
                     //Generate a bottle
                     let bottleQR = `${qrCode}-${x < 10 ? "0" + x : x}`;
-                    console.log(bottleQR);
+                    //console.log(bottleQR);
                     addToNewTransactionsDbBatch(
                       nextDb,
                       bottleQR,

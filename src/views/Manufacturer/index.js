@@ -6,14 +6,7 @@ import { Colxx, Separator } from "../../components/common/CustomBootstrap";
 
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { loadUser } from "../../actions/auth";
-import Manufacturer_Profiling from "../../components/Manufacturer_Profiling/Manufacturer_Profiling";
 import "./pro-styles.css";
-import FeaturedInfo from "../../components/featuredInfo/FeaturedInfo";
-import Chart from "../../components/chart/Chart";
-import { userData } from "../../dummyData";
-import WidgetSm from "../../components/widgetSm/WidgetSm";
-import WidgetLg from "../../components/widgetLg/WidgetLg";
 import useState from "react-usestateref";
 import TableBody from "./pro_table";
 const axios = require("axios").default;

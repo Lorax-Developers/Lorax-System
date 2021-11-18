@@ -18,7 +18,6 @@ import {
 
 import { MobileMenuIcon, MenuIcon } from "../../components/svg";
 
-import { getDirection, setDirection } from "../../helpers/Utils";
 //REDUX
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -38,18 +37,6 @@ class TopNav extends Component {
       searchKeyword: "",
     };
   }
-
-  handleChangeLocale = (locale, direction) => {
-    this.props.changeLocale(locale);
-
-    const currentDirection = getDirection().direction;
-    if (direction !== currentDirection) {
-      setDirection(direction);
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
-    }
-  };
 
   isInFullScreen = () => {
     return (
@@ -205,7 +192,7 @@ class TopNav extends Component {
           <NavLink
             to="#"
             className="menu-button d-none d-md-block"
-          onClick={() => this.props.togglesidebar(!this.props.showsidebar)}
+            onClick={() => this.props.togglesidebar(!this.props.showsidebar)}
           >
             <MenuIcon />
           </NavLink>
@@ -213,7 +200,7 @@ class TopNav extends Component {
             to="#"
             className="menu-button-mobile d-xs-block d-sm-block d-md-none"
             onClick={() => this.props.togglesidebar(!this.props.showsidebar)}
-            >
+          >
             <MobileMenuIcon />
           </NavLink>
 
@@ -223,8 +210,8 @@ class TopNav extends Component {
               id="searchKeyword"
               //placeholder={messages["menu.search"]}
               value={this.state.searchKeyword}
-             // onChange={(e) => this.handleSearchInputChange(e)}
-             // onKeyPress={(e) => this.handleSearchInputKeyPress(e)}
+              // onChange={(e) => this.handleSearchInputChange(e)}
+              // onKeyPress={(e) => this.handleSearchInputKeyPress(e)}
             />
             <span
               className="search-icon"
@@ -233,19 +220,22 @@ class TopNav extends Component {
               <i className="simple-icon-magnifier" />
             </span>
           </div>
-          {this.props.user.role == "PRO" || this.props.user.role == "admin" || this.props.user.role == "DEFF" ?
-          ""
-          :
-          <div className="position-relative d-none d-none d-lg-inline-block">
-            <a
-              className="btn btn-primary btn-sm ml-2"
-              target="_top"
-              href="/scan"
-            >
-              <i class="iconsminds-qr-code"></i>
-              &nbsp; SCAN
-            </a>
-          </div>}
+          {this.props.user.role == "PRO" ||
+          this.props.user.role == "admin" ||
+          this.props.user.role == "DEFF" ? (
+            ""
+          ) : (
+            <div className="position-relative d-none d-none d-lg-inline-block">
+              <a
+                className="btn btn-primary btn-sm ml-2"
+                target="_top"
+                href="/scan"
+              >
+                <i class="iconsminds-qr-code"></i>
+                &nbsp; SCAN
+              </a>
+            </div>
+          )}
         </div>
         <a className="navbar-logo" href="/">
           <span className="logo d-none d-xs-block" />

@@ -9,7 +9,6 @@ const TableBody = (props) => {
   var _id, name, email, phone;
   let status = false;
   function data() {
-    console.log(items);
     var list = new Map(Object.entries(items));
     Object.entries(items).forEach(([key, value]) => {
       if (key == "_id") {
