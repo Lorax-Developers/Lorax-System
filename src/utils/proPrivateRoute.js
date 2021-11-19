@@ -11,7 +11,7 @@ const proPrivateRoute = ({
   <Route
     {...rest}
     render={(props) =>
-      loading ? null : isAuthenticated && user.role == "PRO" ? (
+      loading ? null : isAuthenticated && user.role === "PRO" ? (
         <Component {...props} />
       ) : (
         <Redirect to="/login" />

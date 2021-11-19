@@ -11,13 +11,13 @@ const ManufacturerPrivateRoute = ({
   <Route
     {...rest}
     render={(props) =>
-      loading ? null : isAuthenticated && user.role == "Manufacturer" ? (
+      loading ? null : isAuthenticated && user.role === "Manufacturer" ? (
         <Component {...props} />
-      ) : user.role == "PRO" ? (
+      ) : user.role === "PRO" ? (
         <Redirect to="/manufacturer" />
-      ) : user.role == "DEFF" ? (
+      ) : user.role === "DEFF" ? (
         <Redirect to="/deff-dashboard" />
-      ) : user.role == "admin" ? (
+      ) : user.role === "admin" ? (
         <Redirect to="/admin" />
       ) : (
         <Redirect to="/scan" />

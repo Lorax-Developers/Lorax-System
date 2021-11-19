@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -14,11 +14,11 @@ const ProdashboardPrivateRoute = ({
     {...rest}
     render={(props) =>
       loading ? null : isAuthenticated &&
-        user.role == "PRO" &&
+        user.role === "PRO" &&
         user.hasOwnProperty("pro") ? (
-        user.pro.status == "Granted" ? (
+        user.pro.status === "Granted" ? (
           <Component {...props} />
-        ) : user.pro.status == "Requested" ? (
+        ) : user.pro.status === "Requested" ? (
           Swal.fire({
             title: "Please await authorisation to a manufacturer",
             text: "You need to have authorisation of a manufacturer to access their data",

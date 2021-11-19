@@ -1,4 +1,4 @@
-import React, { Component, Suspense, useEffect } from "react";
+import React, { Component, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -37,9 +37,10 @@ import ProdashboardPrivateRoute from "./utils/prodashboardPrivateRoute";
 import Alert from "./layout/Alert";
 
 class App extends Component {
-  constructor(props) {
+  /* constructor(props) {
     super(props);
   }
+  */
 
   render = () => {
     const currentAppLocale = AppLocale["en"];

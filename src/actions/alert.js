@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
-import { SET_ALERT, REMOVE_ALERT } from "./types";
+import { SET_ALERT } from "./types";
 
 export const setAlert = (msg, alertType) => (dispatch) => {
   const id = uuidv4();
@@ -8,16 +8,11 @@ export const setAlert = (msg, alertType) => (dispatch) => {
     type: SET_ALERT,
     payload: { msg, alertType, id },
   });
-  if(alertType === "success")
-  {
+  if (alertType === "success") {
     toast.success(msg);
-  }
-  else if (alertType === "danger")
-  {
+  } else if (alertType === "danger") {
     toast.error(msg);
-  }
-  else
-  {
+  } else {
     toast(msg);
   }
 };

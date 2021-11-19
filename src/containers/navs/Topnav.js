@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { injectIntl } from "react-intl";
 import {
   UncontrolledDropdown,
   DropdownItem,
@@ -184,7 +183,7 @@ class TopNav extends Component {
   };
 
   render() {
-    const { containerClassnames, menuClickCount } = this.props;
+    //const { containerClassnames, menuClickCount } = this.props;
     //const { messages } = this.props.intl;
     return (
       <nav className="navbar fixed-top">
@@ -220,9 +219,9 @@ class TopNav extends Component {
               <i className="simple-icon-magnifier" />
             </span>
           </div>
-          {this.props.user.role == "PRO" ||
-          this.props.user.role == "admin" ||
-          this.props.user.role == "DEFF" ? (
+          {this.props.user.role === "PRO" ||
+          this.props.user.role === "admin" ||
+          this.props.user.role === "DEFF" ? (
             ""
           ) : (
             <div className="position-relative d-none d-none d-lg-inline-block">

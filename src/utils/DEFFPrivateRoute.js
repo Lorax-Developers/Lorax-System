@@ -11,7 +11,7 @@ const DEFFPrivateRoute = ({
   <Route
     {...rest}
     render={(props) =>
-      loading ? null : isAuthenticated && user.role == "DEFF" ? (
+      loading ? null : isAuthenticated && user.role === "DEFF" ? (
         <Component {...props} />
       ) : (
         <Redirect to="/login" />

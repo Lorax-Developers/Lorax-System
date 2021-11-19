@@ -11,19 +11,19 @@ const TableBody = (props) => {
   function data() {
     var list = new Map(Object.entries(items));
     Object.entries(items).forEach(([key, value]) => {
-      if (key == "_id") {
+      if (key === "_id") {
         _id = value;
-      } else if (key == "name") {
+      } else if (key === "name") {
         name = value;
-      } else if (key == "email") {
+      } else if (key === "email") {
         email = value;
-      } else if (key == "phone") {
+      } else if (key === "phone") {
         phone = value;
-      } else if (key == "pro") {
+      } else if (key === "pro") {
         let pro = value;
         status = pro.status;
       }
-      if (status == false) {
+      if (status === false) {
         status = "Requested";
       }
     });
