@@ -61,7 +61,7 @@ module.exports = {
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
 
-    //The link below must be the same as the one on the ropsten site
+    //The link below must be the same as the one on your infura account 
     ropsten: {
       provider: () =>
         new HDWalletProvider(
