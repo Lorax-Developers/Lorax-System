@@ -1,4 +1,4 @@
 {
-    "mongoURI": "mongodb+srv://admin:admin123@lorax.fldwq.mongodb.net/LoraxDB?retryWrites=true&w=majority",
+    "mongoURI": "PASTE LINK HERE WITHIN QUOTES",
     "jwtSecret": "mysecrettoken"
 }
